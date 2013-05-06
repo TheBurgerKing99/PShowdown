@@ -546,17 +546,6 @@ exports.BattleFormats = {
 		ruleset: ['Hax Clause', 'Team Preview', 'Standard Ubers'],
 		banlist: []
 	},
-	balancedsketchmons: {
-		effectType: 'Format',
-		name: "Balanced Sketchmons",
-		section: "Other Metagames",
-		mod: "sketchmons",
-		challengeShow: true,
-		searchShow: true,
-		rated: true,
-		ruleset: ['Standard', 'Team Preview', 'Evasion Abilities Clause'],
-		banlist: ['Uber', 'Soul Dew']
-	},
 	nuv2: {
                 effectType: 'Format',
                 name: "NUv2",
