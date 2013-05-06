@@ -1412,7 +1412,7 @@ exports.BattleScripts = {
 			} else if (template.id === 'rufflet') {
 				set.level = 95;
 			} else if (template.id === 'braviary') {
-				set.level = 100;
+				set.level = 80;
 				var items = ['Leftovers', 'Life Orb', 'Flying Gem', 'Normal Gem'];
 				items = items.randomize();
 				set.moves = ['Brave Bird', 'Slash', 'Bulk Up', 'Roost'];
@@ -1476,7 +1476,7 @@ exports.BattleScripts = {
 			} else if (template.id === 'venipede') {
 				set.level = 95;
 			} else if (template.id === 'sneasel') {
-				set.level = 100;
+				set.level = 90;
 				set.item = 'Dark Gem';
 				set.moves = ['Thief', 'Ice Shard', 'Low Sweep', 'Fake Out'];
 				set.evs = {hp: 4, def: 0, spd: 0, spa: 0, atk: 252, spe: 252};
