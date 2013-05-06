@@ -1,0 +1,150 @@
+[2013-04-30T19:24:48.554Z] (lobby) Nollan101 was warned by Nollan101
+[2013-04-30T19:25:05.647Z] (lobby) Nollan101 was warned by Nollan101 (no mini-modding)
+[2013-05-01T04:40:11.797Z] (lobby) Nollan's Test Alt was promoted to Administrator by Nollan101.
+[2013-05-01T21:34:43.626Z] (lobby) Nollan's Test Alt was promoted to Administrator by Nollan101.
+[2013-05-02T21:03:32.066Z] (lobby) TheBurgerKing99 was promoted to Moderator by Nollan101.
+[2013-05-02T21:07:39.469Z] (lobby) TheWonderfulKyurem was muted by TheBurgerKing99. (No)
+[2013-05-02T21:08:06.831Z] (lobby) TheBurgerKing99 was warned by Nollan101 (I do NOT tolerate power abuse)
+[2013-05-02T21:08:15.551Z] (lobby) TheWonderfulKyurem was unmuted by Nollan101.
+[2013-05-02T21:15:37.486Z] (lobby) TheWonderfulKyurem was warned by Nollan101 (my serv my rules)
+[2013-05-02T21:16:32.507Z] (lobby) TheWonderfulKyurem was warned by TheBurgerKing99 (what did he **just** say?)
+[2013-05-02T21:18:44.452Z] (lobby) TheWonderfulKyurem was muted by Nollan101. (it means you aren't allowed to say it :/)
+[2013-05-02T21:20:17.663Z] (lobby) TheWonderfulKyurem was unmuted by TheBurgerKing99.
+[2013-05-02T21:21:02.481Z] (lobby) TheWonderfulKyurem was muted by TheBurgerKing99. (be respectful)
+[2013-05-02T21:23:14.029Z] (lobby) TheWonderfulKyurem was unmuted by Nollan101.
+[2013-05-02T21:24:57.067Z] (lobby) TheWonderfulKyurem was banned by Nollan101.
+[2013-05-02T21:47:51.170Z] (lobby) EnerG218 was promoted to Voice by Nollan101.
+[2013-05-02T22:00:05.155Z] (lobby) Aikenk? was promoted to Voice by Nollan101.
+[2013-05-02T22:45:53.167Z] (lobby) TheBurgerKing99 was demoted to Driver by Nollan101.
+[2013-05-02T22:48:31.772Z] (battle-npmou-5) TheBurgerKing99 was promoted to Moderator by Nollan101.
+[2013-05-03T00:36:14.649Z] (lobby) PokermansCoach was warned by Nollan101 (No just no)
+[2013-05-03T01:24:33.129Z] (lobby) Nollan101 set modchat to ~
+[2013-05-03T01:26:18.714Z] (lobby) Nollan101 set modchat to false
+[2013-05-03T21:31:28.709Z] (lobby) Nollan101 declared Well, on the note of news, I'm happy to report that NPM OU now has a ton of new changes
+[2013-05-03T21:31:56.524Z] (lobby) Nollan101 declared the changelist is at http://piratepad.net/NPMOU
+[2013-05-03T22:50:18.024Z] (lobby) TheBurgerKing99 was demoted to Driver by Nollan101.
+[2013-05-03T22:53:27.909Z] (lobby) TheBurgerKing99 was promoted to Moderator by Nollan101.
+[2013-05-03T23:02:58.698Z] (lobby) TheBurgerKing99 was forcibly renamed to Duke Lord Shroomsly CXXVVIV, Failure of Lumara by Nollan101.
+[2013-05-03T23:04:09.130Z] (lobby) Oiawesome was forcibly renamed to "THE POWER OF DERPINESS!" by Nollan101.
+[2013-05-03T23:05:17.522Z] (lobby) TheBurgerKing99 was forcibly renamed to Dah Powah Aboose by Nollan101.
+[2013-05-03T23:05:20.907Z] (lobby) Nollan101 name-locked Dah Powah Aboose to Dah Powah Aboose.
+[2013-05-03T23:06:35.693Z] (lobby) Nollan101 unlocked the name of Dah Powah Aboose.
+[2013-05-03T23:11:46.840Z] (lobby) Arceus11 was promoted to Driver by Nollan101.
+[2013-05-03T23:12:13.360Z] (lobby) TheBurgerKing99 was demoted to Voice by Nollan101.
+[2013-05-03T23:12:25.714Z] (lobby) TheBurgerKing99 was muted by Arceus11.
+[2013-05-03T23:12:35.729Z] (lobby) TheBurgerKing99 was unmuted by "THE POWER OF DERPINESS!".
+[2013-05-03T23:13:15.556Z] (lobby) TheBurgerKing99 was promoted to Moderator by Nollan101.
+[2013-05-03T23:13:27.444Z] (lobby) Arceus11 was muted by TheBurgerKing99. (how do YOU like it?)
+[2013-05-03T23:13:30.736Z] (lobby) Arceus11 was unmuted by TheBurgerKing99.
+[2013-05-03T23:14:00.110Z] (lobby) TheBurgerKing99 was demoted to Driver by Nollan101.
+[2013-05-03T23:17:24.190Z] (lobby) The Pokemon of the Day was changed to Weezing by Nollan101.
+[2013-05-03T23:18:18.961Z] (lobby) Nollan101 set modchat to ~
+[2013-05-03T23:19:07.977Z] (lobby) Nollan101 set modchat to false
+[2013-05-03T23:20:51.421Z] (lobby) "THE POWER OF DERPINESS!" was forcibly renamed to Oiawesome by Nollan101.
+[2013-05-04T00:01:44.683Z] (lobby) TheWonderfulKyurem was banned by Nollan101.
+[2013-05-04T00:54:25.303Z] (lobby) Arceus11 was promoted to Moderator by Nollan101.
+[2013-05-04T00:55:17.468Z] (lobby) TheBurgerKing99 was banned by Nollan101. (no u don't :P)
+[2013-05-04T00:55:22.663Z] (lobby) TheBurgerKing99 was unbanned by Nollan101.
+[2013-05-04T00:55:42.927Z] (lobby) Arceus11 was demoted to Driver by Nollan101.
+[2013-05-04T01:01:40.924Z] (lobby) PokermansCoach was banned by Nollan101. (espionage)
+[2013-05-04T01:02:15.363Z] (lobby) PokermansCoach was unbanned by Nollan101.
+[2013-05-04T01:06:03.989Z] (lobby) Oiawesome2 was forcibly renamed to ThatWeirdGuyYouMeetInThatDarkAlleyOnSaturdayAndThenHeGrabsYouAndWellYouKnowWhatHappensNext by Nollan101.
+[2013-05-04T01:07:58.071Z] (lobby) PokermansCoach was forced to choose a new name by TheBurgerKing99.
+[2013-05-04T01:08:54.168Z] (lobby) ThatWeirdGuyYouMeetInThatDarkAlleyOnSaturdayAndThenHeGrabsYouAndWellYouKnowWhatHappensNext was forced to choose a new name by Oiawesome.
+[2013-05-04T01:17:47.797Z] (lobby) TheBurgerKing99 was warned by Nollan101 (I'm not that dumb)
+[2013-05-04T01:18:43.021Z] (lobby) TheBurgerKing99 was muted by Nollan101.
+[2013-05-04T01:19:14.703Z] (lobby) Oiawesome2 was muted by TheBurgerKing99.
+[2013-05-04T01:19:14.719Z] (lobby) Oiawesome2's alts were also muted: Oiawesome
+[2013-05-04T01:19:18.822Z] (lobby) Oiawesome2 was unmuted by TheBurgerKing99.
+[2013-05-04T01:19:51.257Z] (lobby) Oiawesome2 was muted by Oiawesome.
+[2013-05-04T01:19:51.299Z] (lobby) Oiawesome2's alts were also muted: Oiawesome
+[2013-05-04T01:19:58.476Z] (lobby) Oiawesome2 was unmuted by Oiawesome.
+[2013-05-04T01:20:13.439Z] (lobby) TheBurgerKing99 was demoted to Voice by Nollan101.
+[2013-05-04T01:20:24.700Z] (lobby) Oiawesome was unmuted by Nollan101.
+[2013-05-04T01:20:31.058Z] (lobby) Oiawesome2 was unmuted by Nollan101.
+[2013-05-04T01:21:21.544Z] (lobby) banned was promoted to Voice by Nollan101.
+[2013-05-04T01:21:34.742Z] (lobby) banned was demoted to a regular user by Nollan101.
+[2013-05-04T01:22:55.113Z] (lobby) TheBurgerKing99 was unmuted by Nollan101.
+[2013-05-04T01:34:47.415Z] (lobby) TheBurgerKing99 was promoted to Driver by Nollan101.
+[2013-05-04T01:39:22.405Z] (lobby) Nollan101 set modchat to ~
+[2013-05-04T01:39:59.979Z] (lobby) Nollan101 set modchat to false
+[2013-05-04T01:44:03.995Z] (lobby) Nollan101 declared BK I do not support the site atm :s
+[2013-05-04T01:57:31.318Z] (lobby) Nollan101 declared Oi ur a liar everyone knows it 
+[2013-05-04T02:02:08.900Z] (lobby) TheBurgerKing99 was banned by Nollan101.
+[2013-05-04T02:03:28.624Z] (lobby) Nollan101 set modchat to ~
+[2013-05-04T02:06:31.586Z] (lobby) Nollan101 set modchat to false
+[2013-05-04T03:03:48.376Z] (lobby) Nollan101 set modchat to %
+[2013-05-04T03:23:38.489Z] (lobby) TheBurgerKing99 was unbanned by Nollan101.
+[2013-05-04T17:42:47.111Z] (lobby) Nollan101 declared Testing, testing, 1..2..3
+[2013-05-04T17:49:05.991Z] (lobby) Nollan's Test Alt was forcibly renamed to Nollan's Test Monkey by Nollan101.
+[2013-05-04T17:49:41.109Z] (lobby) TheBurgerKing99 was banned by Nollan101. (u so dumb)
+[2013-05-04T17:49:48.754Z] (lobby) TheBurgerKing99 was unbanned by Nollan101.
+[2013-05-04T19:06:59.680Z] (battle-ru-4) Oiawesome was banned by Nollan101. (haxhacking)
+[2013-05-04T19:08:11.082Z] (lobby) Oiawesome was unbanned by Nollan101.
+[2013-05-04T20:44:37.015Z] (lobby) SupahDupahDudah was forcibly renamed to Nollan's Test Monkey by Nollan101.
+[2013-05-04T20:54:55.400Z] (lobby) Darth onom was banned by Nollan101. (To see if it fixes his problems)
+[2013-05-04T20:55:02.732Z] (lobby) Darth onom was unbanned by Nollan101.
+[2013-05-04T21:48:16.639Z] (lobby) Oiawesome was banned by Nollan101.
+[2013-05-04T21:48:29.415Z] (lobby) Guest 16 was banned by Nollan101.
+[2013-05-04T21:48:36.342Z] (lobby) Oiawesome was unbanned by Nollan101.
+[2013-05-04T21:48:47.776Z] (lobby) PokermansCoach was banned by Nollan101.
+[2013-05-04T21:49:18.477Z] (lobby) Darth onom was warned by Nollan101
+[2013-05-04T21:49:30.817Z] (lobby) Darth onom was banned by Nollan101.
+[2013-05-04T21:49:42.190Z] (lobby) Darth onom was unbanned by Nollan101.
+[2013-05-04T21:50:08.149Z] (lobby) TheBurgerKing99 was banned by Nollan101.
+[2013-05-04T21:50:24.404Z] (lobby) All bans and ip mutes have been lifted by Nollan101.
+[2013-05-04T21:54:00.051Z] (lobby) dsoifnhdsf was forcibly renamed to Lol I can't spell by Nollan101.
+[2013-05-04T22:09:28.591Z] (lobby) Darth onom was forcibly renamed to Weird guy who can't do battles by Nollan101.
+[2013-05-04T22:10:24.424Z] (lobby) Weird guy who can't do battles was forcibly renamed to madman with a stick by Nollan101.
+[2013-05-04T22:52:10.303Z] (battle-nu-15) TheBurgerKing99 was banned by Nollan101. (spam)
+[2013-05-04T22:52:28.633Z] (lobby) TheBurgerKing99 was unbanned by Nollan101.
+[2013-05-05T00:49:00.879Z] (lobby) TheBurgerKing99 was muted by Nollan101. (no one likes u)
+[2013-05-05T00:49:58.644Z] (lobby) TheBurgerKing99 was banned by Nollan101. (PM Harassing)
+[2013-05-05T01:06:34.135Z] (lobby) TheBurgerKing99 was unbanned by Nollan101.
+[2013-05-05T01:25:45.675Z] (lobby) TheBurgerKing99 was demoted to Voice by Nollan101.
+[2013-05-05T01:25:50.654Z] (lobby) TheBurgerKing99 was unmuted by Nollan101.
+[2013-05-05T01:28:55.609Z] (lobby) TheBurgerKing99 was muted by Oiawesome.
+[2013-05-05T01:29:01.905Z] (lobby) TheBurgerKing99 was unmuted by Oiawesome.
+[2013-05-05T01:32:51.856Z] (lobby) Nollan101 set modchat to %
+[2013-05-05T03:08:14.415Z] (lobby) Nollan101 set modchat to false
+[2013-05-05T23:40:58.773Z] (lobby) Nollan101 set modchat to ~
+[2013-05-05T23:41:24.809Z] (lobby) Nollan101 declared I am currently doing immense coding and playtesting atm, so chat is disabled to prevent distractions
+[2013-05-05T23:41:44.293Z] (lobby) Nollan101 declared If you want to talk to someone, do it by Private Message (PM)
+[2013-05-06T01:04:52.662Z] (lobby) The Pokemon of the Day was changed to Drapion by Nollan101.
+[2013-05-06T01:07:25.061Z] (lobby) Guest 2 was forcibly renamed to Nollan's Rock-Hard Abs by Nollan101.
+[2013-05-06T01:54:53.582Z] (lobby) Nollan101 set modchat to false
+[2013-05-06T01:55:20.601Z] (lobby) Nollan101 declared Moderated chat was disabled!
+[2013-05-06T01:56:37.946Z] (lobby) Nollan101 declared Moderated chat was disabled!
+[2013-05-06T01:56:38.851Z] (lobby) Nollan101 declared Anyone may talk now.
+[2013-05-06T02:01:11.783Z] (lobby) Nollan's Rock-Hard Abs was muted by Oiawesome.
+[2013-05-06T02:01:11.788Z] (lobby) Nollan's Rock-Hard Abs's alts were also muted: Nollan101
+[2013-05-06T02:01:20.879Z] (lobby) Oiawesome was muted by Nollan101.
+[2013-05-06T02:01:24.545Z] (lobby) Nollan101 was unmuted by Nollan101.
+[2013-05-06T02:01:38.473Z] (lobby) Oiawesome was unmuted by Nollan101.
+[2013-05-06T02:45:44.710Z] (lobby) Oiawesome2 was warned by Oiawesome
+[2013-05-06T03:52:25.769Z] (lobby) Oiawesome set modchat to +
+[2013-05-06T03:55:40.506Z] (lobby) Oiawesome was banned by Nollan101.
+[2013-05-06T03:55:49.913Z] (lobby) Oiawesome was unbanned by Nollan101.
+[2013-05-06T03:56:24.937Z] (lobby) Nollan101 set modchat to ~
+[2013-05-06T03:56:40.100Z] (lobby) Oiawesome set modchat to false
+[2013-05-06T03:56:40.615Z] (lobby) Oiawesome was muted by Nollan101.
+[2013-05-06T03:56:52.346Z] (lobby) Oiawesome was unmuted by Nollan101.
+[2013-05-06T03:57:14.498Z] (lobby) Nollan101 set modchat to ~
+[2013-05-06T03:57:17.758Z] (lobby) Oiawesome set modchat to true
+[2013-05-06T03:57:24.263Z] (lobby) Nollan101 declared Moderated chat was disabled!
+[2013-05-06T03:58:16.804Z] (lobby) Oiawesome was demoted to Voice by Nollan101.
+[2013-05-06T03:58:29.455Z] (lobby) Oiawesome was promoted to Driver by Nollan101.
+[2013-05-06T03:59:29.499Z] (lobby) Oiawesome set modchat to true
+[2013-05-06T03:59:34.429Z] (lobby) Oiawesome set modchat to +
+[2013-05-06T03:59:39.592Z] (lobby) Nollan101 set modchat to %
+[2013-05-06T03:59:43.633Z] (lobby) Nollan101 set modchat to @
+[2013-05-06T03:59:50.154Z] (lobby) Nollan101 set modchat to &
+[2013-05-06T03:59:50.450Z] (lobby) Oiawesome set modchat to false
+[2013-05-06T03:59:54.366Z] (lobby) Nollan101 set modchat to ~
+[2013-05-06T04:00:15.004Z] (lobby) Oiawesome set modchat to false
+[2013-05-06T04:00:16.861Z] (lobby) Nollan101 set modchat to false
+[2013-05-06T04:00:26.393Z] (lobby) Oiawesome set modchat to +
+[2013-05-06T04:07:56.344Z] (lobby) Nollan101 was muted by Oiawesome.
+[2013-05-06T04:08:05.875Z] (lobby) Nollan101 was unmuted by Oiawesome.
+[2013-05-06T04:29:46.734Z] (lobby) Oiawesome set modchat to +
+[2013-05-06T04:29:56.089Z] (lobby) Oiawesome set modchat to false
