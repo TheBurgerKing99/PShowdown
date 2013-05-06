@@ -63,7 +63,11 @@ exports.BattleFormats = {
 				move.basePower = 150;
 				move.onHit = function(source) {
 					this.add('-message', source.name + " was chased down by the cops and injured by gunfire!");
-					this.directDamage(source.maxhp/4);
+					self: {
+						onHit: function(source) {
+							this.directDamage(source.maxhp/4);
+							}
+					};
 				};
 			}
 		},
