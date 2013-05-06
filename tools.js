@@ -490,7 +490,6 @@ module.exports = (function () {
 							if (learned.substr(1,1) === 'E') {
 								// it's an egg move, so we add each pokemon that can be bred with to its sources
 								var eggGroups = template.eggGroups;
-								if (!eggGroups) continue;
 								if (eggGroups[0] === 'No Eggs') eggGroups = this.getTemplate(template.evos[0]).eggGroups;
 								var atLeastOne = false;
 								var fromSelf = (learned.substr(1) === 'Eany');
@@ -754,7 +753,7 @@ module.exports = (function () {
 		}
 		set.species = template.species;
 
-		set.name = toName(set.name);
+		set.name = toName(set.name).trim().replace(/\|/g,'');
 		var item = this.getItem(string(set.item));
 		set.item = item.name;
 		var ability = this.getAbility(string(set.ability));
@@ -817,9 +816,6 @@ module.exports = (function () {
 		if (banlistTable['illegal']) {
 			var totalEV = 0;
 			for (var k in set.evs) {
-				if (typeof set.evs[k] !== 'number') {
-					set.evs[k] = 0;
-				}
 				totalEV += set.evs[k];
 			}
 			if (totalEV > 510) {

@@ -795,6 +795,7 @@ var User = (function () {
 		}
 	};
 	User.prototype.joinRoom = function(room, socket) {
+		roomid = room?(room.id||room):'';
 		room = Rooms.get(room);
 		if (!room) return false;
 		var connection = null;
@@ -803,7 +804,7 @@ var User = (function () {
 			for (var i=0; i<this.connections.length;i++) {
 				// only join full clients, not pop-out single-room
 				// clients
-				if (this.connections[i].rooms['global']) {
+				if (this.connections[i].rooms['lobby']) {
 					this.joinRoom(room, this.connections[i]);
 				}
 			}
@@ -826,7 +827,7 @@ var User = (function () {
 				room.initSocket(this, socket);
 			}
 		} else if (room.id === 'lobby') {
-			emit(connection.socket, 'init', {room: room.id, notFound: true});
+			emit(connection.socket, 'init', {room: roomid, notFound: true});
 		}
 		return true;
 	};

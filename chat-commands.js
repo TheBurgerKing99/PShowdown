@@ -42,6 +42,7 @@ var updateServerLock = false;
 
 function parseCommandLocal(user, cmd, target, room, socket, message) {
 	if (!room) return;
+	cmd = cmd.toLowerCase();
 	switch (cmd) {
 	case 'cmd':
 		var spaceIndex = target.indexOf(' ');
@@ -53,19 +54,11 @@ function parseCommandLocal(user, cmd, target, room, socket, message) {
 			target = '';
 		}
 		if (cmd === 'userdetails') {
-			if (!room) return false;
 			var targetUser = Users.get(target);
-			if (!targetUser) {
-				emit(socket, 'command', {
-					command: 'userdetails',
-					userid: toId(target),
-					rooms: false
-				});
-				return false;
-			}
+			if (!targetUser || !room) return false;
 			var roomList = {};
 			for (var i in targetUser.roomCount) {
-				if (i==='global') continue;
+				if (i==='lobby') continue;
 				var targetRoom = Rooms.get(i);
 				if (!targetRoom) continue;
 				var roomData = {};
@@ -76,7 +69,6 @@ function parseCommandLocal(user, cmd, target, room, socket, message) {
 				}
 				roomList[i] = roomData;
 			}
-			if (!targetUser.roomCount['global']) roomList = false;
 			var userdetails = {
 				command: 'userdetails',
 				userid: targetUser.userid,
@@ -219,7 +211,7 @@ function parseCommandLocal(user, cmd, target, room, socket, message) {
 		user.avatar = avatar;
 		if (!parts[1]) {
 			emit(socket, 'console', 'Avatar changed to:');
-			emit(socket, 'console', {rawMessage: '<img src="//play.pokemonshowdown.com/sprites/trainers/'+avatar+'.png" alt="" width="80" height="80" />'});
+			emit(socket, 'console', {rawMessage: '<img src="/sprites/trainers/'+avatar+'.png" alt="" width="80" height="80" />'});
 		}
 
 		return false;
@@ -276,7 +268,6 @@ function parseCommandLocal(user, cmd, target, room, socket, message) {
 			var output = 'In rooms: ';
 			var first = true;
 			for (var i in targetUser.roomCount) {
-				if (i === 'global') continue;
 				if (!first) output += ' | ';
 				first = false;
 
@@ -423,7 +414,7 @@ function parseCommandLocal(user, cmd, target, room, socket, message) {
 			message: targets[1]
 		};
 		user.emit('console', message);
-		if (targets[0] !== user) targets[0].emit('console', message);
+		targets[0].emit('console', message);
 		targets[0].lastPM = user.userid;
 		user.lastPM = targets[0].userid;
 		return false;
@@ -711,7 +702,7 @@ function parseCommandLocal(user, cmd, target, room, socket, message) {
 	case 'ranking':
 	case 'rank':
 	case 'ladder':
-		emit(socket, 'console', 'The version of Pokemon Showdown that you are using does not support /' + cmd + '.');
+		emit(socket, 'console', 'You are using an old version of Pokemon Showdown. Please reload the page.');
 		return false;
 		break;
 
@@ -1318,11 +1309,11 @@ function parseCommandLocal(user, cmd, target, room, socket, message) {
 
 	case 'join':
 		var targetRoom = Rooms.get(target);
-		if (target && !targetRoom) {
+		if (!targetRoom) {
 			emit(socket, 'console', "The room '"+target+"' does not exist.");
 			return false;
 		}
-		if (!user.joinRoom(targetRoom || room, socket)) {
+		if (!user.joinRoom(targetRoom, socket)) {
 			emit(socket, 'console', "The room '"+target+"' could not be joined (most likely, you're already in it).");
 			return false;
 		}
@@ -1332,12 +1323,8 @@ function parseCommandLocal(user, cmd, target, room, socket, message) {
 	case 'leave':
 	case 'part':
 		if (room.id === 'global') return false;
-		var targetRoom = Rooms.get(target);
-		if (target && !targetRoom) {
-			emit(socket, 'console', "The room '"+target+"' does not exist.");
-			return false;
-		}
-		user.leaveRoom(targetRoom || room, socket);
+
+		user.leaveRoom(room, socket);
 		return false;
 		break;
 
@@ -1536,11 +1523,10 @@ function parseCommandLocal(user, cmd, target, room, socket, message) {
 	case 'lobbychat':
 		target = toId(target);
 		if (target === 'off') {
-			user.leaveRoom(Rooms.lobby, socket);
-			sendData(socket, '|users|');
+			user.blockLobbyChat = true;
 			emit(socket, 'console', 'You are now blocking lobby chat.');
 		} else {
-			user.joinRoom(Rooms.lobby, socket);
+			user.blockLobbyChat = false;
 			emit(socket, 'console', 'You are now receiving lobby chat.');
 		}
 		return false;
@@ -1719,7 +1705,7 @@ function parseCommandLocal(user, cmd, target, room, socket, message) {
 					// `git` on the PATH (which would be error.code === 127).
 					user.emit('console', '' + error);
 					logQueue.push('' + error);
-					logQueue.forEach(Rooms.lobby.logEntry.bind(Rooms.lobby));
+					logQueue.forEach(Rooms.lobby.logEntry);
 					updateServerLock = false;
 					return;
 				}
@@ -1732,7 +1718,7 @@ function parseCommandLocal(user, cmd, target, room, socket, message) {
 					user.emit('console', s);
 					logQueue.push(s);
 				});
-				logQueue.forEach(Rooms.lobby.logEntry.bind(Rooms.lobby));
+				logQueue.forEach(Rooms.lobby.logEntry);
 				updateServerLock = false;
 			});
 		});

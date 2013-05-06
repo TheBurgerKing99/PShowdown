@@ -95,7 +95,6 @@ exports.BattleFormats = {
 		ruleset: ['Pokemon', 'Standard', 'Evasion Abilities Clause', 'Team Preview'],
 		banlist: ['Uber', 'Drizzle ++ Swift Swim', 'Soul Dew']
 	},
-<<<<<<< HEAD
 	vgcsingles: {
 		effectType: 'Format',
 		section: "Standard Singles",
@@ -103,16 +102,6 @@ exports.BattleFormats = {
 		rated: true,
 		challengeShow: true,
 		searchShow: true,
-=======
-	cap: {
-		name: "CAP",
-		section: "Singles",
-
-		effectType: 'Format',
-		rated: true,
-		challengeShow: true,
-	 	// searchShow: true,
->>>>>>> 48c1f5ead86a0ac05b0eab5c0322ae2aa5e4d1dc
 		isTeambuilderFormat: true,
 		debug: true,
 			onBegin: function() {
@@ -163,15 +152,9 @@ exports.BattleFormats = {
 		ruleset: ['Pokemon', 'Standard', 'Team Preview'],
 		banlist: ['Kyogre', 'Arceus', 'Mewtwo', 'Palkia', 'Rayquaza', 'Dialga', 'Arceus-Steel', 'Arceus-Ghost', 'Arceus-Dark','Arceus-Rock', 'Arceus-Psychic', 'Arceus-Bug', 'Soul Dew', 'Kyurem-White', 'Reshiram', 'Zekrom', 'Arceus-Dragon', 'Arceus-Electric','Arceus-Fighting', 'Arceus-Fire', 'Arceus-Flying', 'Arceus-Ghost', 'Arceus-Grass', 'Arceus-Ground', 'Arceus-Ice','Arceus-Poison', 'Arceus-Water', 'Deoxys-Attack', 'Giratina', 'Giratina-Origin', 'Groudon', 'Ho-oh', 'Lugia']
 	},
-<<<<<<< HEAD
 	oumonotype: {
 		name: "OU Monotype",
 		section: "Standard Singles",
-=======
-	ubers: {
-		name: "Ubers",
-		section: "Singles",
->>>>>>> 48c1f5ead86a0ac05b0eab5c0322ae2aa5e4d1dc
 
 		effectType: 'Format',
 		rated: true,
@@ -442,7 +425,6 @@ exports.BattleFormats = {
 	
 	// Other Metagames
 	///////////////////////////////////////////////////////////////////
-<<<<<<< HEAD
 	
 	npmou: {
     		effectType: 'Format',
@@ -457,72 +439,6 @@ exports.BattleFormats = {
     		ruleset: ['Pokemon', 'Sleep Clause', 'Species Clause', 'Team Preview', 'Moody Clause', 'Evasion Moves Clause'],
     		banlist: ['Uber', 'Unreleased', 'Illegal', 'Sheer Cold', 'Horn Drill', 'Guillotine', 'Drizzle ++ Swift Swim', 'Excadrill + Sand Rush']
     	},
-=======
-
-	pu: {
-		name: "PU",
-		section: "OM of the Month",
-
-		effectType: 'Format',
-		rated: true,
-		challengeShow: true,
-		searchShow: true,
-		isTeambuilderFormat: true,
-		ruleset: ['NU'],
-		banlist: ["Charizard", "Wartortle", "Kadabra", "Golem", "Haunter", "Exeggutor", "Weezing", "Kangaskhan", "Pinsir", "Lapras", "Ampharos", "Misdreavus", "Piloswine", "Miltank", "Ludicolo", "Swellow", "Gardevoir", "Ninjask", "Torkoal", "Cacturne", "Altaria", "Armaldo", "Gorebyss", "Regirock", "Regice", "Bastiodon", "Floatzel", "Drifblim", "Skuntank", "Lickilicky", "Probopass", "Rotom-Fan", "Samurott", "Musharna", "Gurdurr", "Sawk", "Carracosta", "Garbodor", "Sawsbuck", "Alomomola", "Golurk", "Braviary", "Articuno", "Electabuzz", "Electrode", "Marowak", "Liepard", "Tangela", "Eelektross", "Ditto", "Seismitoad", "Zangoose", "Roselia", "Zebstrika", "Serperior", "Metang", "Tauros", "Torterra", "Cradily", "Primeape", "Munchlax", "Scolipede", "Jynx"]
-	},
-	seasonalmaymayhem: {
-		name: "[Seasonal] May Mayhem",
-		section: "OM of the Month",
-		
-		team: 'randomSeasonalMM',
-		canUseRandomTeam: true,
-		effectType: 'Format',
-		rated: true,
-		challengeShow: true,
-		searchShow: true,
-		onBegin: function() {
-			// Shameless plug
-			var date = Date();
-			date = date.split(' ');
-			if (parseInt(date[2]) === 12) {
-				this.add('-message', 'Wish a HAPPY BIRTHDAY to Treecko32!!');
-			}
-			if (parseInt(date[2]) === 16) {
-				this.add('-message', 'Wish a HAPPY BIRTHDAY to Joim!!');
-			}
-			this.add('-message', 'Wish a HAPPY BIRTHDAY to Birkal!!');
-		},
-		onSwitchIn: function(pokemon) {
-			var msg = '';
-			switch (pokemon.name) {
-			case 'Celebi':
-				msg = 'Do or Do not. There is no try.';
-				break;
-			case 'Clefairy':
-				msg = 'You have your moments. Not many of them, but you do have them.';
-				break;
-			case 'Piloswine':
-				msg = 'Gggggaaaaaaarrrrr. Arrrrhhhn.';
-				break;
-			case 'Deoxys':
-				msg = '*hhhh* I am your father. *hhhh*';
-				break;
-			case 'Clefable':
-				msg = 'I did shoot first.';
-				break;
-			case 'Jirachi':
-				msg = 'May the force be with you.';
-				break;
-			default:
-				var dice = this.random(100);
-				if (dice < 25) msg = 'Never gonna give you up, never gonna let you down';
-				break;
-			}
-			if (msg !== '') this.add('-message', msg);
-		}
-	},
->>>>>>> 48c1f5ead86a0ac05b0eab5c0322ae2aa5e4d1dc
 	hackmons: {
 		name: "Hackmons",
 		section: "Other Metagames",
@@ -547,13 +463,8 @@ exports.BattleFormats = {
 		ruleset: ['Pokemon', 'OHKO Clause'],
 		banlist: ['Wonder Guard', 'Pure Power', 'Huge Power', 'Shadow Tag', 'Arena Trap']
 	},
-<<<<<<< HEAD
 	bhdoubles: {
 		name: "BH Doubles",
-=======
-	gennextou: {
-		name: "Gen-NEXT OU",
->>>>>>> 48c1f5ead86a0ac05b0eab5c0322ae2aa5e4d1dc
 		section: "Other Metagames",
 		
 		effectType: 'Format',
@@ -603,32 +514,7 @@ exports.BattleFormats = {
 		ruleset: ['Pokemon', 'Standard', 'Evasion Abilities Clause', 'Team Preview'],
 		banlist: ['Uber', 'Drizzle ++ Swift Swim', 'Soul Dew']
 	},
-<<<<<<< HEAD
 	ousixmoves: {
-=======
-	tiershift: {
-		name: "Tier Shift",
-		section: 'Other Metagames',
-
-		mod: 'tiershift',
-		effectType: 'Format',
-		rated: true,
-		challengeShow: true,
-		searchShow: true,
-		isTeambuilderFormat: true,
-		ruleset: ['Pokemon', 'Standard', 'Evasion Abilities Clause', 'Team Preview'],
-		banlist: ['Uber', 'Drizzle ++ Swift Swim', 'Soul Dew']
-	},
-
-	// Past Generations
-	///////////////////////////////////////////////////////////////////
-
-	gen4oubeta: {
-		name: "[Gen 4] OU (beta)",
-		section: "Past Generations",
-
-		mod: 'gen4',
->>>>>>> 48c1f5ead86a0ac05b0eab5c0322ae2aa5e4d1dc
 		effectType: 'Format',
 		name: "OU Six Moves",
 		section: "Other Metagames",
@@ -660,38 +546,7 @@ exports.BattleFormats = {
 		ruleset: ['Hax Clause', 'Team Preview', 'Standard Ubers'],
 		banlist: []
 	},
-<<<<<<< HEAD
 	balancedsketchmons: {
-=======
-	gen3customgame: {
-		name: "[Gen 3] Custom Game",
-		section: "Past Generations",
-
-		mod: 'gen3',
-		effectType: 'Format',
-		challengeShow: true,
-		ruleset: []
-	},
-	gen1oubeta: {
-		name: "[Gen 1] OU (beta)",
-		section: "Past Generations",
-
-		mod: 'gen1',
-		effectType: 'Format',
-		challengeDefault: true,
-		rated: true,
-		challengeShow: true,
-		searchShow: true,
-		isTeambuilderFormat: true,
-		ruleset: ['Pokemon', 'Standard'],
-		banlist: ['Uber', 'Wrap', 'Fire Spin', 'Clamp', 'Bind']
-	},
-	gen1customgame: {
-		name: "[Gen 1] Custom Game",
-		section: "Past Generations",
-
-		mod: 'gen1',
->>>>>>> 48c1f5ead86a0ac05b0eab5c0322ae2aa5e4d1dc
 		effectType: 'Format',
 		name: "Balanced Sketchmons",
 		section: "Other Metagames",

@@ -1,9 +1,10 @@
 require('sugar');
 
 fs = require('fs');
-if (!('existsSync' in fs)) {
-	// for compatibility with ancient versions of node
-	fs.existsSync = require('path').existsSync;
+if (!fs.existsSync) {
+	// for compatibility with ancient versions of node.js
+	var path = require('path');
+	fs.existsSync = function(loc) { return path.existsSync(loc) };
 }
 config = require('./config/config.js');
 
@@ -38,11 +39,11 @@ toUserid = toId;
 /**
  * Validates a username or Pokemon nickname
  */
-var bannedNameStartChars = {'~':1, '&':1, '@':1, '%':1, '+':1, '-':1, '!':1, '?':1, '#':1, ' ':1};
+var bannedNameStartChars = {'~':1, '&':1, '@':1, '%':1, '+':1, '-':1, '!':1, '?':1, '#':1};
 toName = function(name) {
-	name = string(name);
-	name = name.replace(/[\|\s\[\]\,]+/g, ' ').trim();
-	while (bannedNameStartChars[name.charAt(0)]) {
+	name = string(name).trim();
+	name = name.replace(/(\||\n|\[|\]|\,)/g, '');
+	while (bannedNameStartChars[name.substr(0,1)]) {
 		name = name.substr(1);
 	}
 	if (name.length > 18) name = name.substr(0,18);
@@ -314,10 +315,6 @@ var BattlePokemon = (function() {
 					if (ability === pokemon.ability) {
 						// This event was already run above so we don't need
 						// to run it again.
-						continue;
-					}
-					if ((k === 'DW') && !pokemon.template.dreamWorldRelease) {
-						// unreleased dream world ability
 						continue;
 					}
 					this.battle.singleEvent('FoeMaybeTrapPokemon',
@@ -2189,12 +2186,10 @@ var Battle = (function() {
 		if (!target || !target.hp) return 0;
 		effect = this.getEffect(effect);
 		boost = this.runEvent('Boost', target, source, effect, Object.clone(boost));
-		var success = false;
 		for (var i in boost) {
 			var currentBoost = {};
 			currentBoost[i] = boost[i];
 			if (boost[i] !== 0 && target.boostBy(currentBoost)) {
-				success = true;
 				var msg = '-boost';
 				if (boost[i] < 0) {
 					msg = '-unboost';
@@ -2216,7 +2211,6 @@ var Battle = (function() {
 			}
 		}
 		this.runEvent('AfterBoost', target, source, effect, boost);
-		return success;
 	};
 	Battle.prototype.damage = function(damage, target, source, effect) {
 		if (this.event) {

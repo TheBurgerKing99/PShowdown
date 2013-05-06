@@ -25,8 +25,9 @@ if (!Object.select) {
 }
 
 fs = require('fs');
-if (!('existsSync' in fs)) {
-	fs.existsSync = require('path').existsSync;
+if (!fs.existsSync) {
+	var path = require('path');
+	fs.existsSync = function(loc) { return path.existsSync(loc) };
 }
 
 LoginServer = require('./loginserver.js');
@@ -34,9 +35,19 @@ LoginServer = require('./loginserver.js');
 // Synchronously copy config-example.js over to config.js if it doesn't exist
 if (!fs.existsSync('./config/config.js')) {
 	console.log("config.js doesn't exist - creating one with default settings...");
-	fs.writeFileSync('./config/config.js',
-		fs.readFileSync('./config/config-example.js')
-	);
+	var BUF_LENGTH, buff, bytesRead, fdr, fdw, pos;
+	BUF_LENGTH = 64 * 1024;
+	buff = new Buffer(BUF_LENGTH);
+	fdr = fs.openSync('./config/config-example.js', 'r');
+	fdw = fs.openSync('./config/config.js', 'w');
+	bytesRead = 1;
+	pos = 0;
+	while (bytesRead > 0) {
+		bytesRead = fs.readSync(fdr, buff, 0, BUF_LENGTH, pos);
+		fs.writeSync(fdw, buff, 0, bytesRead);
+		pos += bytesRead;
+	}
+	fs.closeSync(fdr);
 }
 
 config = require('./config/config.js');
@@ -60,17 +71,13 @@ if (process.argv[3]) {
 }
 
 var app = require('http').createServer();
-var appssl;
-if (config.ssl) {
-	appssl = require('https').createServer(config.ssl.options);
-}
 try {
 	(function() {
 		var nodestatic = require('node-static');
 		var cssserver = new nodestatic.Server('./config');
 		var avatarserver = new nodestatic.Server('./config/avatars');
 		var staticserver = new nodestatic.Server('./static');
-		var staticRequestHandler = function(request, response) {
+		app.on('request', function(request, response) {
 			request.resume();
 			request.addListener('end', function() {
 				if (config.customhttpresponse &&
@@ -96,11 +103,7 @@ try {
 					}
 				});
 			});
-		};
-		app.on('request', staticRequestHandler);
-		if (appssl) {
-			appssl.on('request', staticRequestHandler);
-		}
+		});
 	})();
 } catch (e) {
 	console.log('Could not start node-static - try `npm install` if you want to use it');
@@ -113,9 +116,8 @@ var server = require('sockjs').createServer({
 	prefix: '/showdown'
 });
 
-// Make `app`, `appssl`, and `server` available to the console.
+// Make `app` and `server` available to the console.
 App = app;
-AppSSL = appssl;
 Server = server;
 
 /**
@@ -137,11 +139,11 @@ toUserid = toId;
 /**
  * Validates a username or Pokemon nickname
  */
-var bannedNameStartChars = {'~':1, '&':1, '@':1, '%':1, '+':1, '-':1, '!':1, '?':1, '#':1, ' ':1};
+var bannedNameStartChars = {'~':1, '&':1, '@':1, '%':1, '+':1, '-':1, '!':1, '?':1, '#':1};
 toName = function(name) {
-	name = string(name);
-	name = name.replace(/[\|\s\[\]\,]+/g, ' ').trim();
-	while (bannedNameStartChars[name.charAt(0)]) {
+	name = string(name).trim();
+	name = name.replace(/(\||\n|\[|\]|\,)/g, '');
+	while (bannedNameStartChars[name.substr(0,1)]) {
 		name = name.substr(1);
 	}
 	if (name.length > 18) name = name.substr(0,18);
@@ -232,21 +234,16 @@ sendData = function(socket, data) {
 
 if (config.crashguard) {
 	// graceful crash - allow current battles to finish before restarting
-	process.on('uncaughtException', (function() {
-		var lastCrash = 0;
-		return function(err) {
-			var dateNow = Date.now();
-			var quietCrash = require('./crashlogger.js')(err, 'The main process');
-			quietCrash = quietCrash || ((dateNow - lastCrash) <= 1000 * 60 * 5)
-			lastCrash = Date.now();
-			if (quietCrash) return;
-			var stack = (""+err.stack).split("\n").slice(0,2).join("<br />");
-			Rooms.lobby.addRaw('<div class="message-server-crash"><b>THE SERVER HAS CRASHED:</b> '+stack+'<br />Please restart the server.</div>');
-			Rooms.lobby.addRaw('<div class="message-server-crash">You will not be able to talk in the lobby or start new battles until the server restarts.</div>');
-			config.modchat = 'crash';
-			lockdown = true;
-		};
-	})());
+	process.on('uncaughtException', function (err) {
+		if (require('./crashlogger.js')(err, 'The main process')) {
+			return;
+		}
+		var stack = (""+err.stack).split("\n").slice(0,2).join("<br />");
+		Rooms.lobby.addRaw('<div class="message-server-crash"><b>THE SERVER HAS CRASHED:</b> '+stack+'<br />Please restart the server.</div>');
+		Rooms.lobby.addRaw('<div class="message-server-crash">You will not be able to talk in the lobby or start new battles until the server restarts.</div>');
+		config.modchat = 'crash';
+		lockdown = true;
+	});
 }
 
 // event functions
@@ -336,15 +333,8 @@ server.on('connection', function (socket) {
 });
 server.installHandlers(app, {});
 app.listen(config.port);
-if (appssl) {
-	server.installHandlers(appssl, {});
-	appssl.listen(config.ssl.port);
-}
 
 console.log('Server started on port ' + config.port);
-if (appssl) {
-	console.log('SSL server started on port ' + config.ssl.port);
-}
 
 console.log('Test your server at http://localhost:' + config.port);
 

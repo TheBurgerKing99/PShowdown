@@ -469,7 +469,7 @@ var BattleRoom = (function() {
 
 		this.sideTicksLeft = [21, 21];
 		if (!rated) this.sideTicksLeft = [28,28];
-		this.sideTurnTicks = [0, 0];
+		this.sideFreeTicks = [0, 0];
 
 		this.log = [];
 	}
@@ -478,6 +478,7 @@ var BattleRoom = (function() {
 	BattleRoom.prototype.resetTimer = null;
 	BattleRoom.prototype.resetUser = '';
 	BattleRoom.prototype.destroyTimer = null;
+	BattleRoom.prototype.maxTicksLeft = 0;
 	BattleRoom.prototype.active = false;
 	BattleRoom.prototype.lastUpdate = 0;
 
@@ -766,38 +767,48 @@ var BattleRoom = (function() {
 
 		var inactiveSide = this.getInactiveSide();
 
-		var ticksLeft = [0, 0];
+		// now to see how much time we have left
+		if (this.maxTicksLeft) {
+			this.maxTicksLeft--;
+		}
+
 		if (inactiveSide != 1) {
 			// side 0 is inactive
-			this.sideTurnTicks[0]--;
-			this.sideTicksLeft[0]--;
+			if (this.sideFreeTicks[0]) {
+				this.sideFreeTicks[0]--;
+			} else {
+				this.sideTicksLeft[0]--;
+			}
 		}
 		if (inactiveSide != 0) {
 			// side 1 is inactive
-			this.sideTurnTicks[1]--;
-			this.sideTicksLeft[1]--;
+			if (this.sideFreeTicks[1]) {
+				this.sideFreeTicks[1]--;
+			} else {
+				this.sideTicksLeft[1]--;
+			}
 		}
-		ticksLeft[0] = Math.min(this.sideTurnTicks[0], this.sideTicksLeft[0]);
-		ticksLeft[1] = Math.min(this.sideTurnTicks[1], this.sideTicksLeft[1]);
 
-		if (ticksLeft[0] && ticksLeft[1]) {
+		if (this.maxTicksLeft && this.sideTicksLeft[0] && this.sideTicksLeft[1]) {
 			if (inactiveSide == 0 || inactiveSide == 1) {
 				// one side is inactive
-				var inactiveTicksLeft = ticksLeft[inactiveSide];
+				var ticksLeft = Math.min(this.sideTicksLeft[inactiveSide], this.maxTicksLeft);
 				var inactiveUser = this.battle.getPlayer(inactiveSide);
-				if (inactiveTicksLeft % 3 == 0 || inactiveTicksLeft <= 4) {
-					this.send('|inactive|'+(inactiveUser?inactiveUser.name:'Player '+(inactiveSide+1))+' has '+(inactiveTicksLeft*10)+' seconds left.');
+				if (ticksLeft % 3 == 0 || ticksLeft <= 4) {
+					this.send('|inactive|'+(inactiveUser?inactiveUser.name:'Player '+(inactiveSide+1))+' has '+(ticksLeft*10)+' seconds left.');
 				}
 			} else {
 				// both sides are inactive
+				var ticksLeft0 = Math.min(this.sideTicksLeft[0], this.maxTicksLeft);
 				var inactiveUser0 = this.battle.getPlayer(0);
-				if (ticksLeft[0] % 3 == 0 || ticksLeft[0] <= 4) {
-					this.send('|inactive|'+(inactiveUser0?inactiveUser0.name:'Player 1')+' has '+(ticksLeft[0]*10)+' seconds left.', inactiveUser0);
+				if (ticksLeft0 % 3 == 0 || ticksLeft0 <= 4) {
+					this.send('|inactive|'+(inactiveUser0?inactiveUser0.name:'Player 1')+' has '+(ticksLeft0*10)+' seconds left.', inactiveUser0);
 				}
 
+				var ticksLeft1 = Math.min(this.sideTicksLeft[1], this.maxTicksLeft);
 				var inactiveUser1 = this.battle.getPlayer(1);
-				if (ticksLeft[1] % 3 == 0 || ticksLeft[1] <= 4) {
-					this.send('|inactive|'+(inactiveUser1?inactiveUser1.name:'Player 2')+' has '+(ticksLeft[1]*10)+' seconds left.', inactiveUser1);
+				if (ticksLeft1 % 3 == 0 || ticksLeft0 <= 4) {
+					this.send('|inactive|'+(inactiveUser1?inactiveUser1.name:'Player 2')+' has '+(ticksLeft1*10)+' seconds left.', inactiveUser1);
 				}
 			}
 			this.resetTimer = setTimeout(this.kickInactive.bind(this), 10*1000);
@@ -805,8 +816,8 @@ var BattleRoom = (function() {
 		}
 
 		if (inactiveSide < 0) {
-			if (ticksLeft[0]) inactiveSide = 1;
-			else if (ticksLeft[1]) inactiveSide = 0;
+			if (this.sideTicksLeft[0]) inactiveSide = 1;
+			else if (this.sideTicksLeft[1]) inactiveSide = 0;
 		}
 
 		this.forfeit(this.battle.getPlayer(inactiveSide),' lost because of their inactivity.', inactiveSide);
@@ -835,8 +846,9 @@ var BattleRoom = (function() {
 			maxTicksLeft = 6;
 		}
 		if (!this.rated) maxTicksLeft = 30;
+		this.sideFreeTicks = [1,1];
 
-		this.sideTurnTicks = [maxTicksLeft, maxTicksLeft];
+		this.maxTicksLeft = maxTicksLeft;
 
 		var inactiveSide = this.getInactiveSide();
 		if (inactiveSide < 0) {
@@ -844,16 +856,14 @@ var BattleRoom = (function() {
 			if (this.sideTicksLeft[0] < 16) this.sideTicksLeft[0]++;
 			if (this.sideTicksLeft[1] < 16) this.sideTicksLeft[1]++;
 		}
-		this.sideTicksLeft[0]++;
-		this.sideTicksLeft[1]++;
 		if (inactiveSide != 1) {
 			// side 0 is inactive
-			var ticksLeft0 = Math.min(this.sideTicksLeft[0] + 1, maxTicksLeft);
+			var ticksLeft0 = Math.min(this.sideTicksLeft[0] + 1, this.maxTicksLeft);
 			this.send('|inactive|You have '+(ticksLeft0*10)+' seconds to make your decision.', this.battle.getPlayer(0));
 		}
 		if (inactiveSide != 0) {
 			// side 1 is inactive
-			var ticksLeft1 = Math.min(this.sideTicksLeft[1] + 1, maxTicksLeft);
+			var ticksLeft1 = Math.min(this.sideTicksLeft[1] + 1, this.maxTicksLeft);
 			this.send('|inactive|You have '+(ticksLeft1*10)+' seconds to make your decision.', this.battle.getPlayer(1));
 		}
 
@@ -999,6 +1009,15 @@ var BattleRoom = (function() {
 
 		this.update();
 	};
+	BattleRoom.prototype.isEmpty = function() {
+		if (this.battle.p1) return false;
+		if (this.battle.p2) return false;
+		return true;
+	};
+	BattleRoom.prototype.isFull = function() {
+		if (this.battle.p1 && this.battle.p2) return true;
+		return false;
+	};
 	BattleRoom.prototype.addCmd = function() {
 		this.log.push('|'+Array.prototype.slice.call(arguments).join('|'));
 	};
@@ -1038,12 +1057,6 @@ var BattleRoom = (function() {
 				cmd = message;
 				target = '';
 			}
-		}
-		cmd = cmd.toLowerCase();
-
-		if ((cmd === 'me') && !(user.userid in this.users)) {
-			emit(socket, 'message', 'You can\'t send a message to this room without being in it.');
-			return;
 		}
 
 		// Battle actions are actually just text commands that are handled in
@@ -1086,10 +1099,6 @@ var BattleRoom = (function() {
 				this.addCmd('chat', user.name, '<<< Access denied.');
 			}
 		} else {
-			if (!(user.userid in this.users)) {
-				emit(socket, 'message', 'You can\'t send a message to this room without being in it.');
-				return;
-			}
 			this.battle.chat(user, message);
 		}
 		this.update();
@@ -1149,22 +1158,8 @@ var ChatRoom = (function() {
 		} else {
 			this.logEntry = function() { };
 		}
-
-		if (config.reportjoinsperiod) {
-			this.userList = this.getUserList();
-			this.reportJoinsQueue = [];
-			this.reportJoinsInterval = setInterval(
-				this.reportRecentJoins.bind(this), config.reportjoinsperiod
-			);
-		}
 	}
 	ChatRoom.prototype.type = 'chat';
-
-	ChatRoom.prototype.reportRecentJoins = function() {
-		this.userList = this.getUserList();
-		this.send(this.reportJoinsQueue.join('\n'));
-		this.reportJoinsQueue.length = 0;
-	};
 
 	ChatRoom.prototype.rollLogFile = function(sync) {
 		var mkdir = sync ? (function(path, mode, callback) {
@@ -1299,12 +1294,7 @@ var ChatRoom = (function() {
 	};
 	ChatRoom.prototype.sendIdentity = function(user) {
 		if (user && user.connected) {
-			var entry = '|N|' + user.getIdentity() + '|' + user.userid;
-			if (config.reportjoinsperiod) {
-				this.reportJoinsQueue.push(entry);
-			} else {
-				this.send(entry);
-			}
+			this.send('|N|' + user.getIdentity() + '|' + user.userid);
 		}
 	};
 	ChatRoom.prototype.sendAuth = function(message) {
@@ -1333,8 +1323,7 @@ var ChatRoom = (function() {
 			roomType: 'lobby'
 		};
 		emit(socket, 'init', initdata);
-		var userList = this.userList ? this.userList : this.getUserList();
-		sendData(socket, '>'+this.id+'\n|init|chat\n|users|'+userList+'\n'+this.log.slice(-25).join('\n'));
+		sendData(socket, '>'+this.id+'\n|init|chat\n|users|'+this.getUserList()+'\n'+this.log.slice(-25).join('\n'));
 	};
 	ChatRoom.prototype.join = function(user, merging) {
 		if (!user) return false; // ???
@@ -1346,11 +1335,7 @@ var ChatRoom = (function() {
 			this.update(user);
 		} else if (user.named) {
 			var entry = '|J|'+user.getIdentity();
-			if (config.reportjoinsperiod) {
-				this.reportJoinsQueue.push(entry);
-			} else {
-				this.send(entry);
-			}
+			this.send(entry);
 			this.logEntry(entry);
 		}
 
@@ -1362,8 +1347,7 @@ var ChatRoom = (function() {
 				roomType: 'lobby'
 			};
 			user.emit('init', initdata);
-			var userList = this.userList ? this.userList : this.getUserList();
-			this.send('|init|chat\n|users|'+userList+'\n'+this.log.slice(-100).join('\n'), user);
+			this.send('|init|chat\n|users|'+this.getUserList()+'\n'+this.log.slice(-100).join('\n'), user);
 		}
 
 		return user;
@@ -1371,26 +1355,18 @@ var ChatRoom = (function() {
 	ChatRoom.prototype.rename = function(user, oldid, joining) {
 		delete this.users[oldid];
 		this.users[user.userid] = user;
-		var entry;
-		if (joining) {
-			if (config.reportjoins) {
-				entry = '|j|' + user.getIdentity();
-			} else {
+		if (joining && config.reportjoins) {
+			this.add('|j|'+user.getIdentity());
+		} else {
+			var entry;
+			if (joining) {
 				entry = '|J|' + user.getIdentity();
-			}
-		} else if (!user.named) {
-			entry = '|L| ' + oldid;
-		} else {
-			entry = '|N|' + user.getIdentity() + '|' + oldid;
-		}
-		if (config.reportjoins) {
-			this.add(entry);
-		} else {
-			if (config.reportjoinsperiod) {
-				this.reportJoinsQueue.push(entry);
+			} else if (!user.named) {
+				entry = '|L| ' + oldid;
 			} else {
-				this.send(entry);
+				entry = '|N|' + user.getIdentity() + '|' + oldid;
 			}
+			this.send(entry);
 			this.logEntry(entry);
 		}
 		return user;
@@ -1402,11 +1378,7 @@ var ChatRoom = (function() {
 			this.add('|l|'+user.getIdentity());
 		} else if (user.named) {
 			var entry = '|L|' + user.getIdentity();
-			if (config.reportjoinsperiod) {
-				this.reportJoinsQueue.push(entry);
-			} else {
-				this.send(entry);
-			}
+			this.send(entry);
 			this.logEntry(entry);
 		}
 	};
@@ -1436,12 +1408,6 @@ var ChatRoom = (function() {
 				target = '';
 			}
 		}
-		cmd = cmd.toLowerCase();
-
-		if ((cmd === 'me') && !(user.userid in this.users)) {
-			emit(socket, 'message', 'You can\'t send a message to this room without being in it.');
-			return;
-		}
 
 		var parsedMessage = parseCommand(user, cmd, target, this, socket, message);
 		if (typeof parsedMessage === 'string') message = parsedMessage;
@@ -1467,10 +1433,6 @@ var ChatRoom = (function() {
 				this.add('|c|'+user.getIdentity()+'|<< Access denied.', true);
 			}
 		} else if (!user.muted) {
-			if (!(user.userid in this.users)) {
-				emit(socket, 'message', 'You can\'t send a message to this room without being in it.');
-				return;
-			}
 			this.add('|c|'+user.getIdentity()+'|'+message, true);
 		}
 		this.update();
