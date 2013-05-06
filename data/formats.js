@@ -30,11 +30,10 @@ exports.BattleFormats = {
 		var sniperPokemon = {
 			drapion: 1, skorupi: 1, horsea: 1, seadra: 1, kingdra: 1, octillery: 1, remoraid: 1, ariados: 1, 
 			spinarak: 1, spearow: 1, fearow: 1, rufflet: 1, braviary: 1, blastoise: 1, genesect: 1, shellder: 1, 
-			cloyster: 1, pawniard: 1, bisharp: 1, murkrow: 1, nidorino: 1, nidoking: 1, rhydon: 1, rhyhorn: 1, 
-			rhyperior: 1, absol: 1, archen: 1, archeops: 1, corphish: 1, crawdaunt: 1, escavalier: 1, karrablast: 1,
-			gallade: 1, scizor: 1, scyther: 1, anorith: 1, armaldo: 1, beedrill: 1, farfetchd: 1, buizel: 1, 
-			floatzel: 1, krabby: 1, kingler: 1, leavanny: 1, marowak: 1, cubone: 1, pinsir: 1, heracross: 1, 
-			scolipede: 1, whirlipede: 1, venipede: 1, vigoroth: 1, zangoose: 1
+			cloyster: 1, pawniard: 1, bisharp: 1, rhydon: 1, rhyhorn: 1, rhyperior: 1, absol: 1, archen: 1, 
+			archeops: 1, corphish: 1, crawdaunt: 1, escavalier: 1, karrablast: 1, gallade: 1, scizor: 1, 
+			scyther: 1, beedrill: 1, farfetchd: 1, marowak: 1, cubone: 1, pinsir: 1, heracross: 1, scolipede: 1,
+			whirlipede: 1, venipede: 1
 		};
 		if (pokemon.template.id in sniperPokemon) {
 			this.add('-message', pokemon.name + " is a full trained Navy SEAL!");
