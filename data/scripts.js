@@ -1375,7 +1375,7 @@ exports.BattleScripts = {
 	},
 	randomNSSTeam: function(side) {
 		//a bit short but meh it is a WIP
-		var seasonalPokemonList = ['drapion', 'skorupi', 'horsea', 'seadra', 'kingdra', 'octillery', 'remoraid', 'ariados', 'spinarak', 'spearow', 'fearow', 'rufflet', 'braviary', 'blastoise', 'genesect', 'shellder', 'cloyster', 'pawniard', 'bisharp', 'murkrow', 'nidorino', 'nidoking', 'rhydon', 'rhyhorn', 'rhyperior', 'absol', 'archen', 'archeops', 'corphish', 'crawdaunt', 'escavalier', 'karrablast', 'gallade', 'scizor', 'scyther', 'anorith', 'armaldo', 'beedrill', 'farfetchd', 'buizel', 'floatzel', 'krabby', 'kingler', 'leavanny', 'marowak', 'cubone', 'pinsir', 'heracross', 'scolipede', 'whirlipede', 'venipede', 'vigoroth', 'zangoose', 'sneasel'];
+		var seasonalPokemonList = ['drapion', 'skorupi', 'horsea', 'seadra', 'kingdra', 'octillery', 'remoraid', 'ariados', 'spinarak', 'spearow', 'fearow', 'rufflet', 'braviary', 'blastoise', 'genesect', 'shellder', 'cloyster', 'pawniard', 'bisharp', 'rhydon', 'rhyhorn', 'rhyperior', 'absol', 'archen', 'archeops', 'corphish', 'crawdaunt', 'escavalier', 'karrablast', 'gallade', 'scizor', 'scyther', 'beedrill', 'farfetchd', 'marowak', 'cubone', 'pinsir', 'heracross', 'scolipede', 'whirlipede', 'venipede', 'sneasel'];
 	
 		seasonalPokemonList = seasonalPokemonList.randomize();
 		
@@ -1412,7 +1412,13 @@ exports.BattleScripts = {
 			} else if (template.id === 'rufflet') {
 				set.level = 95;
 			} else if (template.id === 'braviary') {
-				set.level = 101;
+				set.level = 100;
+				var items = ['Leftovers', 'Life Orb', 'Flying Gem', 'Normal Gem'];
+				items = items.randomize();
+				set.moves = ['Brave Bird', 'Slash', 'Bulk Up', 'Roost'];
+				set.evs = {hp: 252, def: 4, spd: 0, spa: 0, atk: 252, spe: 0};
+				set.ivs = {hp: 31, def: 31, spd: 31, spa: 31, atk: 31, spe: 31};
+				set.nature = 'Brave';
 			} else if (template.id === 'blastoise') {
 				set.level = 85;
 			} else if (template.id === 'genesect') {
@@ -1425,12 +1431,6 @@ exports.BattleScripts = {
 				set.level = 90;
 			} else if (template.id === 'bisharp') {
 				set.level = 75;
-			} else if (template.id === 'murkrow') {
-				set.level = 90;
-			} else if (template.id === 'nidorino') {
-				set.level = 90;
-			} else if (template.id === 'nidoking') {
-				set.level = 85;
 			} else if (template.id === 'rhyhorn') {
 				set.level = 95;
 			} else if (template.id === 'rhydon') {
@@ -1457,26 +1457,10 @@ exports.BattleScripts = {
 				set.level = 80;
 			} else if (template.id === 'scyther') {
 				set.level = 85;
-			} else if (template.id === 'anorith') {
-				set.level = 95;
-			} else if (template.id === 'armaldo') {
-				set.level = 85;
 			} else if (template.id === 'beedrill') {
 				set.level = 90;
 			} else if (template.id === 'farfetchd') {
 				set.level = 95;
-			} else if (template.id === 'horsea') {
-				set.level = 95;
-			} else if (template.id === 'buizel') {
-				set.level = 95;
-			} else if (template.id === 'floatzel') {
-				set.level = 85;
-			} else if (template.id === 'kingler') {
-				set.level = 85;
-			} else if (template.id === 'krabby') {
-				set.level = 95;
-			} else if (template.id === 'leavanny') {
-				set.level = 90;
 			} else if (template.id === 'marowak') {
 				set.level = 85;
 			} else if (template.id === 'cubone') {
@@ -1485,21 +1469,20 @@ exports.BattleScripts = {
 				set.level = 85;
 			} else if (template.id === 'heracross') {
 				set.level = 80;
-			} else if (template.id === 'horsea') {
-				set.level = 95;
 			} else if (template.id === 'scolipede') {
 				set.level = 85;
 			} else if (template.id === 'whirlipede') {
 				set.level = 90;
 			} else if (template.id === 'venipede') {
 				set.level = 95;
-			} else if (template.id === 'vigoroth') {
-				set.level = 90;
-			} else if (template.id === 'zangoose') {
-				set.level = 90;
 			} else if (template.id === 'sneasel') {
-				set.level = 101;
-			}
+				set.level = 100;
+				set.item = 'Dark Gem';
+				set.moves = ['Thief', 'Ice Shard', 'Low Sweep', 'Fake Out'];
+				set.evs = {hp: 4, def: 0, spd: 0, spa: 0, atk: 252, spe: 252};
+				set.ivs = {hp: 31, def: 31, spd: 31, spa: 31, atk: 31, spe: 31};
+				set.nature = 'Naughty';
+			} 	
 			team.push(set);
 		}
 
