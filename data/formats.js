@@ -61,13 +61,11 @@ exports.BattleFormats = {
 				};	
 			} else if (move.id === 'thief') {
 				move.basePower = 150;
-				move.onHit = function(source) {
-					this.add('-message', source.name + " was chased down by the cops and injured by gunfire!");
-					self: {
-						onHit: function(source) {
+				self: {
+					move.onHit = function(source) {
+						this.add('-message', source.name + " was chased down by the cops and injured by gunfire!");
 							this.directDamage(source.maxhp/4);
 							}
-					};
 				};
 			}
 		},
