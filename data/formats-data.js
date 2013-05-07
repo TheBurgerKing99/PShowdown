@@ -3,6 +3,10 @@ exports.BattleFormatsData = {
 		isNonstandard: true,
 		tier: ""
 	},
+	nollan: {
+		isNonstandard: true,
+		tier: ""
+	},
 	tomohawk: {
 		viableMoves: {"aurasphere":1,"roost":1,"stealthrock":1,"rapidspin":1,"hurricane":1,"airslash":1,"taunt":1,"substitute":1,"toxic":1},
 		isNonstandard: true,
