@@ -1375,7 +1375,7 @@ exports.BattleScripts = {
 	},
 	randomNSSTeam: function(side) {
 		//a bit short but meh it is a WIP
-		var seasonalPokemonList = ['drapion', 'skorupi', 'horsea', 'seadra', 'kingdra', 'octillery', 'remoraid', 'ariados', 'spinarak', 'spearow', 'fearow', 'rufflet', 'braviary', 'blastoise', 'genesect', 'shellder', 'cloyster', 'pawniard', 'bisharp', 'rhydon', 'rhyhorn', 'rhyperior', 'absol', 'archen', 'archeops', 'corphish', 'crawdaunt', 'escavalier', 'karrablast', 'gallade', 'scizor', 'scyther', 'beedrill', 'farfetchd', 'marowak', 'cubone', 'pinsir', 'heracross', 'scolipede', 'whirlipede', 'venipede', 'sneasel'];
+		var seasonalPokemonList = ['nollan', 'drapion', 'skorupi', 'horsea', 'seadra', 'kingdra', 'octillery', 'remoraid', 'ariados', 'spinarak', 'spearow', 'fearow', 'rufflet', 'braviary', 'blastoise', 'genesect', 'shellder', 'cloyster', 'pawniard', 'bisharp', 'rhydon', 'rhyhorn', 'rhyperior', 'absol', 'archen', 'archeops', 'corphish', 'crawdaunt', 'escavalier', 'karrablast', 'gallade', 'scizor', 'scyther', 'beedrill', 'farfetchd', 'marowak', 'cubone', 'pinsir', 'heracross', 'scolipede', 'whirlipede', 'venipede', 'sneasel'];
 	
 		seasonalPokemonList = seasonalPokemonList.randomize();
 		
@@ -1389,6 +1389,14 @@ exports.BattleScripts = {
 			//there are a lot of set adjustments that have been made
 			if (template.id === 'drapion') {
 				set.level = 85;
+			} else if (template.id === 'nollan') {
+				set.level = 85;
+				set.item = 'Leftovers';
+				set.ability = 'Truant';
+				set.moves = ['Double Hit', 'Circle Throw', 'Bulk Up', 'Slack Off'];
+				set.evs = {hp: 252, def: 0, spd: 4, spa: 0, atk: 252, spe: 0};
+				set.ivs = {hp: 31, def: 31, spd: 31, spa: 31, atk: 31, spe: 31};
+				set.nature = 'Brave';
 			} else if (template.id === 'skorupi') {
 				set.level = 95;
 			} else if (template.id === 'horsea') {
