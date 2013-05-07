@@ -1287,6 +1287,7 @@ exports.BattleScripts = {
 			CAP: 74,
 			G4CAP: 74,
 			G5CAP: 74,
+			USER: 74,
 			Unreleased: 74,
 			Uber: 70
 		};
