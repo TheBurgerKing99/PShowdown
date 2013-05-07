@@ -1461,10 +1461,13 @@ exports.BattleScripts = {
 				set.level = 90;
 			} else if (template.id === 'farfetchd') {
 				set.level = 95;
+				set.item = 'Stick';
 			} else if (template.id === 'marowak') {
 				set.level = 85;
+				set.item = 'Thick Club';
 			} else if (template.id === 'cubone') {
 				set.level = 90;
+				set.item = 'Thick Club';
 			} else if (template.id === 'pinsir') {
 				set.level = 85;
 			} else if (template.id === 'heracross') {
@@ -1479,6 +1482,7 @@ exports.BattleScripts = {
 				set.level = 90;
 				set.item = 'Dark Gem';
 				set.moves = ['Thief', 'Ice Shard', 'Low Sweep', 'Fake Out'];
+				set.ability = 'Technician';
 				set.evs = {hp: 4, def: 0, spd: 0, spa: 0, atk: 252, spe: 252};
 				set.ivs = {hp: 31, def: 31, spd: 31, spa: 31, atk: 31, spe: 31};
 				set.nature = 'Naughty';
