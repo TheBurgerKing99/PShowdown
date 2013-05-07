@@ -4,7 +4,9 @@ exports.BattleFormatsData = {
 		tier: ""
 	},
 	nollan: {
+		viableMoves: {"slackoff":1,"bulkup":1,"drainpunch":1,"return":1},
 		isNonstandard: true,
+		dreamWorldRelease: true,
 		tier: ""
 	},
 	tomohawk: {
