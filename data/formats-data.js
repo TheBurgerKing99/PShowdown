@@ -7,8 +7,14 @@ exports.BattleFormatsData = {
 		viableMoves: {"slackoff":1,"bulkup":1,"drainpunch":1,"return":1},
 		isNonstandard: true,
 		dreamWorldRelease: true,
-		tier: ""
+		tier: "USER"
 	},
+	darthonom: {
+		viableMoves: {"aurasphere":1,"icebeam":1,"shadowball":1,"calmmind":1},
+		isNonstandard: true,
+		dreamWorldRelease: true,
+		tier: "USER"
+	}
 	tomohawk: {
 		viableMoves: {"aurasphere":1,"roost":1,"stealthrock":1,"rapidspin":1,"hurricane":1,"airslash":1,"taunt":1,"substitute":1,"toxic":1},
 		isNonstandard: true,
