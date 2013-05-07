@@ -175,7 +175,7 @@ exports.BattleFormats = {
 	 	searchShow: true,
 		isTeambuilderFormat: true,
 		ruleset: ['CAP Pokemon', 'Standard', 'Evasion Abilities Clause', 'Team Preview'],
-		banlist: ['Uber', 'Drizzle ++ Swift Swim', 'Soul Dew']
+		banlist: ['Uber', 'Drizzle ++ Swift Swim', 'Soul Dew', 'USER', 'Electaroo']
 	},
 	uu: {
 		name: "UU",
@@ -439,6 +439,17 @@ exports.BattleFormats = {
     		debug: true,
     		ruleset: ['Pokemon', 'Sleep Clause', 'Species Clause', 'Team Preview', 'Moody Clause', 'Evasion Moves Clause'],
     		banlist: ['Uber', 'Unreleased', 'Illegal', 'Sheer Cold', 'Horn Drill', 'Guillotine', 'Drizzle ++ Swift Swim', 'Excadrill + Sand Rush']
+    	},
+    	dscap: {
+    		effectType: 'Format',
+    		section: "Other Metagames",
+    		name: "DreServ CAP",
+    		rated: true,
+    		challengeShow: true,
+    		searchShow: true,
+    		isTeambuilderFormat: true,
+    		ruleset: ['CAP Pokemon', 'Standard', 'Evasion Abilities Clause', 'Team Preview'],
+     		banlist: ['Uber', 'Soul Dew', 'Drizzle ++ Swift Swim', 'USER', 'G4CAP', 'Tomohawk', 'Necturna', 'Mollux', 'Aurumoth']
     	},
 	hackmons: {
 		name: "Hackmons",
