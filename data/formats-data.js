@@ -10,7 +10,7 @@ exports.BattleFormatsData = {
 		tier: "USER"
 	},
 	darthonom: {
-		viableMoves: {"aurasphere":1,"icebeam":1,"shadowball":1,"calmmind":1,"iciclespear":1,"shadowsneak":1,"swordsdance":1,"thunderpunch":1},
+		viableMoves: {"hiddenpowerfighting":1,"icebeam":1,"shadowball":1,"calmmind":1,"iciclespear":1,"shadowsneak":1,"swordsdance":1,"thunderpunch":1},
 		isNonstandard: true,
 		dreamWorldRelease: true,
 		tier: "USER"
