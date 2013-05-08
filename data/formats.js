@@ -451,6 +451,16 @@ exports.BattleFormats = {
     		ruleset: ['CAP Pokemon', 'Standard', 'Evasion Abilities Clause', 'Team Preview'],
      		banlist: ['Uber', 'Soul Dew', 'Drizzle ++ Swift Swim', 'USER', 'G4CAP', 'Tomohawk', 'Necturna', 'Mollux', 'Aurumoth']
     	},
+    	usermons: {
+    		effectType: 'Format',
+    		section: 'Other Metagames',
+    		name: "Usermons",
+    		challengeShow: true,
+    		searchShow: true,
+    		isTeambuilderFormat: true,
+    		ruleset: ['CAP Pokemon', 'Standard', 'Evasion Abilities Clause', 'Team Preview'],
+    		banlist: ['Uber', 'Soul Dew', 'Drizzle ++ Swift Swim', 'G4CAP', 'G5CAP']
+    	},
 	hackmons: {
 		name: "Hackmons",
 		section: "Other Metagames",
