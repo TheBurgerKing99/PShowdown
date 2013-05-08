@@ -443,7 +443,7 @@ exports.BattleFormats = {
     	dscap: {
     		effectType: 'Format',
     		section: "Other Metagames",
-    		name: "DreServ CAP",
+    		name: "DSCAP Electaroo Playtest",
     		rated: true,
     		challengeShow: true,
     		searchShow: true,
