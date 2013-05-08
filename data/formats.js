@@ -536,6 +536,18 @@ exports.BattleFormats = {
 		ruleset: ['Pokemon', 'Standard', 'Evasion Abilities Clause', 'Team Preview'],
 		banlist: ['Uber', 'Drizzle ++ Swift Swim', 'Soul Dew']
 	},
+	reversestats: {
+		effectType: 'Format',
+		mod: 'reversestats',
+		name: "Reverse Stats Metagame",
+		section: "Other Metagames",
+		rated: true,
+		challengeShow: true,
+		searchShow: true,
+		isTeambuilderFormat: true,
+		ruleset: ['Pokemon', 'Standard', 'Evasion Abilities Clause', 'Team Preview'],
+		banlist: ['Smeargle']
+	},
 	statexchange: {
 		effectType: 'Format',
 		mod: 'statexchange',
@@ -565,8 +577,6 @@ exports.BattleFormats = {
 		section: "Other Metagames",
 		challengeShow: true,
 		canUseRandomTeam: true,
-		searchShow: true,
-		rated: true,
 		team: 'random',
 		ruleset: ['Random Hax Clause', 'Team Preview']
 	},
@@ -575,35 +585,34 @@ exports.BattleFormats = {
 		name: "Haxmons",
 		section: "Other Metagames",
 		challengeShow: true,
-		searchShow: true,
-		rated: true,
 		ruleset: ['Hax Clause', 'Team Preview', 'Standard Ubers'],
 		banlist: []
 	},
-	nuv2: {
-                effectType: 'Format',
-                name: "NUv2",
-                section: "Oiawesome\'s v2 Tiers",
-                mod: "v2project",
-                challengeShow: true,
-                searchShow: true,
-               	debug: true,
-                isTeambuilderFormat: true,
-                ruleset: ['Standard', 'Team Preview'],
-                banlist: ['RU', 'Beheeyem', 'Braviary', 'Gardevoir', 'Musharna', 'Luxray', 'Roselia', 'Drizzle', 'Drought']
-        },
-	ruv2: {
-                effectType: 'Format',
-                name: "RUv2",
-                section: "Oiawesome\'s v2 Tiers",
-                mod: "v2project",
-                challengeShow: true,
-                searchShow: true,
-                debug: true,
-                isTeambuilderFormat: true,
-                ruleset: ['Standard', 'Team Preview'],
-                banlist: ['BL2', 'Abomasnow', 'Ambipom', 'Arcanine', 'Archeops', 'Azelf', 'Azumarill', 'Beheeyem', 'Bisharp', 'Blastoise', 'Bronzong', 'Chandelure', 'Claydol', 'Cobalion', 'Cofagrigus', 'Crobat', 'Dusclops', 'Empoleon', 'Flygon', 'Froslass', 'Heracross', 'Hitmontop', 'Honchkrow', 'Houndoom', 'Kingdra', 'Krookodile', 'Meloetta', 'Machamp', 'Mew', 'Mienshao', 'Milotic', 'Mismagius', 'Nidoking', 'Porygon-Z', 'Porygon2', 'Raikou', 'Registeel', 'Rhyperior', 'Roserade', 'Rotom-Heat', 'Sableye', 'Scrafty', 'Sharpedo', 'Shaymin', 'Slowbro', 'Snorlax', 'Suicune', 'Swampert', 'Togekiss', 'Tornadus', 'Umbreon', 'Victini', 'Virizion', 'Weavile', 'Xatu', 'Yanmega', 'Zapdos', 'Zoroark', 'Shell Smash + Baton Pass', 'BL1', 'OU']
-        },
+	//nuv2: {
+                //effectType: 'Format',
+                //name: "NUv2",
+                //section: "Oiawesome\'s v2 Tiers",
+                //mod: "v2project",
+                //challengeShow: true,
+                //searchShow: true,
+               	//debug: true,
+                //isTeambuilderFormat: true,
+                //ruleset: ['Standard', 'Team Preview'],
+                //banlist: ['RU', 'Beheeyem', 'Braviary', 'Gardevoir', 'Musharna', 'Luxray', 'Roselia', 'Drizzle', 'Drought']
+        //},
+	//ruv2: {
+                //effectType: 'Format',
+                //name: "RUv2",
+                //section: "Oiawesome\'s v2 Tiers",
+                //mod: "v2project",
+                //challengeShow: true,
+                //searchShow: true,
+                //debug: true,
+                //isTeambuilderFormat: true,
+                //ruleset: ['Standard', 'Team Preview'],
+                //banlist: ['BL2', 'Abomasnow', 'Ambipom', 'Arcanine', 'Archeops', 'Azelf', 'Azumarill', 'Beheeyem', 'Bisharp', 'Blastoise', 'Bronzong', 'Chandelure', 'Claydol', 'Cobalion', 'Cofagrigus', 'Crobat', 'Dusclops', 'Empoleon', 'Flygon', 'Froslass', 'Heracross', 'Hitmontop', 'Honchkrow', 'Houndoom', 'Kingdra', 'Krookodile', 'Meloetta', 'Machamp', 'Mew', 'Mienshao', 'Milotic', 'Mismagius', 'Nidoking', 'Porygon-Z', 'Porygon2', 'Raikou', 'Registeel', 'Rhyperior', 'Roserade', 'Rotom-Heat', 'Sableye', 'Scrafty', 'Sharpedo', 'Shaymin', 'Slowbro', 'Snorlax', 'Suicune', 'Swampert', 'Togekiss', 'Tornadus', 'Umbreon', 'Victini', 'Virizion', 'Weavile', 'Xatu', 'Yanmega', 'Zapdos', 'Zoroark', 'Shell Smash + Baton Pass', 'BL1', 'OU']
+        //},
+        
 	// Rulesets
 	///////////////////////////////////////////////////////////////////
 
