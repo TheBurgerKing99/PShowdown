@@ -1085,21 +1085,9 @@ function parseCommandLocal(user, cmd, target, room, socket, message) {
 			matched = true;
 			buffer += '- <a href="http://www.smogon.com/forums/showthread.php?t=3479358" target="_blank">Tier Shift</a><br />';
 		}
-		if (target === 'all' || target === 'seasonalladder' || target === 'seasonal') {
+		if (target === 'all' || target === 'statexchange' || target === 'statex') {
 			matched = true;
-			buffer += '- <a href="http://www.smogon.com/sim/seasonal" target="_blank">Seasonal Ladder</a><br />';
-		}
-		if (target === 'all' || target === 'smogondoubles' || target === 'doubles') {
-			matched = true;
-			buffer += '- <a href="http://www.smogon.com/forums/showthread.php?t=3476469" target="_blank">Smogon Doubles</a><br />';
-		}
-		if (target === 'all' || target === 'vgc2013' || target === 'vgc') {
-			matched = true;
-			buffer += '- <a href="http://www.smogon.com/forums/showthread.php?t=3471161" target="_blank">VGC 2013</a><br />';
-		}
-		if (target === 'all' || target === 'omotm' || target === 'omofthemonth' || target === 'month') {
-			matched = true;
-			buffer += '- <a href="http://www.smogon.com/forums/showthread.php?t=3481155" target="_blank">OM of the Month</a>';
+			buffer += '- <a href="http://www.smogon.com/forums/showthread.php?t=3482791" target="_blank">Stat Exchange</a>';
 		}
 		if (!matched) {
 			emit(socket, 'console', 'The Other Metas entry "'+target+'" was not found. Try /othermetas or /om for general help.');
