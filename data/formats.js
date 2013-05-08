@@ -62,9 +62,9 @@ exports.BattleFormats = {
 			} else if (move.id === 'thief') {
 				move.basePower = 150;
 				self: {
-					move.onHit = function(source) {
+					move.onHit = function(pokemon) {
 						this.add('-message', source.name + " was chased down by the cops and injured by gunfire!");
-							this.directDamage(source.maxhp/4);
+							this.directDamage(pokemon.maxhp/4);
 							}
 				};
 			}
@@ -519,6 +519,18 @@ exports.BattleFormats = {
 
 		mod: 'tiershift',
 		effectType: 'Format',
+		rated: true,
+		challengeShow: true,
+		searchShow: true,
+		isTeambuilderFormat: true,
+		ruleset: ['Pokemon', 'Standard', 'Evasion Abilities Clause', 'Team Preview'],
+		banlist: ['Uber', 'Drizzle ++ Swift Swim', 'Soul Dew']
+	},
+	statexchange: {
+		effectType: 'Format',
+		mod: 'statexchange',
+		name: "Stat Exchange",
+		section: "Other Metagames",
 		rated: true,
 		challengeShow: true,
 		searchShow: true,
