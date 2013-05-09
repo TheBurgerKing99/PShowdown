@@ -1387,106 +1387,354 @@ exports.BattleScripts = {
 			var template = this.getTemplate(pokemon);
 			var set = this.randomSet(template, i);
 			var set = this.randomSet(seasonalPokemonList[i], i);
-			//there are a lot of set adjustments that have been made
+			//there is a massive amount of set adjustments that have been made
 			if (template.id === 'drapion') {
-				set.level = 85;
+				set.level = 80;
+				set.ability = 'Sniper';
+				set.evs = {hp: 4, def: 0, spd: 0, spa: 0, atk: 252, spe: 252};
+				set.nature = 'Jolly';
+				delete template.viableMoves.aquatail;
+				delete template.viableMoves.poisonjab;
+				delete template.viableMoves.sleeptalk;
+				delete template.viableMoves.whirlwind;
+				delete template.viableMoves.crunch;
+				template.viableMoves.crosspoison = 1;
+				template.viableMoves.nightslash = 1;
 			} else if (template.id === 'nollan') {
-				set.level = 85;
+				set.level = 80;
 				set.item = 'Leftovers';
 				set.ability = 'Truant';
 				set.moves = ['Double Hit', 'Circle Throw', 'Bulk Up', 'Slack Off'];
 				set.evs = {hp: 252, def: 0, spd: 4, spa: 0, atk: 252, spe: 0};
-				set.ivs = {hp: 31, def: 31, spd: 31, spa: 31, atk: 31, spe: 31};
 				set.nature = 'Brave';
 			} else if (template.id === 'skorupi') {
 				set.level = 95;
+				set.ability = 'Sniper';
+				set.evs = {hp: 4, def: 0, spd: 0, spa: 0, atk: 252, spe: 252};
+				set.nature = 'Jolly';
+				delete template.viableMoves.poisonjab;
+				delete template.viableMoves.protect;
+				template.viableMoves.crosspoison = 1;
+				template.viableMoves.swordsdance = 1;
+				template.viableMoves.substitute = 1;
 			} else if (template.id === 'horsea') {
 				set.level = 95;
+				set.ability = 'Sniper';
+				set.evs = {hp: 4, def: 0, spd: 0, spa: 252, atk: 0, spe: 252};
+				set.nature = 'Modest';
+				delete template.viableMoves.raindance;
+				template.viableMoves.agility = 1;
+				template.viableMoves.hiddenpowergrass = 1;
 			} else if (template.id === 'seadra') {
 				set.level = 90;
+				set.ability = 'Sniper';
+				set.evs = {hp: 4, def: 0, spd: 0, spa: 252, atk: 0, spe: 252};
+				set.nature = 'Modest';
+				template.viableMoves.hiddenpowergrass = 1;
 			} else if (template.id === 'kingdra') {
-				set.level = 85;
+				set.level = 80;
+				set.ability = 'Sniper';
+				set.evs = {hp: 4, def: 0, spd: 0, spa: 0, atk: 252, spe: 252};
+				set.nature = 'Adamant';
+				delete template.viableMoves.dracometeor;
+				delete template.viableMoves.hydropump;
+				delete template.viableMoves.icebeam;
+				delete template.viableMoves.sleeptalk;
 			} else if (template.id === 'octillery') {
-				set.level = 90;
+				set.level = 85;
+				set.ability = 'Sniper';
+				set.evs = {hp: 252, def: 0, spd: 4, spa: 252, atk: 0, spe: 0};
+				set.nature = 'Quiet';
+				delete template.viableMoves.rockblast;
 			} else if (template.id === 'remoraid') {
 				set.level = 95;
+				set.ability = 'Sniper';
+				set.evs = {hp: 4, def: 0, spd: 0, spa: 252, atk: 0, spe: 252};
+				set.nature = 'Timid';
+				delete template.viableMoves.rockblast;
+				delete template.viableMoves.seedbomb;
+				template.viableMoves.chargebeam = 1;
+				template.viableMoves.acidspray = 1;
 			} else if (template.id === 'ariados') {
 				set.level = 90;
+				set.ability = 'Sniper';
+				set.evs = {hp: 252, def: 4, spd: 0, spa: 0, atk: 252, spe: 0};
+				set.nature = 'Brave';
+				delete template.viableMoves.poisonjab;
+				delete template.viableMoves.toxic;
+				delete template.viableMoves.toxicspikes;
+				template.viableMoves.crosspoison = 1;
+				template.viableMoves.substitute = 1;
 			} else if (template.id === 'spinarak') {
 				set.level = 95;
+				set.ability = 'Sniper';
+				set.evs = {hp: 252, def: 4, spd: 0, spa: 0, atk: 252, spe: 0};
+				set.nature = 'Brave';
+				delete template.viableMoves.poisonjab;
+				delete template.viableMoves.toxic;
+				delete template.viableMoves.toxicspikes;
+				template.viableMoves.crosspoison = 1;
+				template.viableMoves.substitute = 1;
 			} else if (template.id === 'spearow') {
 				set.level = 95;
+				set.ability = 'Sniper';
+				set.evs = {hp: 4, def: 0, spd: 0, spa: 0, atk: 252, spe: 252};
+				set.nature = 'Jolly';
+				template.viableMoves.roost = 1;
+				template.viableMoves.drillrun = 1;	
 			} else if (template.id === 'fearow') {
-				set.level = 95;
+				set.level = 85;
+				set.ability = 'Sniper';
+				set.evs = {hp: 4, def: 0, spd: 0, spa: 0, atk: 252, spe: 252};
+				set.nature = 'Jolly';
 			} else if (template.id === 'rufflet') {
 				set.level = 95;
+				set.ability = 'Sniper';
+				set.evs = {hp: 4, def: 0, spd: 0, spa: 0, atk: 252, spe: 252};
+				set.nature = 'Jolly';
+				delete template.viableMoves.rockslide;
+				template.viableMoves.shadowclaw = 1;
 			} else if (template.id === 'braviary') {
 				set.level = 80;
-				var items = ['Leftovers', 'Life Orb', 'Flying Gem', 'Normal Gem'];
+				var items = ['Leftovers', 'Life Orb', 'Flying Gem'];
 				items = items.randomize();
+				set.ability = 'Sniper';
 				set.moves = ['Brave Bird', 'Slash', 'Bulk Up', 'Roost'];
 				set.evs = {hp: 252, def: 4, spd: 0, spa: 0, atk: 252, spe: 0};
 				set.ivs = {hp: 31, def: 31, spd: 31, spa: 31, atk: 31, spe: 31};
 				set.nature = 'Brave';
 			} else if (template.id === 'blastoise') {
-				set.level = 85;
+				set.level = 80;
+				set.ability = 'Sniper';
+				set.evs = {hp: 252, def: 0, spd: 4, spa: 252, atk: 0, spe: 0};
+				set.nature = 'Quiet';
+				delete template.viableMoves.dragontail;
+				delete template.viableMoves.aquajet;
+				delete template.viableMoves.toxic;
+				template.viableMoves.sleeptalk = 1;
+				template.viableMoves.rest = 1;
 			} else if (template.id === 'genesect') {
-				set.level = 75;
+				set.level = 70;
+				set.ability = 'Sniper';
+				set.evs = {hp: 4, def: 0, spd: 0, spa: 252, atk: 0, spe: 252};
+				set.nature = 'Naive';
+				template.viableMoves.rockpolish = 1;
 			} else if (template.id === 'shellder') {
 				set.level = 95;
+				set.ability = 'Sniper';
+				set.evs = {hp: 0, def: 0, spd: 0, spa: 252, atk: 4, spe: 252};
+				set.nature = 'Naive';
+				delete template.viableMoves.rapidspin;
+				delete template.viableMoves.iciclespear;
+				delete template.viableMoves.rockblast;
+				delete template.viableMoves.razorshell;
+				template.viableMoves.icebeam = 1;
+				template.viableMoves.iceshard = 1;
+				template.viableMoves.hiddenpowergrass = 1;
 			} else if (template.id === 'cloyster') {
-				set.level = 85;
+				set.level = 80;
+				set.ability = 'Sniper';
+				set.evs = {hp: 4, def: 0, spd: 0, spa: 0, atk: 252, spe: 252};
+				set.nature = 'Naive';
+				delete template.viableMoves.iciclespear;
+				delete template.viableMoves.rockblast;
+				delete template.viableMoves.rapidspin;
+				delete template.viableMoves.razorshell;
+				delete template.viableMoves.spikes;
+				delete template.viableMoves.toxicspikes;
+				template.viableMoves.iciclecrash = 1;
+				template.viableMoves.twineedle = 1;
 			} else if (template.id === 'pawniard') {
 				set.level = 90;
+				set.ability = 'Sniper';
+				set.evs = {hp: 4, def: 0, spd: 0, spa: 0, atk: 252, spe: 252};
+				set.nature = 'Adamant';
+				delete template.viableMoves.brickbreak;
+				template.viableMoves.psychocut = 1;
 			} else if (template.id === 'bisharp') {
 				set.level = 75;
+				set.ability = 'Sniper';
+			        set.evs = {hp: 4, def: 0, spd: 0, spa: 0, atk: 252, spe: 252};
+			        set.nature = 'Adamant';
+			        delete template.viableMoves.brickbreak;
+			        template.viableMoves.psychocut = 1;
 			} else if (template.id === 'rhyhorn') {
 				set.level = 95;
+				set.ability = 'Sniper';
+				set.evs = {hp: 252, def: 0, spd: 4, spa: 0, atk: 252, spe: 0};
+				set.nature = 'Brave';
+				delete template.viableMoves.rockblast;
+				delete template.viableMoves.aquatail;
+				delete template.viableMoves.earthquake;
+				template.viableMoves.curse = 1;
+				template.viableMoves.rockpolish = 1;
+				template.viableMoves.drillrun = 1;
 			} else if (template.id === 'rhydon') {
 				set.level = 85;
+				set.ability = 'Sniper';
+				set.evs = {hp: 252, def: 0, spd: 4, spa: 0, atk: 252, spe: 0};
+				set.nature = 'Brave';
+				delete template.viableMoves.aquatail;
+				delete template.viableMoves.rockblast;
+				delete template.viableMoves.earthquake;
+				template.viableMoves.curse = 1;
+				template.viableMoves.rockpolish = 1;
+				template.viableMoves.drillrun = 1;
 			} else if (template.id === 'rhyperior') {
 				set.level = 80;
+				set.ability = 'Sniper';
+				set.evs = {hp: 252, def: 0, spd: 4, spa: 0, atk: 252, spe: 0};
+				set.nature = 'Brave';
+				delete template.viableMoves.rockblast;
+				delete template.viableMoves.aquatail;
+				delete template.viableMoves.earthquake;
+				template.viableMoves.curse = 1;
+				template.viableMoves.rockpolish = 1;
+				template.viableMoves.drillrun = 1;
 			} else if (template.id === 'absol') {
-				set.level = 90;
+				set.level = 85;
+				set.ability = 'Sniper';
+				set.evs = {hp: 4, def: 0, spd: 0, spa: 0, atk: 252, spe: 252};
+				set.nature = 'Adamant';
+				delete template.viableMoves.pursuit;
+				template.viableMoves.batonpass = 1;
 			} else if (template.id === 'archen') {
 				set.level = 85;
+				set.ability = 'Sniper';
+				set.evs = {hp: 4, def: 0, spd: 0, spa: 0, atk: 252, spe: 252};
+				set.nature = 'Jolly';
+				delete template.viableMoves.rockslide;
+				delete template.viableMoves.pluck;
+				template.viableMoves.rockpolish = 1;
 			} else if (template.id === 'archeops') {
 				set.level = 70;
+				set.ability = 'Sniper';
+				set.evs = {hp: 4, def: 0, spd: 0, spa: 0, atk: 252, spe: 252};
+				set.nature = 'Jolly';
+				delete template.viableMoves.rockslide;
+				delete template.viableMoves.pluck;
+				template.viableMoves.headsmash = 1;
+				template.viableMoves.rockpolish = 1;
 			} else if (template.id === 'corphish') {
 				set.level = 95;
+				set.ability = 'Sniper';
+				set.evs = {hp: 4, def: 0, spd: 0, spa: 0, atk: 252, spe: 252};
+				set.nature = 'Adamant';
+				delete template.viableMoves.waterfall;
+				delete template.viableMoves.crunch;
+				template.viableMoves.crabhammer = 1;
+				template.viableMoves.nightslash = 1;
 			} else if (template.id === 'crawdaunt') {
-				set.level = 85;
+				set.level = 80;
+				set.ability = 'Sniper';
+				set.evs = {hp: 4, def: 0, spd: 0, spa: 0, atk: 252, spe: 252};
+				set.nature = 'Adamant';
+				delete template.viableMoves.waterfall;
+				delete template.viableMoves.crunch;
+				template.viableMoves.crabhammer = 1;
+				template.viableMoves.nightslash = 1;
 			} else if (template.id === 'karrablast') {
 				set.level = 95;
+				set.ability = 'Sniper';
+				set.evs = {hp: 4, def: 0, spd: 0, spa: 0, atk: 252, spe: 252};
+				set.nature = 'Jolly';
 			} else if (template.id === 'escavalier') {
 				set.level = 85;
+				set.ability = 'Sniper';
+				set.evs = {hp: 252, def: 0, spd: 4, spa: 0, atk: 252, spe: 0};
+				set.nature = 'Brave';
+				delete template.viableMoves.knockoff;
+				template.viableMoves.twineedle = 1;
 			} else if (template.id === 'gallade') {
-				set.level = 85;
-			} else if (template.id === 'scizor') {
 				set.level = 80;
+				set.ability = 'Sniper';
+				set.evs = {hp: 4, def: 0, spd: 0, spa: 0, atk: 252, spe: 252};
+				set.nature = 'Jolly';
+				delete template.viableMoves.bulkup;
+				delete template.viableMoves.drainpunch;
+				delete template.viableMoves.trick;
+				delete template.viableMoves.icepunch;
+				delete template.viableMoves.shadowsneak;
+				template.viableMoves.leafblade = 1;
+				template.viableMoves.nightslash = 1;
+			} else if (template.id === 'scizor') {
+				set.level = 75;
+				set.ability = 'Sniper';
+				set.evs = {hp: 252, def: 0, spd: 4, spa: 0, atk: 252, spe: 0};
+				set.nature = 'Brave';
+				delete template.viableMoves.bugbite;
+				template.viableMoves.agility = 1;
+				template.viableMoves.ironhead = 1;
 			} else if (template.id === 'scyther') {
 				set.level = 85;
+				set.item = 'Flying Gem';
+				set.ability = 'Sniper';
+				set.moves = ['Acrobatics', 'X-scissor', 'Baton Pass', 'Swords Dance'];
+				set.evs = {hp: 4, def: 0, spd: 0, spa: 0, atk: 252, spe: 252};
+				set.nature = 'Jolly';
 			} else if (template.id === 'beedrill') {
 				set.level = 90;
+				set.item = 'Choice Scarf';
+				set.ability = 'Sniper';
+				set.moves = ['Twineedle', 'Cross Poison', 'Drill Run', 'U-turn'];
+				set.evs = {hp: 4, def: 0, spd: 0, spa: 0, atk: 252, spe: 252};
+				set.nature = 'Adamant';	
 			} else if (template.id === 'farfetchd') {
 				set.level = 95;
 				set.item = 'Stick';
+				set.ability = 'Sniper';
+				set.evs = {hp: 4, def: 0, spd: 0, spa: 0, atk: 252, spe: 252};
+				set.nature = 'Jolly';
+				template.viableMoves.nightslash = 1;
+				template.viableMoves.agility = 1;
 			} else if (template.id === 'marowak') {
 				set.level = 85;
 				set.item = 'Thick Club';
+				set.ability = 'Sniper';
+				set.evs = {hp: 252, def: 0, spd: 4, spa: 0, atk: 252, spe: 0};
+				set.nature = 'Brave';
+				delete template.viableMoves.earthquake;
+				delete template.viableMoves.doubleedge;
 			} else if (template.id === 'cubone') {
-				set.level = 90;
+				set.level = 95;
 				set.item = 'Thick Club';
+				set.ability = 'Sniper';
+				set.evs = {hp: 252, def: 0, spd: 4, spa: 0, atk: 252, spe: 0};
+				set.nature = 'Brave';
+				delete template.viableMoves.earthquake;
+				delete template.viableMoves.doubleedge;
 			} else if (template.id === 'pinsir') {
-				set.level = 85;
+				set.level = 80;
+				set.ability = 'Sniper';
+				set.evs = {hp: 4, def: 0, spd: 0, spa: 0, atk: 252, spe: 252};
+				set.nature = 'Jolly';
+				delete template.viableMoves.quickattack;
+				delete template.viableMoves.stealthrock;
 			} else if (template.id === 'heracross') {
 				set.level = 80;
+				set.ability = 'Sniper';
+				set.evs = {hp: 4, def: 0, spd: 0, spa: 0, atk: 252, spe: 252};
+				set.nature = 'Jolly';
+				template.viableMoves.nightslash = 1;
 			} else if (template.id === 'scolipede') {
 				set.level = 85;
+				set.ability = 'Sniper';
+				set.evs = {hp: 4, def: 0, spd: 0, spa: 0, atk: 252, spe: 252};
+				set.nature = 'Jolly';
+				delete template.viableMoves.aquatail;
+				delete template.viableMoves.rockslide;
 			} else if (template.id === 'whirlipede') {
 				set.level = 90;
+				set.item = 'Eviolite';
+				set.ability = 'Sniper';
+				set.evs = {hp: 252, def: 0, spd: 4, spa: 0, atk: 252, spe: 0};
+				set.nature = 'Brave';
 			} else if (template.id === 'venipede') {
 				set.level = 95;
+				set.item = 'Eviolite';
+				set.ability = 'Sniper';
+				set.evs = {hp: 252, def: 0, spd: 4, spa: 0, atk: 252, spe: 0};
+				set.nature = 'Brave';
 			} else if (template.id === 'sneasel') {
 				set.level = 90;
 				set.item = 'Dark Gem';
