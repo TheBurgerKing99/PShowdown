@@ -121,8 +121,7 @@ function parseCommandLocal(user, cmd, target, room, socket, message) {
 			emit(socket, 'console', '/tourneymode - Access denied.');
 			return false;
 		}
-		TourneyMode.on = true;
-		if (TourneyMode.on) {
+		if (LoginServer.disabled) {
 			emit(socket, 'console', '/tourneymode - A tourney is already in progress.');
 			return false;
 		}
@@ -136,8 +135,7 @@ function parseCommandLocal(user, cmd, target, room, socket, message) {
 			emit(socket, 'console', '/tourneymode - Access denied.');
 			return false;
 		}
-		TourneyMode.on = false;
-		if (!TourneyMode.on) {
+		if (!LoginServer.disabled) {
 			emit(socket, 'console', '/tourneymode - Tourney mode is already off.');
 			return false;
 		}
