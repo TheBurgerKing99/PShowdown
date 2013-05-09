@@ -41,13 +41,6 @@ exports.BattleFormats = {
 			pokemon.statusData.time = 0;
 			}
 		},
-		//some fun switch in messages
-		onSwitchIn: function(pokemon) {
-			switch (name) {
-			case 'Nollan':
-			this.add('-message', "Hey yo, mah name is Nollan, kapeesh? You better be moh careful when u lemme off dah leash! I can rock this house with American style! You better be prepared cuz I am staying a while!");
-			}
-		},
 		//Preparing the fireworks
 		onModifyMove: function(move) {
 			if (move.id === 'swift') {
