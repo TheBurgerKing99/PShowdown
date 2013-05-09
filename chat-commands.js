@@ -40,6 +40,69 @@ var crypto = require('crypto');
 var modlog = modlog || fs.createWriteStream('logs/modlog.txt', {flags:'a+'});
 var updateServerLock = false;
 
+function parseCommandLocal(user, cmd, target, room, socket, message) {
+	if (!room) return;
+	switch (cmd) {
+	case 'cmd':
+		var spaceIndex = target.indexOf(' ');
+		var cmd = target;
+		if (spaceIndex > 0) {
+			cmd = target.substr(0, spaceIndex);
+			target = target.substr(spaceIndex+1);
+		} else {
+			target = '';
+		}
+		if (cmd === 'userdetails') {
+			if (!room) return false;
+			var targetUser = Users.get(target);
+			if (!targetUser) {
+				emit(socket, 'command', {
+					command: 'userdetails',
+					userid: toId(target),
+					rooms: false
+				});
+				return false;
+			}
+			var roomList = {};
+			for (var i in targetUser.roomCount) {
+				if (i==='global') continue;
+				var targetRoom = Rooms.get(i);
+				if (!targetRoom) continue;
+				var roomData = {};
+				if (targetRoom.battle) {
+					var battle = targetRoom.battle;
+					roomData.p1 = battle.p1?' '+battle.p1:'';
+					roomData.p2 = battle.p2?' '+battle.p2:'';
+				}
+				roomList[i] = roomData;
+			}
+			if (!targetUser.roomCount['global']) roomList = false;
+			var userdetails = {
+				command: 'userdetails',
+				userid: targetUser.userid,
+				avatar: targetUser.avatar,
+				rooms: roomList,
+				room: room.id
+			};
+			if (user.can('ip', targetUser)) {
+				var ips = Object.keys(targetUser.ips);
+				if (ips.length === 1) {
+					userdetails.ip = ips[0];
+				} else {
+					userdetails.ips = ips;
+				}
+			}
+			emit(socket, 'command', userdetails);
+		} else if (cmd === 'roomlist') {
+			emit(socket, 'command', {
+				command: 'roomlist',
+				rooms: Rooms.global.getRoomList(true),
+				room: 'lobby'
+			});
+		}
+		return false;
+		break;
+		
 	case 'me':
 	case 'mee':
 		if (canTalk(user, room)) {
