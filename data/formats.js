@@ -43,16 +43,12 @@ exports.BattleFormats = {
 		},
 		//some fun switch in messages
 		onSwitchIn: function(pokemon) {
-			var msg = '';
 			switch (name) {
 			case 'Nollan':
-			msg = "Hey yo, mah name is Nollan, kapeesh? You better be moh careful when u lemme off dah leash! I can rock this house with American style! You better be prepared cuz I am staying a while!";
-			break;
-			}
-			if (msg !== '') {
-				this.add('-message', msg);
+			this.add('-message', "Hey yo, mah name is Nollan, kapeesh? You better be moh careful when u lemme off dah leash! I can rock this house with American style! You better be prepared cuz I am staying a while!");
 			}
 		},
+		//Preparing the fireworks
 		onModifyMove: function(move) {
 			if (move.id === 'swift') {
 				move.category = 'Special';
