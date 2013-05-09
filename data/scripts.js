@@ -1384,10 +1384,12 @@ exports.BattleScripts = {
 
 		for (var i=0; i<6; i++) {
 			var pokemon = seasonalPokemonList[i];
-			var template = this.getTemplate(pokemon);
 			var set = this.randomSet(template, i);
 			var set = this.randomSet(seasonalPokemonList[i], i);
+			var template = this.getTemplate(seasonalPokemonList[i]);
 			//there is a massive amount of set adjustments that have been made
+			// we're gonna modify the pokemon templates as well
+			template = Object.clone(template, true);
 			if (template.id === 'drapion') {
 				set.level = 80;
 				set.ability = 'Sniper';
