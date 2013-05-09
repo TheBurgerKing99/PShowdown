@@ -39,6 +39,42 @@ var crypto = require('crypto');
 
 var modlog = modlog || fs.createWriteStream('logs/modlog.txt', {flags:'a+'});
 var updateServerLock = false;
+//Some test chat commands
+var roulbets = [];
+var roulon = false;
+var roulprize = 50;
+
+var triviabonus = 1;
+var tourbonus = 1;
+
+
+var tourActive = false;
+var tourSigyn = false;
+var tourBracket = [];
+var tourSignup = [];
+var tourTier = '';
+var tourRound = 0;
+var tourSize = 0;
+var tourMoveOn = [];
+var tourRoundSize = 0;
+
+var tourTierList = ['OU','UU','RU','NU','Random Battle','Ubers','Tier Shift','Challenge Cup 1-vs-1','Hackmons','Balanced Hackmons','LC','Smogon Doubles','Doubles Random Battle','Doubles Challenge Cup','Glitchmons'];
+var tourTierString = '';
+for (var i = 0; i < tourTierList.length; i++) {
+	if ((tourTierList.length - 1) > i) {
+	tourTierString = tourTierString + tourTierList[i] + ', ';
+	} else {
+	tourTierString = tourTierString + tourTierList[i];
+	}
+}
+	
+var allMoney = new Array();
+//NOTE: THE BELOW CODE WILL AUTOMATICALLY IMPORT CASHMONEYDATAS.  CHANGE TO FALSE
+var importMoney = true;
+
+if (importMoney = true) {
+	restoreMoneySync();
+}
 
 function parseCommandLocal(user, cmd, target, room, socket, message) {
 	if (!room) return;
@@ -102,7 +138,1027 @@ function parseCommandLocal(user, cmd, target, room, socket, message) {
 		}
 		return false;
 		break;
+
+/tour commands
+	case 'tour':
+	case 'starttour':
+		if (!user.can('broadcast')) {
+			emit(socket, 'console', 'You do not have enough authority to use this command.');
+			return false;
+		}
+		if (tourActive || tourSigyn) {
+			emit(socket, 'console', 'There is already a tournament running, or there is one in a signup phase.');
+			return false;
+		}
+		if (!target) {
+			emit(socket, 'console', 'Proper syntax for this command: /tour tier, size');
+			return false;
+		}
+		var targets = splittyDiddles(target);
+		var tierMatch = false;
+		for (var i = 0; i < tourTierList.length; i++) {
+			if ((targets[0]) == tourTierList[i]) {
+			tierMatch = true;
+			}
+		}
+		if (!tierMatch) {
+			emit(socket, 'console', 'Please use one of the following tiers: ' + tourTierString);
+			return false;
+		}
+		targets[1] = parseInt(targets[1]);
+		if (isNaN(targets[1])) {
+			emit(socket, 'console', 'Proper syntax for this command: /tour tier, size');
+			return false;
+		}
+		if (targets[1] < 4) {
+			emit(socket, 'console', 'Tournaments must contain 4 or more people.');
+			return false;
+		}
 		
+		tourTier = targets[0];
+		tourSize = targets[1];
+		tourSigyn = true;
+		tourSignup = [];		
+		
+		room.addRaw('<h2><font color="green">' + sanitize(user.name) + ' has started a ' + tourTier + ' Tournament.</font> <font color="red">/j</font> <font color="green">to join!</font></h2><b><font color="blueviolet">PLAYERS:</font></b> ' + tourSize + '<br /><font color="blue"><b>TIER:</b></font> ' + tourTier + '<hr />');
+		
+		return false;
+		break;
+		/*
+	case 'oriwinners':
+		emit(socket, 'console', tourMoveOn + ' --- ' + tourBracket);
+		return false;
+		break;
+		*/
+	case 'toursize':
+		if (!user.can('broadcast')) {
+			emit(socket, 'console', 'You do not have enough authority to use this command.');
+			return false;
+		}
+		if (!tourSigyn) {
+			emit(socket, 'console', 'The tournament size cannot me changed now!');
+			return false;
+		}
+		if (!target) {
+			emit(socket, 'console', 'Proper syntax for this command: /toursize, size');
+			return false;
+		}
+		target = parseInt(target);
+		if (isNaN(target)) {
+			emit(socket, 'console', 'Proper syntax for this command: /tour tier, size');
+			return false;
+		}
+		if (target < 4) {
+			emit(socket, 'console', 'A tournament must have at least 4 people in it.');
+			return false;
+		}
+		if (target < tourSignup.length) {
+			emit(socket, 'console', 'You can\'t boot people from a tournament like this.');
+			return false;
+		}
+		tourSize = target;
+		room.addRaw('<b>' + user.name + '</b> has changed the tournament size to: '+ tourSize +'. <b><i>' + (tourSize - tourSignup.length) + ' slots remaining.</b></i>');
+		if(tourSize == tourSignup.length) {
+			beginTour();
+		}
+		return false;
+		break;
+		
+	case 'jointour':
+	case 'jt':
+	case 'j':
+		if ((!tourSigyn) || tourActive) {
+			emit(socket, 'console', 'There is already a tournament running, or there is not any tournament to join.');
+			return false;
+		}
+		var tourGuy = user.userid;
+		if (addToTour(tourGuy)) {
+			room.addRaw('<b>' + user.name + '</b> has joined the tournament. <b><i>' + (tourSize - tourSignup.length) + ' slots remaining.</b></i>');
+			if(tourSize == tourSignup.length) {
+				beginTour();
+			}
+		} else {
+			emit(socket, 'console', 'You could not enter the tournament.  You may already be in the tournament  Type /lt if you want to leave the tournament.');
+		}
+		return false;
+		break;
+	
+	case 'leavetour':
+	case 'lt':
+		if ((!tourSigyn) && (!tourActive)) {
+			emit(socket, 'console', 'There is no tournament to leave.');
+			return false;
+		}
+		var spotRemover = false;
+		if (tourSigyn) {
+			for(var i=0;i<tourSignup.length;i++) {
+				//emit(socket, 'console', tourSignup[1]);
+				if (user.userid === tourSignup[i]) {
+					tourSignup.splice(i,1);
+					spotRemover = true;
+					}
+				}
+			if (spotRemover) {
+				room.addRaw('<b>' + user.name + '</b> has left the tournament. <b><i>' + (tourSize - tourSignup.length) + ' slots remaining.</b></i>');
+			}
+		} else if (tourActive) {
+			var tourBrackCur;
+			var tourDefWin;
+			for(var i=0;i<tourBracket.length;i++) {
+					tourBrackCur = tourBracket[i];
+					if (tourBrackCur[0] == user.userid) {
+						tourDefWin = Users.get(tourBrackCur[1]);
+						if (tourDefWin) {
+							spotRemover = true;
+							tourDefWin.tourRole = 'winner';
+							tourDefWin.tourOpp = '';
+							user.tourRole = '';
+							user.tourOpp = '';
+						}
+					}
+					if (tourBrackCur[1] == user.userid) {
+						tourDefWin = Users.get(tourBrackCur[0]);
+						if (tourDefWin) {
+							spotRemover = true;
+							tourDefWin.tourRole = 'winner';
+							tourDefWin.tourOpp = '';
+							user.tourRole = '';
+							user.tourOpp = '';
+						}
+					}
+				}
+			if (spotRemover) {
+				room.addRaw('<b>' + user.name + '</b> has left the tournament. <b><i>');
+			}
+		}
+		if (!spotRemover) {
+			emit(socket, 'console', 'You cannot leave this tournament.  Either you did not enter the tournament, or your opponent is unavailable.');
+			}
+		return false;
+		break;
+			
+	case 'forceleave':
+	case 'fl':
+	case 'flt':
+		if (!user.can('broadcast')) {
+			emit(socket, 'console', 'You do not have enough authority to use this command.');
+			return false;
+		}
+		if (!tourSigyn) {
+			emit(socket, 'console', 'There is no tournament in a sign-up phase.  Use /dq username if you wish to remove someone in an active tournament.');
+			return false;
+		}
+		if (!target) {
+			emit(socket, 'console', 'Please specify a user to kick from this signup.');
+			return false;
+		}
+		var targetUser = Users.get(target);
+		if (targetUser){
+			target = targetUser.userid;
+			}
+
+		var spotRemover = false;
+
+			for(var i=0;i<tourSignup.length;i++) {
+				//emit(socket, 'console', tourSignup[1]);
+				if (target === tourSignup[i]) {
+					tourSignup.splice(i,1);
+					spotRemover = true;
+					}
+				}
+		if (spotRemover) {
+				room.addRaw('The user <b>' + target + '</b> has left the tournament by force. <b><i>' + (tourSize - tourSignup.length) + ' slots remaining.</b></i>');
+			} else {
+				emit(socket, 'console', 'The user that you specified is not in the tournament.');
+			}
+		return false;
+		break;
+	
+	case 'vr':
+	case 'viewround':
+	if (!user.can('broadcast')) {
+			emit(socket, 'console', 'You do not have enough authority to use this command.');
+			return false;
+	}
+	if (!tourActive) {
+			emit(socket, 'console', 'There is no active tournament running.');
+			return false;
+	}
+	if (tourRound == 1) {
+		rooms.lobby.addRaw('<hr /><h3><font color="green">The ' + tourTier + ' tournament has begun!</font></h3><font color="blue"><b>TIER:</b></font> ' + tourTier );
+	} else {
+		rooms.lobby.addRaw('<hr /><h3><font color="green">Round '+ tourRound +'!</font></h3><font color="blue"><b>TIER:</b></font> ' + tourTier );
+	}
+	var tourBrackCur;
+	for(var i = 0;i < tourBracket.length;i++) {
+		tourBrackCur = tourBracket[i];
+		if (!(tourBrackCur[0] === 'bye') && !(tourBrackCur[1] === 'bye')) {
+			rooms.lobby.addRaw(' - ' + getTourColor(tourBrackCur[0]) + ' VS ' + getTourColor(tourBrackCur[1]));
+		} else if (tourBrackCur[0] === 'bye') {
+			rooms.lobby.addRaw(' - ' + tourBrackCur[1] + ' has recieved a bye!');
+		} else if (tourBrackCur[1] === 'bye') {
+			rooms.lobby.addRaw(' - ' + tourBrackCur[0] + ' has recieved a bye!');
+		} else {
+			rooms.lobby.addRaw(' - ' + tourBrackCur[0] + ' VS ' + tourBrackCur[1]);
+		}
+	}
+	var tourfinalcheck = tourBracket[0];
+	if ((tourBracket.length == 1) && (!(tourfinalcheck[0] === 'bye') || !(tourfinalcheck[1] === 'bye'))) {
+		rooms.lobby.addRaw('This match is the finals!  Good luck!');
+	}
+	rooms.lobby.addRaw('<hr />');
+	return false; 
+	break;
+	
+	case 'remind':
+		if (!user.can('broadcast')) {
+			emit(socket, 'console', 'You do not have enough authority to use this command.');
+			return false;
+		}
+		if (!tourSigyn) {
+				emit(socket, 'console', 'There is no tournament to sign up for.');
+				return false;
+		}
+		room.addRaw('<hr /><h2><font color="green">Please sign up for the ' + tourTier + ' Tournament.</font> <font color="red">/j</font> <font color="green">to join!</font></h2><b><font color="blueviolet">PLAYERS:</font></b> ' + tourSize + '<br /><font color="blue"><b>TIER:</b></font> ' + tourTier + '<hr />');
+		return false;
+		break;
+		
+	case 'replace':
+	
+		if (!user.can('broadcast')) {
+			emit(socket, 'console', 'You do not have enough authority to use this command.');
+			return false;
+		}
+		if (!tourActive) {
+			emit(socket, 'console', 'The tournament is currently in a sign-up phase or is not active, and replacing users only works mid-tournament.');
+			return false;
+		}
+		if (!target) {
+			emit(socket, 'console', 'Proper syntax for this command is: /replace user1, user2.  User 2 will replace User 1 in the current tournament.');
+			return false;
+		}
+		var targets = splittyDiddles(target);
+		if (!targets[1]) {
+			emit(socket, 'console', 'Proper syntax for this command is: /replace user1, user2.  User 2 will replace User 1 in the current tournament.');
+			return false;
+		}
+		var userOne = Users.get(targets[0]); 
+		var userTwo = Users.get(targets[1]);
+		if (!userTwo) {
+			emit(socket, 'console', 'Proper syntax for this command is: /replace user1, user2.  The user you specified to be placed in the tournament is not present!');
+			return false;
+		} else {
+			targets[1] = userTwo.userid;
+		}
+		if (userOne) {
+			targets[0] = userOne.userid;
+		}
+		var tourBrackCur = [];
+		var replaceSuccess = false;
+		//emit(socket, 'console', targets[0] + ' - ' + targets[1]);
+		for (var i = 0; i < tourBracket.length; i++) {
+			tourBrackCur = tourBracket[i];
+			if (tourBrackCur[0] === targets[0]) {
+				tourBrackCur[0] = targets[1];
+				userTwo.tourRole = 'participant';
+				userTwo.tourOpp = tourBrackCur[1];
+				var oppGuy = Users.get(tourBrackCur[1]);
+				if (oppGuy) {
+					if (oppGuy.tourOpp === targets[0]) {
+						oppGuy.tourOpp = targets[1];
+						}
+					}
+				replaceSuccess = true;
+				}
+			if (tourBrackCur[1] === targets[0]) {
+				tourBrackCur[1] = targets[1];
+				userTwo.tourRole = 'participant';
+				userTwo.tourOpp = tourBrackCur[0];
+				var oppGuy = Users.get(tourBrackCur[0]);
+				if (oppGuy) {
+					if (oppGuy.tourOpp === targets[0]) {
+						oppGuy.tourOpp = targets[1];
+						}
+					}
+				replaceSuccess = true;
+				}
+			if (tourMoveOn[i] === targets[0]) {
+				tourMoveOn[i] = targets[1];
+				userTwo.tourRole = 'winner';
+				userTwo.tourOpp = '';
+			} else if (!(tourMoveOn[i] === '')) {
+				userTwo.tourRole = '';
+				userTwo.tourOpp = '';
+			}
+		}
+		if (replaceSuccess) {
+			room.addRaw('<b>' + targets[0] +'</b> has left the tournament and is replaced by <b>' + targets[1] + '</b>.');
+			} else {
+			emit(socket, 'console', 'The user you indicated is not in the tournament!');
+			}
+	return false;
+	break;
+	
+	case 'endtour':
+		if (!user.can('broadcast')) {
+			emit(socket, 'console', 'You do not have enough authority to use this command.');
+			return false;
+		}
+		tourActive = false;
+		tourSigyn = false;
+		tourBracket = [];
+		tourSignup = [];
+		tourTier = '';
+		tourRound = 0;
+		tourSize = 0;
+		tourMoveOn = [];
+		tourRoundSize = 0;
+		room.addRaw('<h2><b>' + user.name + '</b> has ended the tournament.</h2>');
+		return false;
+		break;
+	
+	case 'dq':
+	case 'disqualify':
+		if (!user.can('broadcast')) {
+			emit(socket, 'console', 'You do not have enough authority to use this command.');
+			return false;
+		}
+		if (!target) {
+			emit(socket, 'console', 'Proper syntax for this command is: /dq username');
+			return false;
+		}
+		var targetUser = Users.get(target);
+		if (!targetUser) {
+			emit(socket, 'console', 'That user does not exist!');
+			return false;
+		}
+		if (!tourActive) {
+			emit(socket, 'console', 'There is no tournament running at this time!');
+			return false;
+		}
+		var dqGuy = targetUser.userid;
+		var tourBrackCur;
+		var posCheck = false;
+		for(var i = 0;i < tourBracket.length;i++) {
+			tourBrackCur = tourBracket[i];
+			if (tourBrackCur[0] === dqGuy) {
+				var finalGuy = Users.get(tourBrackCur[1]);
+				finalGuy.tourRole = 'winner';
+				targetUser.tourRole = '';
+				posCheck = true;
+				}
+			if (tourBrackCur[1] === dqGuy) {
+				var finalGuy = Users.get(tourBrackCur[0]);
+				finalGuy.tourRole = 'winner';
+				targetUser.tourRole = '';
+				posCheck = true;
+				}
+			}
+		if (posCheck) {
+			room.addRaw('<b>' + targetUser.name + '</b> has been disqualified.');
+		} else {
+			emit(socket, 'console', 'That user was not in the tournament!');
+		}
+		return false;
+		break;
+		
+	//CURRENCY COMMANDS
+	//POKEBUCKSS
+	
+	case 'scratchticket':
+		var moneyGuy = showMoneyUser(user.name);
+		if (moneyGuy[3] < 1) {
+			emit(socket, 'console', 'You need at least one Fun Ticket to use a Scratch Ticket!');
+			return false;
+			}
+		moneyGuy[3] = moneyGuy[3] - 1;
+		var scratchwin = Math.floor((Math.random()*1000)+1);
+		if (scratchwin < 850) {
+				emit(socket, 'console', "Sorry, you didn't win this time!");
+			} else if (scratchwin < 900) {
+				emit(socket, 'console', 'You have won 50PB with a scratch ticket!  That\'s enough to buy... another ticket!');
+				updateMoney(user.name, 50);
+			} else if (scratchwin < 970) {
+				emit(socket, 'console', 'You have won 150PB with a scratch ticket!  That\'s a decent profit!');
+				updateMoney(user.name, 150);
+			} else if (scratchwin < 980) {
+				emit(socket, 'console', 'You have won 250PB with a scratch ticket!  Don\'t spend it all in one place!');
+				updateMoney(user.name, 250);
+			} else if (scratchwin < 985) {
+				room.addRaw('<b>' + user.name + '</b> has won <b>500PB</b> with a scratch ticket!  You\'re luckier than a Farfetch\'d with a Stick and Super Luck using Slash!');
+				updateMoney(user.name, 500);
+			} else if (scratchwin < 990) {
+				room.addRaw('<b>' + user.name + '</b> hit the jackpot!  They have won <b>20 Fun Tickets</b> with a scratch ticket!  I swear I\'m not encouraging gambling with this...');
+				moneyGuy[3] = moneyGuy[3] + 20;
+			} else if (scratchwin < 995) {
+				room.addRaw('<b>' + user.name + '</b> hit the jackpot!  They have won <b>1000PB</b> with a scratch ticket!  Don\'t spend it all in one place!  (Actually, I hope you spend it all here...)');
+				updateMoney(user.name, 1000);
+			} else if ((scratchwin < 996) && (!moneyGuy[4])) {
+				room.addRaw('<b>' + user.name + '</b> hit the jackpot!  They have won <b>a Bonus Mystery Mark</b> with a scratch ticket!  That\'s cool, I guess???');
+				moneyGuy[4] = true;
+			} else if ((scratchwin < 997) && (!moneyGuy[4])) {
+				room.addRaw('<b>' + user.name + '</b> hit the jackpot!  They have won <b>2000PB</b> with a scratch ticket!  Don\'t spend it all in one place!  (Actually, I hope you spend it all here...)');
+				updateMoney(user.name, 2000);
+			} else if (scratchwin < 1000) {
+				room.addRaw('<b>' + user.name + '</b> hit the jackpot!  They have won <b>2000PB</b> with a scratch ticket!  Don\'t spend it all in one place!  (Actually, I hope you spend it all here...)');
+				updateMoney(user.name, 2000);
+			} else {
+				room.addRaw('<b>' + user.name + '</b> hit the ultimate jackpot!  They have won <b>5000PB</b> with a scratch ticket!  Jeez!  What luck!');
+				updateMoney(user.name, 5000);
+			}
+			
+	return false;
+	break;
+	
+	case 'startroulette':
+	case 'startroul':
+		if (!user.can('mute')) {
+			emit(socket, 'console', 'You must be a driver or above to start taking tickets for the roulette.');
+			return false;
+			}
+		if (roulon) {
+			emit(socket, 'console', 'Either someone is currently taking bets, or the roulette needs to be spun!');
+			return false;
+			} else {
+			room.addRaw('<div class="infobox"><b>' + user.name + ' </b>is now taking bets for the roulette!'+
+			'</b><br><br><b>1 Fun Ticket (<i>/buy ticket</i>):</b> One ticket per entry.  You can bet multiple times.' +
+			'<br><b><i>/betnumber #</i>: </b> Bet on an individual number from 0-40.  Bonus if you win on 0!' + 
+			'<br><b><i>/betcolor black</i>: </b> Bet on black (even) numbers not including 0.  Good odds, low payout.' + 
+			'<br><b><i>/betcolor red</i>: </b> Bet on red (odd) numbers.' +  
+			'</div>');
+			roulon = true;
+			emit(socket, 'console', 'When everyone is ready, type /spin to spin the wheel!');
+			return false;
+			}			
+	return false;
+	break;
+	
+	case 'betnumber':
+	case 'betnum':
+		var moneyGuy = showMoneyUser(user.name);
+		if (!target) {
+			emit(socket, 'console', 'The syntax for this command is /betnumber #');
+			return false;
+			}
+		var targetNum = parseInt(target);
+		if ((targetNum < 0) || (targetNum > 40) || (isNaN(targetNum))) {
+			emit(socket, 'console', 'That\'s not a valid number!');
+			return false;
+		}
+		if (!roulon) {
+			emit(socket, 'console', 'The roulette is not currently taking bets at this time.');
+			return false;
+			}
+		if (moneyGuy[3] < 1) {
+			emit(socket, 'console', 'You need at least one Fun Ticket to place a bet on the roulette!');
+			return false;
+			}
+		moneyGuy[3] = moneyGuy[3] - 1;
+		roulbets.push([user.name,targetNum]);
+		room.addRaw('<b>' + user.name + '</b> has placed a bet on the number <b>' + targetNum + '!');
+		return false;
+		break;
+	
+	case 'betcolor':
+	case 'betcol':
+		var moneyGuy = showMoneyUser(user.name);
+		if (!target) {
+			emit(socket, 'console', 'The syntax for this command is /betnumber #');
+			return false;
+			}
+		var targetCol = target;
+		if (!((targetCol === 'red') || (targetCol === 'black'))) {
+			emit(socket, 'console', 'That\'s not a valid color!  You can pick red or black.');
+			return false;
+		}
+		if (!roulon) {
+			emit(socket, 'console', 'The roulette is not currently taking bets at this time.');
+			return false;
+			}
+		if (moneyGuy[3] < 1) {
+			emit(socket, 'console', 'You need at least one Fun Ticket to place a bet on the roulette!');
+			return false;
+			}
+		moneyGuy[3] = moneyGuy[3] - 1;
+		roulbets.push([user.name,targetCol]);
+		room.addRaw('<b>' + user.name + '</b> has placed a bet on the color <b>' + targetCol + '!');
+	return false;
+	break;
+	
+	case 'spin':
+		if (!user.can('mute')) {
+			emit(socket, 'console', 'You must be a driver or above to spin the roulette wheel.');
+			return false;
+			}
+		if (roulbets.length == 0) {
+			emit(socket, 'console', 'No one has placed a bet yet!');
+			return false;
+			}
+		if (!roulon) {
+			emit(socket, 'console', 'You haven\'t started taking bets!');
+			return false;
+		} else {
+		var finalRoulwin = false;
+		do {
+			var roulwin = Math.floor((Math.random()*100));
+			var roulpeeps = [];
+			var roulpeepsnames = '';
+			var roulcolpeeps = [];
+			var roulcolpeepsnames = '';
+			var wintemp;
+			var colorguywin;
+			if (roulwin == 0) {
+				for (var i = 0; i < roulbets.length; i++) {
+					wintemp = roulbets[i];
+					if (wintemp[1] === 0) {
+						updateMoney(wintemp[0], (roulprize * 8 + 100));
+						
+						if ((roulpeeps.lastIndexOf(wintemp[0])) == -1) {
+							roulpeeps.push(wintemp[0]);
+							roulpeepsnames = roulpeepsnames + wintemp[0] + ' ';
+							}
+					}				
+				}
+				room.addRaw('<div class="infobox"><b>' + 'BIG WIN!'+
+				'</b><br><br><b>The roulette spun a 0!</b>  That\'s a total prize of ' + ((roulprize * 8) + 100) + 'PB per ticket!' +
+				'<br><b><i>Congrats to</i>:</b> ' + roulpeepsnames +
+				'</div>');
+				finalRoulwin = true;
+			} else if (roulwin < 41) {
+				var colorwin = 'red';
+				if ((roulwin % 2) == 0) colorwin = 'black';
+			
+			
+				for (var i = 0; i < roulbets.length; i++) {
+					wintemp = roulbets[i];
+					if (wintemp[1] === roulwin) {
+						updateMoney(wintemp[0], (roulprize * 8));
+						
+						if ((roulpeeps.lastIndexOf(wintemp[0])) == -1) {
+							roulpeeps.push(wintemp[0]);
+							roulpeepsnames = roulpeepsnames + wintemp[0] + ' ';
+							}
+					} else if (wintemp[1] === colorwin)	{
+						updateMoney(wintemp[0], (roulprize * 2));
+						
+						if ((roulcolpeeps.lastIndexOf(wintemp[0])) == -1) {
+							roulcolpeeps.push(wintemp[0]);
+							roulcolpeepsnames = roulcolpeepsnames + wintemp[0] + ' ';
+							}
+						}
+				}
+				room.addRaw('<div class="infobox"><b>' + 'Results:'+
+				'</b><br><br><b>The roulette spun a ' + roulwin + '!</b>  That\'s a total prize of ' + (roulprize * 8) + 'PB per ticket on the number!' +
+				'<br><b><i>Congrats to</i>:</b> ' + roulpeepsnames +
+				'</b><br><br><b>The roulette landed on ' + colorwin + '!</b>  That\'s a total prize of ' + (roulprize * 2) + 'PB per ticket on the color!' +
+				'<br><b><i>Congrats to</i>:</b> ' + roulcolpeepsnames +
+				'</div>');
+				finalRoulwin = true;
+				} else {
+				emit(socket, 'console', "Spinning...");
+				}
+		}
+		while (!finalRoulwin);
+	
+	roulon = false;
+	roulbets = [];
+	}
+	return false;
+	break;
+	
+	case 'mmoneybackup':
+		if (user.name === 'Orivexes') 
+			{
+				var done = backupMoney();
+				emit(socket, 'console', "just check the logs, jeez");
+			}
+	return false;
+	break;
+	
+	case 'mmoneyrestore':
+		if (user.name === 'Orivexes') 
+			{
+				var done = restoreMoney();
+				emit(socket, 'console', "just check the logs, jeez");
+			}
+		return false;
+		break;
+		
+	
+	case 'money':
+	case 'inv':
+	case 'inventory':
+	case '!money':
+	case '!inv':
+	case '!inventory':
+	
+		if (!target) target = user.name;
+		var targetUser = Users.get(target);
+		if (!targetUser) {
+			emit(socket, 'console', 'User '+target+' not found.');
+			return false;
+			}
+		
+		var moneyGuy = showMoneyUser(targetUser.name);
+		/*var targetUser;
+		if (!target) 
+			{
+				targetUser = user;
+			} else {
+				targetUser = Users.get(target);
+				if (!targetUser) 
+					{
+						emit(socket, 'console', 'User '+target+' not found.');
+						return false;
+					}
+			}*/
+		
+		var emotepacklist = " ";
+		var emoteguylist = moneyGuy[2];
+		for(var i = 0; i < 10; i++) {
+			if (emoteguylist[i]) {
+				if (emotepacklist === " ") {
+						emotepacklist = emotepacklist + "Pack #" + (i+1);
+					} else {				
+						emotepacklist = emotepacklist + ", " +"Pack #" + (i+1);
+					}
+				}
+			}
+		var marked;
+		if (moneyGuy[4]) {
+			marked = 'Yes';
+		} else {
+			marked = 'No';
+		}
+		
+			
+			
+		showOrBroadcastStart(user, cmd, room, socket, message);
+		showOrBroadcast(user, cmd, room, socket,
+			'<div class="infobox"><b>' + targetUser.name +
+			':</b><br><b>Pokebucks: </b>' + moneyGuy[1] +
+			'<br><b>Pokemon Emoticon Packs:</b>' + emotepacklist +
+			'<br><b>Fun Tickets: </b>' + moneyGuy[3] +
+			'<br><b>Bonus Mystery Mark: </b>' + marked + 
+			//'<br><b>Intro Message: </b>' + targetUser.intro +
+			'</div>');
+		return false;
+		break;
+	
+	case 'shopinfo':
+	case '!shopinfo':
+		if (!target) {
+			emit(socket, 'console', 'Be sure to type /shopinfo <item>.');
+			return false;
+			}
+		if ((target === 'ticket') || (target === 'funticket')) {
+		showOrBroadcastStart(user, cmd, room, socket, message);
+		showOrBroadcast(user, cmd, room, socket,
+			'<div class="infobox"><b>Welcome to the Pokebucks Shop!'+
+			'</b><br><b>Fun Ticket:</b> 50PB apiece or buy in bulk.  Use these to play games such as:<br><b>Scratch Ticket (1 Ticket):</b> Use a ticket like a scratch ticket to win!  <i>/scratchticket</i>' + 
+			'<br><b>Roulette (1 Ticket):</b> Place a bet on the roulette wheel to get some extra Pokebucks!' +
+			'</div>');
+			}
+		if ((target === 'emotepack') || (target === 'emotepacks') || (target === 'emotes') || (target === 'emoticons') || (target === 'epack')) {
+		showOrBroadcastStart(user, cmd, room, socket, message);
+		showOrBroadcast(user, cmd, room, socket,
+			'<div class="infobox"><b>Welcome to the Pokebucks Shop!'+
+			'</b><br><b>Emote Pack: </b> 15000PB per pack.  Buying these unlocks commands to use emoticons.' +
+			'</div>');
+			}
+		if ((target === 'bonusmark') || (target === 'mark')) {
+		showOrBroadcastStart(user, cmd, room, socket, message);
+		showOrBroadcast(user, cmd, room, socket,
+			'<div class="infobox"><b>Welcome to the Pokebucks Shop!'+
+			'</b><br><b>Bonus Mystery Mark: </b> 10000PB.  A "?" is affixed to the front of your name.' +
+			'</div>');
+			}
+		if (target === 'voice') {
+		showOrBroadcastStart(user, cmd, room, socket, message);
+		showOrBroadcast(user, cmd, room, socket,
+			'<div class="infobox"><b>Welcome to the Pokebucks Shop!'+
+			'</b><br><b>Voice:</b> 50000PB.  You will gain Voice status permanently!  This is only available to regular users.' +
+			'</div>');
+			}
+		return false;
+		break;
+	
+	case 'shop':
+	case '!shop':
+	case 'store':
+	case '!store':
+	case 'prices':
+	case '!prices':
+		showOrBroadcastStart(user, cmd, room, socket, message);
+		showOrBroadcast(user, cmd, room, socket,
+			'<div class="infobox"><b>Welcome to the Pokebucks Shop!'+
+			'</b><br><b>1 Fun Ticket (<i>/buy ticket</i>): </b> 50PB' +
+			'<br><b>Reel of 10 Fun Tickets (<i>/buy ticketreel</i>): </b> 450PB' + 
+			'<br><b>Bucket of 100 Fun Tickets (<i>/buy ticketbucket</i>): </b> 4000PB' + 
+			'<br><br><b>Bonus Mystery Mark (<i>/buy mark</i>): </b> 10000PB' + 
+			'<br><br><b>Emoticon Pack 1 (<i>/buy epack1</i>): </b> SOLD OUT' + 
+			'<br><b>Emoticon Pack 2 (<i>/buy epack2</i>): </b> SOLD OUT' + 
+			'<br><br><b>Voice (<i>/buy voice</i>): </b> 50000PB' + 
+			'<br><br><b>Want to gift one of these items to someone?  Type: <i>/gift username, item</i>! </b>' + 
+			'<br><b>Want more info on one of these items?  Type: <i>/shopinfo item</i>! </b>' + 
+			'<br><b>Need to check your money and inventory?  Type: <i>/money</i>! </b>' + 
+			'<br><b>For other information on the shop, type: <i>/shophelp</i>! </b>' +
+			'</div>');
+		return false;
+		break;
+	
+	case 'buy':
+	case 'purchase':
+		if (!target) {
+		showOrBroadcastStart(user, cmd, room, socket, message);
+		showOrBroadcast(user, cmd, room, socket,
+			'<div class="infobox"><b>Welcome to the Pokebucks Shop!'+
+			'</b><br><b>1 Fun Ticket (<i>/buy ticket</i>): </b> 50PB' +
+			'<br><b>Reel of 10 Fun Tickets (<i>/buy ticketreel</i>): </b> 450PB' + 
+			'<br><b>Bucket of 100 Fun Tickets (<i>/buy ticketbucket</i>): </b> 4000PB' + 
+			'<br><br><b>Bonus Mystery Mark (<i>/buy mark</i>): </b> 10000PB' + 
+			'<br><br><b>Emoticon Pack 1 (<i>/buy epack1</i>): </b> SOLD OUT' + 
+			'<br><b>Emoticon Pack 2 (<i>/buy epack2</i>): </b> SOLD OUT' + 
+			'<br><br><b>Voice (<i>/buy voice</i>): </b> 50000PB' + 
+			'<br><br><b>Want to gift one of these items to someone?  Type: <i>/gift username, item</i>! </b>' + 
+			'<br><b>Want more info on one of these items?  Type: <i>/shopinfo item</i>! </b>' + 
+			'<br><b>Need to check your money and inventory?  Type: <i>/money</i>! </b>' + 
+			'<br><b>For other information on the shop, type: <i>/shophelp</i>! </b>' +
+			'</div>');
+		return false;
+		}
+		var itemNames = ['ticket','ticketreel','ticketbucket','mark','epack1','epack2','voice'];
+		var itemFullNames = ['Fun Ticket','Reel of Fun Tickets','Bucket of Fun Tickets','Bonus Mystery Mark','Emoticon Pack 1','Emoticon Pack 2','Voice'];
+		var itemPrices = ['50','450','4000','10000','15000','15000','50000'];
+		var checkItem = false;
+		var finalItem;
+		var finalPrice;
+		for(var i = 0; i < itemNames.length; i++) {
+			if (target === itemNames[i]) {
+				checkItem = true;
+				finalPrice = itemPrices[i];
+				finalItem = itemFullNames[i];
+				}
+			}
+		if (!checkItem) {
+			emit(socket, 'console', 'This item was not found.  Please check the shop listing by typing "/shop".');
+			return false;
+			}
+		if ((target === 'epack1') || (target === 'epack2')) {
+			emit(socket, 'console', 'The item you are trying to purchase is not available at the moment.  Please check the shop listing by typing "/shop".');
+			return false;
+			}
+		var work = buyItem(user.name,target,user.name);
+		if (work) {
+			room.addRaw('<b>' + user.name + '</b> has purchased a <b>' + finalItem + '</b> for ' + finalPrice + 'PB!');
+			} else {
+			var moneyGuy = showMoneyUser(user.name);
+			if (moneyGuy[1] < parseInt(finalPrice)) {
+				emit(socket, 'console', 'You don\'t have enough money.');
+				} else {
+				emit(socket, 'console', 'You already have or cannot purchase this item.');
+				}
+			}
+		return false;
+		break;
+		
+	case 'gift':
+	case 'buyfor':
+		if (!target) {
+		showOrBroadcastStart(user, cmd, room, socket, message);
+		showOrBroadcast(user, cmd, room, socket,
+			'<div class="infobox"><b>Welcome to the Pokebucks Shop!'+
+			'</b><br><b>1 Fun Ticket (<i>/buy ticket</i>): </b> 50PB' +
+			'<br><b>Reel of 10 Fun Tickets (<i>/buy ticketreel</i>): </b> 450PB' + 
+			'<br><b>Bucket of 100 Fun Tickets (<i>/buy ticketbucket</i>): </b> 4000PB' + 
+			'<br><br><b>Bonus Mystery Mark (<i>/buy mark</i>): </b> 10000PB' + 
+			'<br><br><b>Emoticon Pack 1 (<i>/buy epack1</i>): </b> SOLD OUT' + 
+			'<br><b>Emoticon Pack 2 (<i>/buy epack2</i>): </b> SOLD OUT' + 
+			'<br><br><b>Voice (<i>/buy voice</i>): </b> 50000PB' + 
+			'<br><br><b>Want to gift one of these items to someone?  Type: <i>/gift username, item</i>! </b>' + 
+			'<br><b>Want more info on one of these items?  Type: <i>/shopinfo item</i>! </b>' + 
+			'<br><b>Need to check your money and inventory?  Type: <i>/money</i>! </b>' + 
+			'<br><b>For other information on the shop, type: <i>/shophelp</i>! </b>' +
+			'</div>');
+		return false;
+		}
+		
+		var targets = splittyDoodles(target);
+		var targetUser = targets[0];
+		if (!targets[1]) {
+			emit(socket, 'console', 'Syntax for giving people money: /pay user, #');
+			return parseCommand(user, '?', cmd, room, socket);
+		}
+		var targetUser = Users.get(targets[0]);
+		if (!targetUser) {
+			emit(socket, 'console', 'The user you specified is not here!');
+			return false;
+		}
+		
+		var itemNames = ['ticket','ticketreel','ticketbucket','mark','epack1','epack2','voice'];
+		var itemFullNames = ['Fun Ticket','Reel of Fun Tickets','Bucket of Fun Tickets','Bonus Mystery Mark','Emoticon Pack 1','Emoticon Pack 2','Voice'];
+		var itemPrices = ['50','450','4000','10000','15000','15000','50000'];
+		var checkItem = false;
+		var finalItem;
+		var finalPrice;
+		for(var i = 0; i < itemNames.length; i++) {
+			if (targets[1] === itemNames[i]) {
+				checkItem = true;
+				finalPrice = itemPrices[i];
+				finalItem = itemFullNames[i];
+				}
+			}
+		if (!checkItem) {
+			emit(socket, 'console', 'This item was not found.  Please check the shop listing by typing "/shop".');
+			return false;
+			}
+		if ((targets[1] === 'epack1') || (targets[1] === 'epack2')) {
+			emit(socket, 'console', 'The item you are trying to purchase is not available at the moment.  Please check the shop listing by typing "/shop".');
+			return false;
+			}
+		var work = buyItem(user.name,targets[1],targetUser.name);
+		if (work) {
+			room.addRaw('<b>' + user.name + '</b> has gifted a <b>' + finalItem + '</b> to <b>' + targetUser.name + ' for ' + finalPrice + 'PB!');
+			} else {
+			var moneyGuy = showMoneyUser(targetUser.name);
+			if (moneyGuy[1] < parseInt(finalPrice)) {
+				emit(socket, 'console', 'You don\'t have enough money.');
+				} else {
+				emit(socket, 'console', 'You already have or cannot purchase this item.');
+				}
+			}
+		return false;
+		break;
+	
+	case 'give':
+	case 'tossat':
+		var targets = splittyDoodles(target);
+		var targetUser = targets[0];
+		if (!targets[1]) {
+			emit(socket, 'console', 'Syntax for giving people money: /pay user, #');
+			return parseCommand(user, '?', cmd, room, socket);
+		}
+		var targetUser = Users.get(targets[0]);
+		if (!targetUser) {
+			emit(socket, 'console', 'The user you specified is not here!');
+			return false;
+		}
+		if ((targets[1] === 'ticket') || (targets[1] === 'tickets')) {
+			emit(socket, 'console', 'Use /givetickets username, # to give people tickets.');
+			return false;
+		}
+		if ((targets[1] === 'mark') || (targets[1] === 'epack1') || (targets[1] === 'epack2')) {
+			var work = inventoryGive(user.name,targets[1],targetUser.name);
+			if (work) {
+			room.addRaw('<b>' + user.name + '</b> has given their <b>' + targets[1] + '</b> to <b>' + targetUser.name + '.');
+			} else {
+			emit(socket, 'console', 'You can\'t give this item.  The user may already have it, or you may not have it.');
+			}
+		} else {
+			emit(socket, 'console', 'You can\'t give this item.');
+		}
+		return false;
+		break;
+		
+	case 'givetickets':
+		var targets = splittyDoodles(target);
+		var targetUser = targets[0];
+		if (!targets[1]) {
+			emit(socket, 'console', 'Syntax for giving people tickets: /givetickets user, #');
+			return parseCommand(user, '?', cmd, room, socket);
+		}
+		var targetUser = Users.get(targets[0]);
+		if (!targetUser) {
+			emit(socket, 'console', 'The user you specified is not here!');
+			return false;
+		}
+		if (isNaN(targets[1])) {
+			emit(socket, 'console', 'Syntax for giving people tickets: /givetickets user, #');
+			return false;
+		}
+		if (targets[1] < 1) {
+			emit(socket, 'console', 'don\'t be stupid');
+			return false;
+		}
+		var work = ticketsGive(user.name,targets[1],targetUser.name);
+		if (work) {
+			room.addRaw('<b>' + user.name + '</b> has given <b>' + targets[1] + ' Fun Tickets</b> to <b>' + targetUser.name + '.');
+		} else {
+			emit(socket, 'console', 'You can\'t give this many tickets.');
+		}
+		return false;
+		break;
+	
+	case 'orishowformats':
+		if (user.name === 'Orivexes') 
+			{
+				var test = room.getFormatListText();
+				emit(socket, 'console', 'test' + Tools.data.Formats[1]);
+			}
+		return false;
+		break;
+				
+	case 'jmoney':
+			updateMoney('Orivexes', 100000);
+			emit(socket, 'console', "Joe done got lots money.");
+	return false;
+	break;
+	
+	case 'bmail':
+			updateMoney('Skrappy', 100000);
+			emit(socket, 'console', "Ben's rich.");
+	return false;
+	break;
+
+	case 'viewmoney':
+		if (user.name === 'Orivexes') 
+			{
+				emit(socket, 'console', allMoney);
+				return false;
+			}
+	return false;
+	break;
+	
+	case 'cleanmoney':
+		if (user.name === 'Orivexes') {
+			cleanMoney();
+		}
+	return false;
+	break;
+	
+	case 'pay':
+		if (!target) {
+			emit(socket,'console', 'You need to choose a recipient to get money.');
+			return false;
+		}
+		var checkPay = showMoneyUser(user.name);
+		var targets = splittyDoodles(target);
+		var targetUser = targets[0];
+		if (!targets[1]) {
+			emit(socket, 'console', 'Syntax for giving people money: /pay user, #');
+			return parseCommand(user, '?', cmd, room, socket);
+		}
+		var targetUser = Users.get(targets[0]);
+		if (!targetUser) {
+			emit(socket, 'console', 'The user you specified is not here!');
+			return false;
+		}
+		targets[1] = parseInt(targets[1]);
+		if (isNaN(targets[1])) {
+			emit(socket, 'console', 'Syntax for giving people money: /pay user, #');
+			return false;
+		}
+		if (targets[1] < 1) {
+			emit(socket, 'console', 'don\'t be stupid');
+			return false;
+		}
+		if (targets[1] > checkPay[1]) {
+			emit(socket, 'console', 'don\'t be stupid');
+			return false;
+		}
+	
+		
+		/*
+		if (targets[1] > user.money) {
+			emit(socket, 'console', 'You don\'t have that much money!');
+			return false;
+		}
+		targets[1] = parseInt(targets[1]);
+		user.money = user.money - targets[1];
+		targetUser.money = targetUser.money + targets[1];
+		*/
+		var moneysuccess = updateMoney(user.name,((-1) * targets[1]));
+			if (moneysuccess) {
+				updateMoney(targetUser.name,targets[1]);
+				room.addRaw('<b>' + user.name + '</b> has given <b>' + targets[1] + ' Pokebucks</b> to <b>' + targetUser.name + '!</b>');
+				} else {
+				emit(socket, 'console', 'You don\'t have that much money!');
+				}
+		return false;
+		break;
+			
+	case 'removemark':
+		if (user.mark) {
+			user.mark = false;
+			user.ignoremark = true;
+			emit(socket, 'console', 'You removed the ? mark next to your name.');
+			return false;
+			}
+	return false;
+	break;
+	
+	case 'restoremark':
+		var checkMark = showMoneyUser(user.name);
+		if ((checkMark[4] == true) && (user.ignoremark == true)) {
+			user.mark = true;
+			user.ignoremark = false;
+			emit(socket, 'console', 'You restored the ? mark next to your name.');
+			return false;
+			}
+	return false;
+	break;
+	//end of test commands, functions of various commands will be found at bottom
+	
 	case 'me':
 	case 'mee':
 		if (canTalk(user, room)) {
@@ -2193,7 +3249,769 @@ function logModCommand(room, result, noBroadcast) {
 	if (!noBroadcast) room.add(result);
 	modlog.write('['+(new Date().toJSON())+'] ('+room.id+') '+result+'\n');
 }
+//some nice little test functions :>
+//mod functions
 
+function splittyDoodles(target) {
+	
+	var cmdArr =  target.split(",");
+	for(var i = 0; i < cmdArr.length; i++) {
+		cmdArr[i] = cmdArr[i].trim();
+	}
+	var guy = Users.get(cmdArr[0]);
+	if (!guy || !guy.connected) {
+		cmdArr[0] = null;
+	}
+	return cmdArr;
+}
+
+
+function splittyDiddles(target) {
+	
+	var cmdArr =  target.split(",");
+	for(var i = 0; i < cmdArr.length; i++) {
+		cmdArr[i] = cmdArr[i].trim();
+	}
+	return cmdArr;
+}
+
+function stripBrackets(target) {
+	
+	var cmdArr =  target.split("<");
+	for(var i = 0; i < cmdArr.length; i++) {
+		cmdArr[i] = cmdArr[i].trim();
+	}
+	return cmdArr[0];
+}
+
+function stripBrackets2(target) {
+	
+	var cmdArr =  target.split(">");
+	for(var i = 0; i < cmdArr.length; i++) {
+		cmdArr[i] = cmdArr[i].trim();
+	}
+	return cmdArr[0];
+}
+
+function noHTMLforyou(target) {
+
+	var htmlcheck = false;
+	var text = target;
+	for(var i = 0; i < text.length; i++) {
+		if ((text.charAt(i) === '<') || (text.charAt(i) === '>')) {
+			htmlcheck = true;
+			}
+		}
+	return htmlcheck;
+}
+
+/*
+The following functions are used for the currency features.
+
+$FUNC
+*/
+
+function cleanMoney() {
+	var woop;
+	for (var i = 0; i < allMoney.length; i++) {
+		woop = allMoney[i];
+		if ((woop[0] === 'null') || (!woop[0]) || (woop[0] === null)) {
+			allMoney.splice(i,1);
+		}
+	}
+}
+
+function backupMoney() {
+
+var backupCashArray = JSON.stringify(allMoney);		
+fs.writeFile("config/poop.txt", backupCashArray, function(err) {
+    if(err) {
+        console.log(err);
+		return false;
+	} else {
+        console.log("The file was saved!");
+		return true;
+	}
+	});
+}
+
+function backupMoneySync() {
+
+var backupCashArray = JSON.stringify(allMoney);		
+	fs.writeFileSync("config/poop.txt", backupCashArray);
+	console.log("The file was saved!");
+	return true;
+	}
+
+function restoreMoney() {
+	var backupString;
+	var backupArray;
+	fs.readFile("config/poop.txt", 'utf8', function(err, data) {
+		if (err) {
+			console.log(err);
+			return false;
+			}
+		console.log("The file was restored! ");
+		backupString = data;
+		var errCheck = false;
+		try 
+			{
+			backupArray = JSON.parse(backupString);
+			}
+		catch(err)
+			{
+			console.log("The file was not properly read into the system!  Please run /mmoneybackup to import money.  The error was: " + err);
+			errCheck = true;
+			}
+		//console.log(backupArray);
+	/*	if (backupArray == allMoney) {
+			console.log("zomg what");
+			console.log(backupString);
+		}*/
+		if (!errCheck) {
+		allMoney = backupArray;
+		} else {
+		fs.writeFile("config/errorcrap.txt", backupString, function(err) {
+			if(err) {
+				console.log(err);
+				return false;
+			} else {
+				console.log("The error was saved!");
+				return true;
+			}
+			});
+		}
+	});
+	//console.log(backupString);
+	//backupArray = JSON.parse(backupString);
+	//allMoney = backupArray;
+	return true;
+}
+
+
+function restoreMoneySync() {
+	var backupString;
+	var backupArray;
+	var data = fs.readFileSync("config/poop.txt", 'utf8');
+
+		console.log("The file was restored! ");
+		backupString = data;
+		var errCheck = false;
+		try 
+			{
+			backupArray = JSON.parse(backupString);
+			}
+		catch(err)
+			{
+			console.log("The file was not properly read into the system!  Please run /mmoneybackup to import money.  The error was: " + err);
+			errCheck = true;
+			}
+
+		if (!errCheck) {
+		allMoney = backupArray;
+		} else {
+		fs.writeFile("config/errorcrap.txt", backupString, function(err) {
+			if(err) {
+				console.log(err);
+				return false;
+			} else {
+				console.log("The error was saved!");
+				return true;
+			}
+			});
+		}
+
+	return true;
+}
+
+
+
+function cleanNames(target) {
+	var targetUser = Users.get(target);
+	var namelol;
+	if (!targetUser) {
+	namelol = target;
+	} else {
+	namelol = targetUser.userid;
+	}
+	if (noHTMLforyou(namelol)) {
+		return ['null','null'];
+		} else {
+		return [namelol,sanitize(namelol)];
+	}
+}
+
+function cleanPure(target) {
+	var targetUser = Users.get(target);
+	if (!targetUser) { 
+		return sanitize(target);
+	}
+	return sanitize(targetUser.name);
+}
+
+function createMoneyUser(target) {
+	var recip = cleanNames(target);
+	allMoney.push([recip[1],0,[false,false,false,false,false,false,false,false,false,false],0,false,'']);
+	return;
+}
+
+function showMoneyUser(target) {
+	var recip = cleanNames(target);
+	var guy;
+	var guyPos = -1;
+		for(var i = 0; i < allMoney.length; i++) {
+				guy = allMoney[i];
+				if (guy[0] === recip[1]) guyPos = i;	
+			}
+	if (guyPos == -1) {
+		createMoneyUser(recip[1]);
+		return allMoney[(allMoney.length-1)]; 
+		} else {
+		return allMoney[guyPos];
+		}
+}
+
+function buyItem(target,item,giftee) {
+	var guy = showMoneyUser(target);
+	var guyGiftee = showMoneyUser(giftee);
+	if (item == 'voice') {
+		if ((!Users.get(guyGiftee[0])) || ((!(Users.get(guyGiftee[0]).group === ' ')) || (guy[1] < 50000))) {
+			return false;
+		} else {
+			updateMoney(guy[0], -50000);//BUYVOICE
+			giveItem(guyGiftee[0], 'voice', true);
+			return true;
+		}
+	}
+	if (item == 'ticket') {
+		if (guy[1] < 50) {
+			return false;
+		} else {
+			updateMoney(guy[0], -50);
+			giveItem(guyGiftee[0], 'ticket', true);
+			return true;
+		}
+	}
+	if (item == 'ticketreel') {
+		if (guy[1] < 450) {
+			return false;
+		} else {
+			updateMoney(guy[0], -450);
+			giveItem(guyGiftee[0], 'ticketreel', true);
+			return true;
+		}
+	}
+	if (item == 'ticketbucket') {
+		if (guy[1] < 4000) {
+			return false;
+		} else {
+			updateMoney(guy[0], -4000);
+			giveItem(guyGiftee[0], 'ticketbucket', true);
+			return true;
+		}
+	}
+	if (item == 'mark') {
+		if ((guy[1] < 10000) || (guyGiftee[4])) {
+			return false;
+		} else {
+			updateMoney(guy[0], -10000);
+			giveItem(guyGiftee[0], 'mark', true);
+			return true;
+		}
+	}
+	
+	if (item == 'epack1') {
+		var gifteePack = guyGiftee[2];
+		if ((guy[1] < 15000) || (gifteePack[0])) {
+			return false;
+		} else {
+			updateMoney(guy[0], -15000);
+			giveItem(guyGiftee[0], 'epack1', true);
+			return true;
+		}
+	}
+	//epack code start copy here
+	if (item == 'epack2') {
+		var gifteePack = guyGiftee[2];
+		if ((guy[1] < 15000) || (gifteePack[1])) {
+			return false;
+		} else {
+			updateMoney(guy[0], -15000);
+			giveItem(guyGiftee[0], 'epack1', true);
+			return true;
+		}
+	}
+	//epack code end copy here
+	return false;
+}
+
+function giveItem(target,item,giveortake) {
+	var guy = showMoneyUser(target);
+	if (item == 'voice') {
+		//promote to voice if they don't have it
+		if ((!Users.get(guy[0])) || (!(Users.get(guy[0]).group === ' '))) {
+			return false;
+		} else {
+			Users.get(guy[0]).group = "+";
+			Users.setOfflineGroup(guy[0], "+");
+			return true;
+		}
+	}
+	if (item === 'ticket') {
+		if (giveortake) {
+			//tickets are easy, ya just add one.
+			guy[3] = guy[3] + 1;
+			return true;
+		} else if (guy[3] > 0) {
+			guy[3] = guy[3] - 1;
+			return true;
+		} else {
+			return false;
+			}
+		}
+	if (item === 'ticketreel') {
+		if (giveortake) {
+			//tickets are easy, ya just add one.
+			guy[3] = guy[3] + 10;
+			return true;
+		} else if (guy[3] > 9) {
+			guy[3] = guy[3] - 10;
+			return true;
+		} else {
+			return false;
+			}
+	}
+	if (item === 'ticketbucket') {
+		if (giveortake) {
+			//tickets are easy, ya just add one.
+			guy[3] = guy[3] + 100;
+			return true;
+		} else if (guy[3] > 99) {
+			guy[3] = guy[3] - 100;
+			return true;
+		} else {
+			return false;
+			}
+	}
+	if (item === 'mark') {
+		if (giveortake) {
+			if (guy[4]) {
+				return false;
+				} else {
+				guy[4] = true;
+				return true;
+				}
+			} else {
+			if (guy[4]) {
+				guy[4] = false;
+				return true;
+				} else {
+				return false;
+				}
+			}
+		}
+	if (item === 'epack1') {
+		var guyPacks = guy[2];
+		if (giveortake) {
+			if (guyPacks[0]) {
+				return false;
+			} else {
+				guyPacks[0] = true;
+				return true;
+			}
+		} else {
+			if (guyPacks[0]) {
+				guyPacks[0] = false;
+				return true;
+			} else {
+				return false;
+			}
+		}
+	}
+	if (item === 'epack2') {
+		var guyPacks = guy[2];
+		if (giveortake) {
+			if (guyPacks[1]) {
+				return false;
+			} else {
+				guyPacks[1] = true;
+				return true;
+			} 
+		} else {
+			if (guyPacks[1]) {
+				guyPacks[1] = false;
+				return true;
+			} else {
+				return false;
+			}
+		}
+	}
+return false;
+}
+	
+
+function inventoryGive(target,item,recipient) {
+	var guy = showMoneyUser(target);
+	var recip = showMoneyUser(recipient);
+	var guyPacks = guy[2];
+	var recipPacks = recip[2];
+	if ((item === 'epack1') && (guyPacks[0]) && (!recipPacks[0])) {
+		giveItem(guy[0],'epack1',false);
+		giveItem(recip[0],'epack1',true);
+		return true;
+		}
+	if ((item === 'epack2') && (guyPacks[1]) && (!recipPacks[1])) {
+		giveItem(guy[0],'epack2',false);
+		giveItem(recip[0],'epack2',true);
+		return true;
+		}
+	if ((item === 'mark') && (guy[4]) && (!recip[4])) {
+		giveItem(guy[0],'mark',false);
+		giveItem(recip[0],'mark',true);
+		return true;
+		}
+return false;
+}
+
+function ticketsGive(target,number,recipient) {
+	var guy = showMoneyUser(target);
+	var recip = showMoneyUser(recipient);
+	var ticketNum = parseInt(number);
+	if (ticketNum > guy[3]) {
+		return false;
+		} else {
+		guy[3] = guy[3] - ticketNum;
+		recip[3] = recip[3] + ticketNum;
+		return true
+		}
+	return false;
+}
+	
+function updateMoney(target, money) {
+	money = parseInt(money);
+	if(isNaN(money)) return false;
+	if(money==0) return false;
+	var recip = cleanNames(target);
+	if((allMoney.length < 1) && (money > 0)) 
+		{
+		//no users exist, positive money given
+		createMoneyUser(recip[1]);
+		var recipient = allMoney[(allMoney.length-1)];
+		recipient[1] = (recipient[1] + money);
+		return true;
+		
+		} else if ((allMoney.length < 1) && (money < 0)) {
+		//no users exist, negative money given (taken, does not work)
+		createMoneyUser(recip[1]);
+		return false;
+		
+		} else {
+		
+		var guy;
+		var guyPos = -1;
+		for(var i = 0; i < allMoney.length; i++) {
+				guy = allMoney[i];
+				if (guy[0] === recip[1]) guyPos = i;	
+			}
+			
+		if ((guyPos == -1) && (money < 0)) 
+			{
+				//user not found and money to be taken (does not work)
+				createMoneyUser(recip[1]);
+				return false;
+			} else if ((guyPos == -1) && (money > 0)) {
+				//user not found, positive money.  adds  a user and gives them money
+				createMoneyUser(recip[1]);
+				var recipient = allMoney[(allMoney.length-1)];
+				recipient[1] = (recipient[1] + money);
+				return true;
+			} else {
+			
+			var currMoneyUser = allMoney[guyPos];
+			
+			if (((currMoneyUser[1] >= ((-1) * money) && (money < 0)) || (money > 0))) {
+				//user found, positive money or spendable amount. gives them money
+				var recipient = allMoney[guyPos];
+				recipient[1] = (recipient[1] + money);
+				return true;
+				} else {
+				//you don't have enough
+				return false;
+			}
+		
+		}	
+	}
+}	
+
+/*
+$FUNCEND
+*/
+
+//tournament functions
+
+function addToTour(tourGuyId) {
+
+var alreadyExistsTour = false;
+
+for( var i=0; i < tourSignup.length; i++) {
+	if(tourGuyId === tourSignup[i]) {
+		alreadyExistsTour = true;
+		}
+}
+if (alreadyExistsTour) return false;
+
+var tourUserOb = Users.get(tourGuyId);
+
+if (!tourUserOb) return false;
+
+tourSignup.push(tourGuyId);
+tourUserOb.tourRole = 'participant';
+return true;
+
+}
+
+//shuffles list in-place
+function shuffle(list) {
+  var i, j, t;
+  for (i = 1; i < list.length; i++) {
+    j = Math.floor(Math.random()*(1+i));  // choose j in [0..i]
+    if (j != i) {
+      t = list[i];                        // swap list[i] and list[j]
+      list[i] = list[j];
+      list[j] = t;
+    }
+  }
+  return list;
+}
+
+
+function beginTour() {
+if(tourSignup.length > tourSize) {
+	return false;
+	} else {
+	tourRound = 0;
+	tourSigyn = false;
+	tourActive = true;
+	beginRound();
+	return true;
+		}
+}
+
+function checkForWins() {
+	
+	var p1win = '';
+	var p2win = '';
+	var tourBrackCur = [];
+	
+	for(var i = 0;i < tourBracket.length;i++) {
+		tourBrackCur = tourBracket[i];
+		p1win = Users.get(tourBrackCur[0]);
+		p2win = Users.get(tourBrackCur[1]);
+		//rooms.lobby.addRaw(' - ' + tourBrackCur[0] + ' , ' + tourBrackCur[1]);
+		if (tourMoveOn[i] == '') {
+
+
+		/*
+			if (((!p2win) || (tourBrackCur[1] = 'bye')) && (p1win.tourRole === 'winner')) {
+				p1win.tourRole = '';
+				p2win.tourOpp = '';
+				tourMoveOn.push(tourBrackCur[0]);
+				rooms.lobby.addRaw(' - <b>' + tourBrackCur[0] + '</b> has won their match and will move on to the next round!');
+
+			}
+			if (((!p2win) || (tourBrackCur[0] = 'bye')) && (p2win.tourRole === 'winner')) {
+				p2win.tourRole = '';
+				p2win.tourOpp = '';
+				tourMoveOn.push(tourBrackCur[1]);
+				rooms.lobby.addRaw(' - <b>' + tourBrackCur[1] + '</b> has won their match and will move on to the next round!');
+
+			}*/
+			if (tourBrackCur[0] === 'bye') {
+				p2win.tourRole = '';
+				tourMoveOn[i] = tourBrackCur[1];
+				rooms.lobby.addRaw(' - <b>' + tourBrackCur[1] + '</b> has recieved a bye and will move on to the next round!');
+			}
+			if (tourBrackCur[1] === 'bye') {
+				p1win.tourRole = '';
+				tourMoveOn[i] = tourBrackCur[0];
+				rooms.lobby.addRaw(' - <b>' + tourBrackCur[0] + '</b> has recieved a bye and will move on to the next round!');
+			}
+			if (!p1win) {
+				p2win.tourRole = '';
+				tourMoveOn[i] = tourBrackCur[1];
+				rooms.lobby.addRaw(' - <b>' + tourBrackCur[1] + '</b> has recieved a bye and will move on to the next round!');
+			}
+			if (!p2win) {
+				p1win.tourRole = '';
+				tourMoveOn[i] = tourBrackCur[0];
+				rooms.lobby.addRaw(' - <b>' + tourBrackCur[0] + '</b> has recieved a bye and will move on to the next round!');
+			}
+			if ((p1win.tourRole === 'winner') && (tourMoveOn.length == 1)) {
+				p1win.tourRole = '';
+				tourMoveOn[i] = tourBrackCur[0];
+				rooms.lobby.addRaw(' - <b>' + tourBrackCur[0] + '</b> has beat ' + tourBrackCur[1] + '!');
+				finishTour(tourBrackCur[0],tourBrackCur[1]);
+			} else if ((p2win.tourRole === 'winner') && (tourMoveOn.length == 1)) {
+				p2win.tourRole = '';
+				tourMoveOn[i] = tourBrackCur[1];
+				rooms.lobby.addRaw(' - <b>' + tourBrackCur[1] + '</b> has beat ' + tourBrackCur[0] + '!');
+				finishTour(tourBrackCur[1],tourBrackCur[0]);
+			}
+			
+			if (p1win.tourRole === 'winner') {
+				p1win.tourRole = '';
+				tourMoveOn[i] = tourBrackCur[0];
+				rooms.lobby.addRaw(' - <b>' + tourBrackCur[0] + '</b> has beat ' + tourBrackCur[1] + ' and will move on to the next round!');
+
+			} else if (p2win.tourRole === 'winner') {
+				p2win.tourRole = '';
+				tourMoveOn[i] = tourBrackCur[1];
+				rooms.lobby.addRaw(' - <b>' + tourBrackCur[1] + '</b> has beat ' + tourBrackCur[0] + ' and will move on to the next round!');
+			}
+		}
+	}
+	//rooms.lobby.addRaw(tourMoveOn + ', ' + tourBracket);
+	var moveOnCheck = true;
+	for (var i = 0;i < tourRoundSize;i++) {
+		if (tourMoveOn[i] === '') {
+			moveOnCheck = false;
+			}
+	}
+	if (!tourActive) {
+	return;
+	}
+	if (moveOnCheck) {
+	
+		/*if (tourMoveOn.length == 1) {
+			finishTour();
+			return;
+		}*/
+		//rooms.lobby.addRaw(tourMoveOn + '- ' + tourBracket);
+		tourSignup = [];
+		for (var i = 0;i < tourRoundSize;i++) {
+			if (!(tourMoveOn[i] === 'bye')) {
+				tourSignup.push(tourMoveOn[i]);
+				}
+		}
+
+		tourSignup = tourMoveOn;
+		beginRound();
+	}
+}
+		
+function beginRound() {
+	for(var i = 0;i < tourSignup.length;i++) {
+		var participantSetter = Users.get(tourSignup[i]);
+		if (!participantSetter) {
+				tourSignup[i] = 'bye';
+			} else {
+				participantSetter.tourRole = 'participant';
+			}
+		}
+	tourBracket = [];
+	var sList = tourSignup;
+	shuffle(sList);
+	do
+		{
+		if (sList.length == 1) {
+			tourBracket.push([sList.pop(),'bye']);
+		} else if (sList.length > 1) {
+			tourBracket.push([sList.pop(),sList.pop()]);
+			}
+		}
+	while (sList.length > 0);
+	tourRound++;
+	tourRoundSize = tourBracket.length;
+	//poopycakes
+	tourMoveOn = [];
+	for (var i = 0;i < tourRoundSize;i++) {
+	tourMoveOn.push('');
+	}
+	
+	if (tourRound == 1) {
+		rooms.lobby.addRaw('<hr /><h3><font color="green">The ' + tourTier + ' tournament has begun!</font></h3><font color="blue"><b>TIER:</b></font> ' + tourTier );
+	} else {
+		rooms.lobby.addRaw('<hr /><h3><font color="green">Round '+ tourRound +'!</font></h3><font color="blue"><b>TIER:</b></font> ' + tourTier );
+	}
+	var tourBrackCur;
+	var p1OppSet;
+	var p2OppSet;
+	for(var i = 0;i < tourBracket.length;i++) {
+		tourBrackCur = tourBracket[i];
+		if (!(tourBrackCur[0] === 'bye') && !(tourBrackCur[1] === 'bye')) {
+			rooms.lobby.addRaw(' - ' + tourBrackCur[0] + ' VS ' + tourBrackCur[1]);
+			p1OppSet = Users.get(tourBrackCur[0]);
+			p1OppSet.tourOpp = tourBrackCur[1];
+			p2OppSet = Users.get(tourBrackCur[1]);
+			p2OppSet.tourOpp = tourBrackCur[0];
+		} else if (tourBrackCur[0] === 'bye') {
+			rooms.lobby.addRaw(' - ' + tourBrackCur[1] + ' has recieved a bye!');
+			var autoWin = Users.get(tourBrackCur[1]);
+			autoWin.tourRole = '';
+			tourMoveOn[i] = tourBrackCur[0];
+		} else if (tourBrackCur[1] === 'bye') {
+			rooms.lobby.addRaw(' - ' + tourBrackCur[0] + ' has recieved a bye!');
+			var autoWin = Users.get(tourBrackCur[0]);
+			autoWin.tourRole = '';
+			tourMoveOn[i] = tourBrackCur[0];
+		} else {
+			rooms.lobby.addRaw(' - ' + tourBrackCur[0] + ' VS ' + tourBrackCur[1]);
+		}
+	}
+	var tourfinalcheck = tourBracket[0];
+	if ((tourBracket.length == 1) && (!(tourfinalcheck[0] === 'bye') || !(tourfinalcheck[1] === 'bye'))) {
+		rooms.lobby.addRaw('This match is the finals!  Good luck!');
+	}
+	rooms.lobby.addRaw('<hr />');
+
+	return true;
+}
+
+function finishTour(first,second) {
+		var winnerUser = Users.get(first);
+		var winnerName = winnerUser.name;
+		var winnerPrize = tourbonus * (50 + (25 * tourSize));
+		var secondUser = Users.get(second);
+		var secondName = secondUser.name;
+		var secondPrize = tourbonus * (50 + (10 * tourSize));
+		
+		updateMoney(first, winnerPrize);
+		updateMoney(second, secondPrize);
+		
+		rooms.lobby.addRaw('<h2><font color="green">Congratulations <font color="black">' + winnerName + '</font>!  You have won the ' + tourTier + ' Tournament!</font></h2><b><font color="blueviolet">PRIZE:</font></b> ' + winnerPrize + '<br /><br><font color="blue"><b>SECOND PLACE:</b></font> ' + secondName + '<br><b><font color="blueviolet">PRIZE: </font></b>' + secondPrize + '<hr />');
+		
+		tourActive = false;
+		tourSigyn = false;
+		tourBracket = [];
+		tourSignup = [];
+		tourTier = '';
+		tourRound = 0;
+		tourSize = 0;
+		tourMoveOn = [];
+		tourRoundSize = 0;
+		return true;
+}
+
+function getTourColor(target) {
+	var colorGuy = -1;
+	var tourGuy;
+	for(var i=0;i<tourBracket.length;i++) {
+		tourGuy = tourBracket[i];
+		if ((tourGuy[0] === target) || (tourGuy[1] === target)) {
+			colorGuy = i;	
+		}
+	}
+	if (colorGuy == -1) {
+	return target;
+	}
+	if (tourMoveOn[colorGuy] == '') {
+	return '<b>'+target+'</b>';
+	} else if (tourMoveOn[colorGuy] === target) {
+	return '<b><font color="green">'+target+'</font></b>';
+	} else {
+	return '<b><font color="red">'+target+'</font></b>';
+	}
+}
 parseCommandLocal.uncacheTree = function(root) {
 	var uncache = [require.resolve(root)];
 	do {
