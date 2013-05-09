@@ -115,6 +115,35 @@ function parseCommandLocal(user, cmd, target, room, socket, message) {
 		}
 		break;
 
+	case 'tourneymodeon':
+	case 'starttourney':
+		if (!user.can('disableladder')) {
+			emit(socket, 'console', '/tourneymode - Access denied.');
+			return false;
+		}
+		if (LoginServer.disabled) {
+			emit(socket, 'console', '/tourneymode - A tourney is already in progress.');
+			return false;
+		}
+		logModCommand(room, 'Tourney mode was started by ' + user.name + '.', true);
+		room.addRaw('<div class="broadcast-green"><b>Tourney mode is now on!</b><br />You will now win points for winning battles.</div>');
+		return false;
+		break;
+	case 'tourneymodeoff':
+	case 'endtourney':
+		if (!user.can('disableladder')) {
+			emit(socket, 'console', '/tourneymode - Access denied.');
+			return false;
+		}
+		if (!LoginServer.disabled) {
+			emit(socket, 'console', '/tourneymode - Tourney mode is already off.');
+			return false;
+		}
+		logModCommand(room, 'The tourney was ended by ' + user.name + '.', true);
+		room.addRaw('<div class="broadcast-red"><b>The tourney is now over.</b><br />Thank you for participating!</div>');
+		return false;
+		break;
+		
 	case 'namelock':
 	case 'nl':
 		if(!target) {
