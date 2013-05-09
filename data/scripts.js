@@ -1386,7 +1386,7 @@ exports.BattleScripts = {
 			var pokemon = seasonalPokemonList[i];
 			var set = this.randomSet(template, i);
 			var set = this.randomSet(seasonalPokemonList[i], i);
-			var template = this.getTemplate(seasonalPokemonList[i]);
+			var template = this.getTemplate(pokemon);
 			//there is a massive amount of set adjustments that have been made
 			// we're gonna modify the pokemon templates as well
 			template = Object.clone(template, true);
@@ -1545,7 +1545,6 @@ exports.BattleScripts = {
 				delete template.viableMoves.spikes;
 				delete template.viableMoves.toxicspikes;
 				template.viableMoves.iciclecrash = 1;
-				template.viableMoves.twineedle = 1;
 			} else if (template.id === 'pawniard') {
 				set.level = 90;
 				set.ability = 'Sniper';
@@ -1646,7 +1645,6 @@ exports.BattleScripts = {
 				set.evs = {hp: 252, def: 0, spd: 4, spa: 0, atk: 252, spe: 0};
 				set.nature = 'Brave';
 				delete template.viableMoves.knockoff;
-				template.viableMoves.twineedle = 1;
 			} else if (template.id === 'gallade') {
 				set.level = 80;
 				set.ability = 'Sniper';
