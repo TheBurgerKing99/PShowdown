@@ -1669,7 +1669,7 @@ exports.BattleScripts = {
 				set.level = 85;
 				set.item = 'Flying Gem';
 				set.ability = 'Sniper';
-				set.moves = ['Acrobatics', 'X-scissor', 'Baton Pass', 'Swords Dance'];
+				set.moves = ['Acrobatics', 'X-Scissor', 'Baton Pass', 'Swords Dance'];
 				set.evs = {hp: 4, def: 0, spd: 0, spa: 0, atk: 252, spe: 252};
 				set.nature = 'Jolly';
 			} else if (template.id === 'beedrill') {
