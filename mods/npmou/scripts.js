@@ -86,26 +86,17 @@ exports.BattleScripts = {
         this.data.Pokedex.cresselia.abilities['DW'] = 'Persistent';
         
         this.data.Pokedex.serperior.types = ["Grass","Dragon"];
-        this.data.Learnsets.serperior.learnset.dracometeor = ['5T'];
         
         this.data.Pokedex.emboar.types = ["Fire","Dark"];
-        this.data.Learnsets.emboar.learnset.crunch = ['5L0'];
-        this.data.Learnsets.emboar.learnset.suckerpunch = ['5L0'];
         
         this.data.Pokedex.musharna.types = ["Psychic","Ghost"];
-        this.data.Learnsets.musharna.learnset.lunardance = ['5L0'];
-        
-        this.data.Learnsets.conkeldurr.learnset.pillarsmash = ['5L0'];
-        
+
         this.data.Pokedex.darmanitan.types = ["Fire","Fighting"];
         this.data.Pokedex.darmanitan.abilities['1'] = 'Reckless';
-        this.data.Learnsets.darmanitan.learnset.submission = ['5L0'];
         
         this.data.Pokedex.cofagrigus.types = ["Ghost","Steel"];
-        this.data.Learnsets.cofagrigus.learnset.flashcannon = ['5M'];
         
         this.data.Pokedex.gothitelle.types = ["Psychic","Dark"];
-        this.data.Learnsets.gothitelle.learnset.darkpulse = ['5L0'];
         
         this.data.Pokedex.reuniclus.abilities['0'] = 'Gravitation';
         
@@ -115,55 +106,26 @@ exports.BattleScripts = {
         
         this.data.Pokedex.escavalier.abilities['1'] = 'Sturdy';
         this.data.Pokedex.escavalier.abilities['DW'] = 'Hyper Cutter';
-        this.data.Learnsets.escavalier.learnset.drillrun = ['5T'];
-        this.data.Learnsets.escavalier.learnset.sharpen = ['5L0'];
-        
-        this.data.Learnsets.amoonguss.learnset.leechseed = ['5L0'];
-        
+
         this.data.Pokedex.klinklang.abilities['0'] = 'Technician';
         this.data.Pokedex.klinklang.abilities['1'] = 'Motor Drive';
         
-        this.data.Learnsets.ferrothorn.learnset.hornleech = ['5L0'];
-        this.data.Learnsets.ferrothorn.learnset.rapidspin = ['5L0'];
-        
         this.data.Pokedex.eelektross.types = ["Electric","Dragon"];
-        this.data.Learnsets.eelektross.learnset.dragonrush = ['5L0'];
-        this.data.Learnsets.eelektross.learnset.dragondance = ['5L0'];
         
         this.data.Pokedex.beheeyem.types = ["Psychic","Electric"];
-        this.data.Learnsets.beheeyem.learnset.thunder = ['5M'];
-        this.data.Learnsets.beheeyem.learnset.lunardance = ['5L0'];
         
         this.data.Pokedex.chandelure.abilities['DW'] = 'Levitate';
         
         this.data.Pokedex.beartic.types = ["Ice","Fighting"];
-        this.data.Learnsets.beartic.learnset.drainpunch = ['5T'];
         
         this.data.Pokedex.cryogonal.types = ["Ice","Steel"];
         
         this.data.Pokedex.accelgor.abilities['DW'] = 'Dry Skin';
         
         this.data.Pokedex.druddigon.types = ["Dragon","Rock"];
-        this.data.Learnsets.druddigon.learnset.stoneedge = ['5M'];
         
         this.data.Pokedex.braviary.types = ["Fighting","Flying"];
-        this.data.Learnsets.braviary.learnset.submission = ['5L0'];
-        
-        this.data.Learnsets.bisharp.learnset.sharpen = ['5L0'];
-        
-        this.data.Learnsets.hydreigon.learnset.blackhole = ['5L0'];
-        
-        delete this.data.Learnsets.thundurus.learnset.nastyplot;
-        delete this.data.Learnsets.thundurus.learnset.swagger;
-        
-        this.data.Learnsets.kyuremblack.learnset.icepunch = ['5T'];
-        this.data.Learnsets.kyuremblack.learnset.thunderpunch = ['5T'];
-        this.data.Learnsets.kyuremblack.learnset.iceshard = ['5L0'];
-        
-        this.data.Learnsets.keldeo.learnset.icebeam = ['5M'];
         
         this.data.Pokedex.genesect.abilities['0'] = 'Compoundeyes';
-        this.data.Learnsets.genesect.learnset.lockon = ['5L0'];
-        delete this.data.Learnsets.genesect.learnset.zapcannon;
         }   
 };
