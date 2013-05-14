@@ -23,24 +23,9 @@ exports.BattleScripts = {
         
         this.data.Pokedex.blastoise.abilities['DW'] = 'Water Veil';
         
-        this.data.Learnsets.nidoking.learnset.dragondance = ['5L0'];
-        this.data.Learnsets.nidoking.learnset.gammastrike = ['5L0'];
-        
         this.data.Pokedex.clefable.types = ["Normal","Psychic"];
-        this.data.Learnsets.clefable.learnset.lunardance = ['5L0'];
-        
-        this.data.Learnsets.dugtrio.learnset.fissure = ['5L0'];
-        
-        this.data.Learnsets.tentacruel.learnset.thunderwave = ['5M'];
-        this.data.Learnsets.tentacruel.learnset.thunderbolt = ['5M'];
-        
-        this.data.Learnsets.magneton.learnset.lockon = ['5L0'];
-        delete this.data.Learnsets.magneton.learnset.zapcannon;
         
         this.data.Pokedex.electrode.abilities['1'] = 'Volt Absorb';
-        this.data.Learnsets.electrode.learnset.lockon = ['5L0'];
-        
-        this.data.Learnsets.muk.learnset.gammastrike = ['5L0'];
         
         this.data.Pokedex.weezing.types = ["Poison","Electric"];
         this.data.Learnsets.weezing.learnset.wildcharge = ['5M'];
