@@ -28,17 +28,8 @@ exports.BattleScripts = {
         this.data.Pokedex.electrode.abilities['1'] = 'Volt Absorb';
         
         this.data.Pokedex.weezing.types = ["Poison","Electric"];
-        this.data.Learnsets.weezing.learnset.wildcharge = ['5M'];
-        this.data.Learnsets.weezing.learnset.gammastrike = ['5L0'];
-        this.data.Learnsets.weezing.learnset.lockon = ['5L0'];
         
         this.data.Pokedex.pinsir.types = ["Bug","Dark"];
-        this.data.Learnsets.pinsir.learnset.crunch = ['5L0'];
-        this.data.Learnsets.pinsir.learnset.pursuit = ['5L0'];
-        
-        this.data.Learnsets.flareon.learnset.howl = ['5L0'];
-        
-        this.data.Learnsets.aerodactyl.learnset.bravebird = ['5L0'];
         
         this.data.Pokedex.dragonair.types = ["Dragon","Water"];
         
