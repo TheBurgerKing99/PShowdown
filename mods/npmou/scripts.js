@@ -33,40 +33,13 @@ exports.BattleScripts = {
         
         this.data.Pokedex.dragonair.types = ["Dragon","Water"];
         
-        this.data.Learnsets.typhlosion.learnset.flameburst = ['5L0'];
-        
-        this.data.Learnsets.ampharos.learnset.tailglow = ['5L0'];
-        
         this.data.Pokedex.azumarill.types = ["Water","Normal"];
         
-        this.data.Learnsets.espeon.learnset.lunardance = ['5L0'];
-        
         this.data.Pokedex.umbreon.abilities['DW'] = 'Magic Guard';
-        this.data.Learnsets.umbreon.learnset.lunardance = ['5L0'];
-        
-        this.data.Learnsets.steelix.learnset.coil = ['5L0'];
-        this.data.Learnsets.steelix.learnset.slackoff = ['5L0'];
-        
-        this.data.Learnsets.qwilfish.learnset.poisontail = ['5L0'];
-        this.data.Learnsets.qwilfish.learnset.gammastrike = ['5L0'];
         
         this.data.Pokedex.mantine.abilities['DW'] = 'Serene Grace';
-        this.data.Learnsets.mantine.learnset.hurricane = ['5L0'];
-        delete this.data.Learnsets.mantine.learnset.airslash;
-        
-        this.data.Learnsets.houndoom.learnset.howl = ['5L0'];
         
         this.data.Pokedex.kingdra.abilities['DW'] = 'Water Veil';
-        
-        this.data.Learnsets.porygon2.learnset.lockon = ['5L0'];
-        delete this.data.Learnsets.porygon2.learnset.zapcannon;
-        
-        this.data.Learnsets.entei.learnset.earthquake = ['5M'];
-        this.data.Learnsets.entei.learnset.extremespeed = ['5L0'];
-        this.data.Learnsets.entei.learnset.flareblitz = ['5L0'];
-        
-        this.data.Learnsets.raikou.learnset.aurasphere = ['5L0'];
-        this.data.Learnsets.raikou.learnset.weatherball = ['5L0'];
         
         this.data.Learnsets.swampert.learnset.fissure = ['5L0'];
         
