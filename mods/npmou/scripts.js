@@ -59,81 +59,27 @@ exports.BattleScripts = {
         
         this.data.Pokedex.registeel.abilities['DW'] = 'Heavy Metal';
         
-        this.data.Learnsets.infernape.learnset.flameburst = ['5L0'];
-        
         this.data.Pokedex.luxray.types = ["Electric","Dark"];
-        this.data.Learnsets.luxray.learnset.howl = ['5L0'];
         
         this.data.Pokedex.bastiodon.types = ["Steel"];
-        
-        this.data.Learnsets.ambipom.learnset.tailslap = ['5L0'];
-        
-        this.data.Learnsets.drifblim.learnset.flamethrower = ['5M'];
-        this.data.Learnsets.drifblim.learnset.roost = ['5T'];
-        
-        this.data.Learnsets.honchkrow.learnset.blackhole = ['5L0'];
-        
-        this.data.Learnsets.spiritomb.learnset.blackhole = ['5L0'];
-        
+
         this.data.Pokedex.hippowdon.abilities['DW'] = 'Sand Veil';
-        this.data.Learnsets.hippowdon.learnset.fissure = ['5L0'];
-        
-        delete this.data.Learnsets.mantyke.learnset.airslash;
-        
-        this.data.Learnsets.toxicroak.learnset.gammastrike = ['5L0'];
         
         this.data.Pokedex.lumineon.types = ["Water","Flying"];
-        this.data.Learnsets.lumineon.learnset.airslash = ['5L0'];
-        this.data.Learnsets.lumineon.learnset.hurricane = ['5L0'];
-        
-        this.data.Learnsets.magnezone.learnset.lockon = ['5L0'];
-        delete this.data.Learnsets.magnezone.learnset.zapcannon;
         
         this.data.Pokedex.weavile.abilities['0'] = 'Technician';
         
-        this.data.Learnsets.magmortar.learnset.flameburst = ['5L0'];
-        
         this.data.Pokedex.electivire.types = ["Electric","Fighting"];
-        this.data.Learnsets.electivire.learnset.submission = ['5L0'];
-        this.data.Learnsets.electivire.learnset.drainpunch = ['5T'];
-        
-        this.data.Learnsets.togekiss.learnset.lunardance = ['5L0'];
         
         this.data.Pokedex.yanmega.types = ["Bug","Dragon"];
         this.data.Pokedex.yanmega.abilities['1'] = 'Compoundeyes';
-        this.data.Learnsets.yanmega.learnset.dracometeor = ['5T'];
-        this.data.Learnsets.yanmega.learnset.dragonpulse = ['5T'];
-        delete this.data.Learnsets.yanmega.learnset.hypnosis;
-        
-        this.data.Learnsets.porygonz.learnset.lockon = ['5L0'];
-        delete this.data.Learnsets.porygonz.learnset.zapcannon;
         
         this.data.Pokedex.gallade.abilities['0'] = 'Trace';
         
         this.data.Pokedex.dusknoir.types = ["Ghost","Fighting"];
         this.data.Pokedex.dusknoir.abilities['0'] = 'Iron Fist';
-        this.data.Learnsets.dusknoir.learnset.drainpunch = ['5T'];
-        this.data.Learnsets.dusknoir.learnset.superpower = ['5T'];
-        this.data.Learnsets.dusknoir.learnset.moonlight = ['5L0'];
         
         this.data.Pokedex.rotom.abilities['0'] = 'Prankster';
-        
-        this.data.Learnsets.rotomwash.learnset.scald = ['5M'];
-        this.data.Learnsets.rotomwash.learnset.surf = ['5M'];
-        
-        this.data.Learnsets.rotommow.learnset.gigadrain = ['5T'];
-        this.data.Learnsets.rotommow.learnset.solarbeam = ['5M'];
-        
-        this.data.Learnsets.rotomheat.learnset.flamethrower = ['5M'];
-        this.data.Learnsets.rotomheat.learnset.fireblast = ['5M'];
-        
-        this.data.Learnsets.rotomfrost.learnset.icebeam = ['5M'];
-        this.data.Learnsets.rotomfrost.learnset.milkdrink = ['5L0'];
-        
-        this.data.Learnsets.rotomfan.learnset.hurricane = ['5L0'];
-        this.data.Learnsets.rotomfan.learnset.tailwind = ['5L0'];
-        
-        this.data.Learnsets.heatran.learnset.eruption = ['5L0'];
         
         this.data.Pokedex.regigigas.abilities['DW'] = 'Iron Fist';
         
