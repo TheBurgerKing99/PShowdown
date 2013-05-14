@@ -18,15 +18,10 @@ exports.BattleScripts = {
             delete this.data.Learnsets[i].flameburst;
         }
         
-        this.data.Learnsets.venusaur.learnset.powerwhip = ['5L0'];
-        
         this.data.Pokedex.charizard.types = ["Fire","Dragon"];
         this.data.Pokedex.charizard.abilities['DW'] = 'Levitate';
-        this.data.Learnsets.charizard.learnset.dracometeor = ['5T'];
         
         this.data.Pokedex.blastoise.abilities['DW'] = 'Water Veil';
-                
-        this.data.Learnsets.sandslash.learnset.spikes = ['5L0'];
         
         this.data.Learnsets.nidoking.learnset.dragondance = ['5L0'];
         this.data.Learnsets.nidoking.learnset.gammastrike = ['5L0'];
