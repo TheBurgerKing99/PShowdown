@@ -41,47 +41,23 @@ exports.BattleScripts = {
         
         this.data.Pokedex.kingdra.abilities['DW'] = 'Water Veil';
         
-        this.data.Learnsets.swampert.learnset.fissure = ['5L0'];
-        
-        this.data.Learnsets.shiftry.learnset.hurricane = ['5L0'];
-        
         this.data.Pokedex.gardevoir.abilities['DW'] = 'Justified';
         
-        this.data.Learnsets.manectric.learnset.howl = ['5L0'];
-        this.data.Learnsets.manectric.learnset.flameburst = ['5L0'];
-        
         this.data.Pokedex.cacturne.abilities['0'] = 'Sand Rush';
-        this.data.Learnsets.cacturne.learnset.sharpen = ['5L0'];
         
         this.data.Pokedex.wailord.abilities['0'] = 'Hydration';
-        
-        this.data.Learnsets.flygon.learnset.stealthrock = ['5L0'];
-        this.data.Learnsets.flygon.learnset.dragondance = ['5L0'];
-        
+
         this.data.Pokedex.claydol.abilities['0'] = 'Magic Guard';
-        this.data.Learnsets.claydol.learnset.recover = ['5L0'];
-        this.data.Learnsets.claydol.learnset.lockon = ['5L0'];
         
         this.data.Pokedex.armaldo.abilities['0'] = 'Sand Force';
         
         this.data.Pokedex.milotic.abilities['0'] = 'Multiscale';
         
-        this.data.Learnsets.absol.learnset.howl = ['5L0'];
-        
         this.data.Pokedex.metagross.abilities['1'] = 'Gravitation';
         
         this.data.Pokedex.regirock.abilities['DW'] = 'Sand Veil';
-        this.data.Learnsets.regirock.learnset.lockon = ['5L0'];
-        delete this.data.Learnsets.regirock.learnset.zapcannon;
         
         this.data.Pokedex.registeel.abilities['DW'] = 'Heavy Metal';
-        this.data.Learnsets.registeel.learnset.heavyslam = ['5L0'];
-        this.data.Learnsets.registeel.learnset.lockon = ['5L0'];
-        delete this.data.Learnsets.registeel.learnset.zapcannon;
-        
-        this.data.Learnsets.latias.learnset.lunardance = ['5L0'];
-        
-        this.data.Learnsets.latios.learnset.lunardance = ['5L0'];
         
         this.data.Learnsets.infernape.learnset.flameburst = ['5L0'];
         
