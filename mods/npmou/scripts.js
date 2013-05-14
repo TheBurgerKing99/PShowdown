@@ -126,9 +126,6 @@ exports.BattleScripts = {
         
         this.data.Pokedex.metagross.abilities['1'] = 'Gravitation';
         
-        this.data.Learnsets.regice.learnset.lockon = ['5L0'];
-        delete this.data.Learnsets.regice.learnset.zapcannon;
-        
         this.data.Pokedex.regirock.abilities['DW'] = 'Sand Veil';
         this.data.Learnsets.regirock.learnset.lockon = ['5L0'];
         delete this.data.Learnsets.regirock.learnset.zapcannon;
