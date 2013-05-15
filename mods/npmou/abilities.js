@@ -301,7 +301,7 @@ exports.BattleAbilities = {
 		shortDesc: "This Pokemon loses 1/4 HP upon a KO.",
 		onSourceFaint: function(target, source, effect) {
 			if (effect && effect.effectType === 'Move') {
-				this.damage(source.maxhp/4);
+				this.damage(source.maxhp/4, source);
 			}
 		},
 		id: "defeatist",
