@@ -299,11 +299,10 @@ exports.BattleAbilities = {
 	"defeatist": {
 		desc: "This pokemon loses 1/4 of its HP every time it KOs an opponent.",
 		shortDesc: "This Pokemon loses 1/4 HP upon a KO.",
-		onSourceFaint: function(target, source, effect) {
+		onTargetFaint: function(target, source, effect) {
 			if (effect && effect.effectType === 'Move') {
-				self: {
-					this.directDamage(source.maxhp/4);
-				}
+				this.debug('Defeatist recoil');
+				this.directDamage(source.maxhp/4);
 			}
 		},
 		id: "defeatist",
