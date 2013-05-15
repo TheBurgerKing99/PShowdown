@@ -354,6 +354,21 @@ exports.BattleAbilities = {
 		rating: 3,
 		num: 131
 	},
+	"hypercutter": {
+		desc: "This pokemon's cutting, clawing, and slashing attacks gain a 20% boost.",
+		shortDesc: "Cutting attacks are boosted by 20%.",
+		//yes, I know I could just do a slash attack thing like they do for Iron Fist, but I prefered keeping all of this ability's data in one place
+		onBasePower: function(basePower, attacker, defender, move) {
+			if (move.id === "xscissor" || move.id === "slash" || move.id === "nightslash" || move.id === "psychocut" || move.id === "aerialace" || move.id === "aircutter" || move.id === "crosschop" || move.id === "crosspoison" || move.id === "crushclaw" || move.id === "dragonclaw" || move.id === "drillpeck" || move.id === "drillrun" || move.id === "falseswipe" || move.id === "cut" || move.id === "furycutter" || move.id === "furyswipes" || move.id === "leafblade" || move.id === "metalclaw" || move.id === "powergem" || move.id === "razorleaf" || move.id === "razorshell" || move.id === "razorwind" || move.id === "sacredsword" || move.id === "secretsword" || move.id === "shadowclaw") {
+				this.debug('Hyper Cutter boost');
+				return basePower * 12/10;
+			}
+		},
+		id: "hypercutter",
+		name: "Hyper Cutter",
+		rating: 3,
+		num: 52
+	},
 	"illuminate": {
 		desc: "Boosts the accuracy of this pokemon by x1.2.",
 		shortDesc: "Provides 20% boost to accuracy.",
@@ -366,22 +381,5 @@ exports.BattleAbilities = {
 		name: "Illuminate",
 		rating: 3,
 		num: 35
-	},
-	"zenmode": {
-		desc: "When Darmanitan enters the battle, it will enter Zen Mode. This ability only works on Darmanitan, even if it is copied by Role Play, Entrainment, or swapped with Skill Swap.",
-		shortDesc: "If this Pokemon is Darmanitan, it changes to Zen Mode.",
-		onStart: function(pokemon) {
-			if (pokemon.template.speciesid==='darmanitan' && pokemon.transformInto('Darmanitan-Zen')) {
-				pokemon.transformed = false;
-				this.add('-formechange', pokemon, 'Darmanitan-Zen');
-				this.add('-message', 'Zen Mode triggered! (placeholder)');
-			} else {
-			return false;
-			}
-		},
-		id: "zenmode",
-		name: "Zen Mode",
-		rating: 3,
-		num: 161
 	}
 };
