@@ -297,11 +297,11 @@ exports.BattleAbilities = {
 		num: 75
 	},
 	"defeatist": {
-		desc: "This pokemon loses 1/4 of its HP every time it KOs an opponent.",
-		shortDesc: "This Pokemon loses 1/4 HP upon a KO.",
+		desc: "This pokemon loses 1/3 of its HP every time it KOs an opponent.",
+		shortDesc: "This Pokemon loses 1/3 HP upon a KO.",
 		onSourceFaint: function(target, source, effect) {
 			if (effect && effect.effectType === 'Move') {
-				this.damage(source.maxhp/4, source);
+				this.damage(source.maxhp/3, source);
 			}
 		},
 		id: "defeatist",
@@ -337,12 +337,45 @@ exports.BattleAbilities = {
 		rating: 3,
 		num: 52
 	},
+	"zenmode": {
+		desc: "Darmanitan will enter Zen Mode. If it loses its ability it will change back. This ability only works on Darmanitan, even if it is copied by Role Play, Entrainment, or swapped with Skill Swap.",
+		shortDesc: "If this Pokemon is Darmanitan, it changes to Zen Mode.",
+		onResidualOrder: 27,
+		onResidual: function(pokemon) {
+			if (pokemon.baseTemplate.species !== 'Darmanitan') {
+			return;
+			}
+			if (pokemon.hp <= pokemon.template.speciesid==='darmanitan'){
+				pokemon.addVolatile('zenmode');
+			}
+		},
+		effect: {
+			onStart: function(pokemon) {
+				if (pokemon.formeChange('Darmanitan-Zen')) {
+					this.add('-formechange', pokemon, 'Darmanitan-Zen');
+					this.add('-message', 'Darmanitan tranformed due to Zen Mode!');
+				} else {
+					return false;
+				}
+			},
+			onUpdate: function(pokemon) {
+				if (pokemon.ability !== 'zenmode') {
+					pokemon.transformed = false;
+					pokemon.removeVolatile('zenmode');
+				}
+			}
+		},
+		id: "zenmode",
+		name: "Zen Mode",
+		rating: 3,
+		num: 161
+	},
 	"illuminate": {
 		desc: "Boosts the accuracy of this pokemon by x1.2.",
 		shortDesc: "Provides 20% boost to accuracy.",
 		onModifyMove: function(move) {
 			if (typeof move.accuracy !== 'number') return;
-			this.debug('illuminate - accuracy boost');
+			this.debug('Illuminate - boosting accuracy');
 			move.accuracy *= 1.2;
 		},
 		id: "illuminate",
