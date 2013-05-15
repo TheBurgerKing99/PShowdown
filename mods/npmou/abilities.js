@@ -296,44 +296,14 @@ exports.BattleAbilities = {
 		rating: 3,
 		num: 75
 	},
-	"whitesmoke": {
-		desc: "This pokemon's stats cannot be lowered.",
-		shortDesc: "This pokemon's stats cannot be lowered.",
-		onBoost: function(boost) {
-			for (var i in boost) {
-				if (boost[i] < 0) {
-					this.add("-message", target.name+"'s stats were not lowered!");
-					boost[i] = 0;
-				}
-			}
-		},
-		id: "whitesmoke",
-		name: "White Smoke",
-		rating: 3,
-		num: 73
-	},
-	"clearbody": {
-		desc: "This pokemon's stats cannot be lowered.",
-		shortDesc: "This pokemon's stats cannot be lowered.",
-		onBoost: function(boost) {
-			for (var i in boost) {
-				if (boost[i] < 0) {
-					this.add("-message", target.name+"'s stats were not lowered!");
-					boost[i] = 0;
-				}
-			}
-		},
-		id: "clearbody",
-		name: "Clear Body",
-		rating: 3,
-		num: 29
-	},
 	"defeatist": {
 		desc: "This pokemon loses 1/4 of its HP every time it KOs an opponent.",
 		shortDesc: "This Pokemon loses 1/4 HP upon a KO.",
 		onSourceFaint: function(target, source, effect) {
 			if (effect && effect.effectType === 'Move') {
-				this.directDamage(source.maxhp/4);
+				self: {
+					this.directDamage(source.maxhp/4);
+				}
 			}
 		},
 		id: "defeatist",
@@ -381,22 +351,5 @@ exports.BattleAbilities = {
 		name: "Illuminate",
 		rating: 3,
 		num: 35
-	},
-		"zenmode": {
-		desc: "When Darmanitan enters the battle, it will enter Zen Mode. This ability only works on Darmanitan, even if it is copied by Role Play, Entrainment, or swapped with Skill Swap.",
-		shortDesc: "If this Pokemon is Darmanitan, it changes to Zen Mode.",
-		onStart: function(pokemon) {
-			if (pokemon.template.speciesid==='darmanitan' && pokemon.transformInto('Darmanitan-Zen')) {
-				pokemon.transformed = false;
-				this.add('-formechange', pokemon, 'Darmanitan-Zen');
-				this.add('-message', 'Zen Mode triggered! (placeholder)');
-			} else {
-			return false;
-			}
-		},
-		id: "zenmode",
-		name: "Zen Mode",
-		rating: 3,
-		num: 161
 	}
 };
