@@ -30,7 +30,7 @@ exports.BattleAbilities = {
 		onStart: function(source) {
         		this.debug("Starting Trick Room");
         		if (this.pseudoWeather['trickroom']) {
-            			this.removePseudoWeather('trickroom', pokemon, pokemon);
+            			this.removePseudoWeather('trickroom');
         		}
         		this.addPseudoWeather('trickroom');
         		this.pseudoWeather['trickroom'].duration = 5;
