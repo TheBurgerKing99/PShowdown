@@ -354,7 +354,7 @@ exports.BattleAbilities = {
 			onStart: function(pokemon) {
 				if (pokemon.formeChange('Darmanitan-Zen')) {
 					this.add('-formechange', pokemon, 'Darmanitan-Zen');
-					this.add('-message', 'Darmanitan tranformed due to Zen Mode! (placeholder)');
+					this.add('-message', 'Darmanitan tranformed due to Zen Mode!');
 				} else {
 					return false;
 				}
@@ -362,7 +362,7 @@ exports.BattleAbilities = {
 			onEnd: function(pokemon) {
 				if (pokemon.formeChange('Darmanitan')) {
 					this.add('-formechange', pokemon, 'Darmanitan');
-					this.add('-message', 'Zen Mode ended! (placeholder)');
+					this.add('-message', 'Zen Mode ended! (placeholder');
 				} else {
 					return false;
 				}
@@ -378,6 +378,38 @@ exports.BattleAbilities = {
 		name: "Zen Mode",
 		rating: 3,
 		num: 161
+	},
+	"whitesmoke": {
+		desc: "Opponents cannot reduce this Pokemon's stats; they can, however, modify stat changes with Power Swap, Guard Swap and Heart Swap and inflict stat boosts with Swagger and Flatter. This ability does not prevent self-inflicted stat reductions. [Field Effect]\u00a0If this Pokemon is in the lead spot, the rate of wild Pokemon battles decreases by 50%.",
+		shortDesc: "Prevents other Pokemon from lowering this Pokemon's stat stages.",
+		onBoost: function(boost, target, source) {
+			for (var i in boost) {
+				if (boost[i] < 0) {
+					delete boost[i];
+					this.add("-message", target.name+"'s stats were not lowered!");
+				}
+			}
+		},
+		id: "whitesmoke",
+		name: "White Smoke",
+		rating: 3,
+		num: 73
+	},
+	"clearbody": {
+		desc: "Opponents cannot reduce this Pokemon's stats; they can, however, modify stat changes with Power Swap, Guard Swap and Heart Swap and inflict stat boosts with Swagger and Flatter. This ability does not prevent self-inflicted stat reductions. [Field Effect]\u00a0If this Pokemon is in the lead spot, the rate of wild Pokemon battles decreases by 50%.",
+		shortDesc: "Prevents other Pokemon from lowering this Pokemon's stat stages.",
+		onBoost: function(boost, target, source) {
+			for (var i in boost) {
+				if (boost[i] < 0) {
+					delete boost[i];
+					this.add("-message", target.name+"'s stats were not lowered!");
+				}
+			}
+		},
+		id: "clearbody",
+		name: "Clear Body",
+		rating: 3,
+		num: 29
 	},
 	"illuminate": {
 		desc: "Boosts the accuracy of this pokemon by x1.2.",
