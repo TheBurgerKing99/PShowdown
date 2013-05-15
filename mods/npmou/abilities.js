@@ -274,7 +274,7 @@ exports.BattleAbilities = {
 		onSourceBasePower: function(basePower, attacker, defender, move) {
 			if (this.getEffectiveness(move.type, defender) < 0) {
 				this.debug('Battle Armor Weaken');
-				return basePower*2/3;
+				return basePower * 2/3;
 			}
 		},		
 		id: "battlearmor",
@@ -288,7 +288,7 @@ exports.BattleAbilities = {
 		onSourceBasePower: function(basePower, attacker, defender, move) {
 			if (this.getEffectiveness(move.type, defender) < 0) {
 				this.debug('Shell Armor Weaken');
-				return basePower*2/3;
+				return basePower * 2/3;
 			}
 		},
 		id: "shellarmor",
@@ -301,7 +301,7 @@ exports.BattleAbilities = {
 		shortDesc: "This pokemon's stats cannot be lowered.",
 		onBoost: function(boost) {
 			for (var i in boost) {
-				if (boost[i] < 0{
+				if (boost[i] < 0 {
 					this.add("-message", target.name+"'s stats were not lowered!");
 					boost[i] = 0;
 				}
@@ -317,7 +317,7 @@ exports.BattleAbilities = {
 		shortDesc: "This pokemon's stats cannot be lowered.",
 		onBoost: function(boost) {
 			for (var i in boost) {
-				if (boost[i] < 0{
+				if (boost[i] < 0 {
 					this.add("-message", target.name+"'s stats were not lowered!");
 					boost[i] = 0;
 				}
