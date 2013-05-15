@@ -439,7 +439,7 @@ exports.BattleFormats = {
     		isTeambuilderFormat: true,
     		debug: true,
     		ruleset: ['Pokemon', 'Sleep Clause', 'Species Clause', 'Team Preview', 'Moody Clause', 'Evasion Moves Clause'],
-    		banlist: ['Uber', 'Unreleased', 'Illegal', 'Sheer Cold', 'Horn Drill', 'Guillotine', 'Drizzle ++ Swift Swim', 'Excadrill + Sand Rush']
+    		banlist: ['Uber', 'Unreleased', 'Illegal', 'Sheer Cold', 'Horn Drill', 'Guillotine', 'Excadrill + Sand Rush']
     	},
     	dscap: {
     		effectType: 'Format',
