@@ -1089,7 +1089,7 @@ function parseCommandLocal(user, cmd, target, room, socket, message) {
 		showOrBroadcastStart(user, cmd, room, socket, message);
 		showOrBroadcast(user, cmd, room, socket,
 			'<div class="infobox">NPM is a pokemon modifier that tests the strengths and weaknesses of new typings while balancing and adding a sprinkle of flavor to the metagame:<br />' +
-			'- <a href="http://pastebin.com/yS3aPeV8" target="_blank">NPM information and changelist</a><br />' +
+			'- <a href="http://pastebin.com/mGHsbium" target="_blank">NPM information and changelist</a><br />' +
 			'- <a href="http://piratepad.net/NPMOU" target="_blank">If you have comments, suggestions, or questions, put them here</a><br />' +
 			'</div>');
 		return false;
