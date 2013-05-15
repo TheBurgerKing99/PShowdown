@@ -338,22 +338,32 @@ exports.BattleAbilities = {
 		num: 52
 	},
 	"zenmode": {
-		desc: "Darmanitan will enter Zen Mode. If it loses its ability it will change back. This ability only works on Darmanitan, even if it is copied by Role Play, Entrainment, or swapped with Skill Swap.",
-		shortDesc: "If this Pokemon is Darmanitan, it changes to Zen Mode.",
+		desc: "When Darmanitan's HP drops to below half, it will enter Zen Mode at the end of the turn. If it loses its ability, or recovers HP to above half while in Zen mode, it will change back. This ability only works on Darmanitan, even if it is copied by Role Play, Entrainment, or swapped with Skill Swap.",
+		shortDesc: "If this Pokemon is Darmanitan, it changes to Zen Mode whenever it is below half HP.",
 		onResidualOrder: 27,
 		onResidual: function(pokemon) {
 			if (pokemon.baseTemplate.species !== 'Darmanitan') {
-			return;
+				return;
 			}
-			if (pokemon.hp <= pokemon.template.speciesid==='darmanitan'){
+			if (pokemon.hp <= pokemon.maxhp/1 && pokemon.template.speciesid==='darmanitan'){
 				pokemon.addVolatile('zenmode');
+			} else if (pokemon.hp > pokemon.maxhp/1 && pokemon.template.speciesid==='darmanitanzen') {
+			pokemon.removeVolatile('zenmode');
 			}
 		},
 		effect: {
 			onStart: function(pokemon) {
 				if (pokemon.formeChange('Darmanitan-Zen')) {
 					this.add('-formechange', pokemon, 'Darmanitan-Zen');
-					this.add('-message', 'Darmanitan tranformed due to Zen Mode!');
+					this.add('-message', 'Darmanitan tranformed due to Zen Mode! (placeholder)');
+				} else {
+					return false;
+				}
+			},
+			onEnd: function(pokemon) {
+				if (pokemon.formeChange('Darmanitan')) {
+					this.add('-formechange', pokemon, 'Darmanitan');
+					this.add('-message', 'Zen Mode ended! (placeholder)');
 				} else {
 					return false;
 				}
