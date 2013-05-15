@@ -6,7 +6,7 @@ exports.BattleAbilities = {
 		 isNonstandard: false,
 		 name: "Persistent",
 		 // implemented in the corresponding move
-		 rating: 4,
+		 rating: 3,
 		 num: -4
 	},
   	"gravitation": {
@@ -35,7 +35,7 @@ exports.BattleAbilities = {
         		this.addPseudoWeather('trickroom');
         		this.pseudoWeather['trickroom'].duration = 5;
            	},
-		rating: 4,
+		rating: 5,
 		num: 1001
   	},
   	"chlorophyll": {
@@ -48,7 +48,7 @@ exports.BattleAbilities = {
 		},
 		id: "chlorophyll",
 		name: "Chlorophyll",
-		rating: 2,
+		rating: 4,
 		num: 34
  	},
  	"arcticrush": {
@@ -64,7 +64,7 @@ exports.BattleAbilities = {
 		},
 		id: "arcticrush",
 		name: "Arctic Rush",
-		rating: 2,
+		rating: 4,
 		num: 1002
 	},
 	"sandrush": {
@@ -80,7 +80,7 @@ exports.BattleAbilities = {
 		},
 		id: "sandrush",
 		name: "Sand Rush",
-		rating: 2,
+		rating: 4,
 		num: 146
 	},
 	"swiftswim": {
@@ -93,7 +93,7 @@ exports.BattleAbilities = {
 		},
 		id: "swiftswim",
 		name: "Swift Swim",
-		rating: 2,
+		rating: 4,
 		num: 33
 	},
 	"solarpower": {
@@ -106,7 +106,7 @@ exports.BattleAbilities = {
 		},
 		id: "solarpower",
 		name: "Solar Power",
-		rating: 2,
+		rating: 3,
 		num: 94
 	},
 	"waterveil": {
@@ -119,7 +119,7 @@ exports.BattleAbilities = {
 		},
 		id: "waterveil",
 		name: "Water Veil",
-		rating: 2,
+		rating: 3,
 		num: 41
 	},
 	"sandforce": {
@@ -135,7 +135,7 @@ exports.BattleAbilities = {
 		},
 		id: "sandforce",
 		name: "Sand Force",
-		rating: 2,
+		rating: 3,
 		num: 159
 	},
 	"snowcloak": {
@@ -151,7 +151,7 @@ exports.BattleAbilities = {
 		},
 		id: "snowcloak",
 		name: "Snow Cloak",
-		rating: 2,
+		rating: 3,
 		num: 81
 	},
 	"icebody": {
@@ -198,5 +198,205 @@ exports.BattleAbilities = {
 		name: "Rain Dish",
 		rating: 3,
 		num: 44
+	},
+	"filter": {
+		desc: "This Pokemon receives one-half reduced damage from Super Effective attacks.",
+		shortDesc: "This Pokemon receives 1/2 damage from super effective attacks.",
+		onSourceBasePower: function(basePower, attacker, defender, move) {
+			if (this.getEffectiveness(move.type, defender) > 0) {
+				this.debug('Filter neutralize');
+				return basePower * 1/2;
+			}
+		},
+		id: "filter",
+		name: "Filter",
+		rating: 3,
+		num: 111
+	},
+	"solidrock": {
+		desc: "This Pokemon receives one-half reduced damage from Super Effective attacks.",
+		shortDesc: "This Pokemon receives 1/2 damage from super effective attacks.",
+		onSourceBasePower: function(basePower, attacker, defender, move) {
+			if (this.getEffectiveness(move.type, defender) > 0) {
+				this.debug('Solid Rock neutralize');
+				return basePower * 1/2;
+			}
+		},
+		id: "solidrock",
+		name: "Solid Rock",
+		rating: 3,
+		num: 116
+	},
+	"lightmetal": {
+		inherit: true,
+		desc: "The user's speed is increased by 20%, and the user's weight is halved. The weight loss decreases the damage taken from Low Kick and Grass Knot, and also lowers user's base power of Heavy Slam and Heat Crash, due these moves being calculated by the target and user's weight.",
+		shortDesc: "This Pokemon's speed is increased by 20%, and weight is halved.",
+		onModifySpe: function(spe) {
+			return spe * 1.2;
+		}
+	},
+	"heavymetal": {
+		inherit: true,
+		desc: "The user's defense is increased by 20%, and the user's weight is doubled. The weight gain increases the damage taken from Low Kick and Grass Knot, and increases user's base power of Heavy Slam and Heat Crash, due these moves being calculated by the target and user's weight.",
+		shortDesc: "This Pokemon's defense is increased by 20%, and weight is doubled.",
+		onModifyDef: function(def) {
+			return def * 1.2;
+		}
+	},
+	"purepower": {
+		desc: "This Pokemon's Special Attack stat is doubled. Therefore, if this Pokemon's Special Attack stat on the status screen is 200, it effectively has an Special Attack stat of 400; which is then subject to the full range of stat boosts and reductions.",
+		shortDesc: "This Pokemon's Special Attack is doubled.",
+		onModifySpA: function(spa) {
+			return spa * 2;
+		},
+		id: "purepower",
+		name: "Pure Power",
+		rating: 5,
+		num: 74
+	},
+	"angerpoint": {
+		desc: "When its health reaches one-third or less of its max HP, this pokemon's Physical attacks gain a 50% boost to power.",
+		shortDesc: "When this Pokemon has 1/3 or less of its max HP, its Physical attacks do 1.5x damage.",
+		onBasePower: function(basePower, attacker, defender, move) {
+			if (move.category === 'Physical' && attacker.hp <= attacker.maxhp/3) {
+				this.debug('Anger Point boost');
+				return basePower * 1.5;
+			}
+		},
+		id: "angerpoint",
+		name: "Anger Point",
+		rating: 2,
+		num: 83
+	},
+	"battlearmor": {
+		desc: "Not very effective hits do two thirds damage to this pokemon.",
+		shortDesc: "Resisted hits do 2/3 damage to this pokemon.",
+		onSourceBasePower: function(basePower, attacker, defender, move) {
+			if (this.getEffectiveness(move.type, defender) < 0) {
+				this.debug('Battle Armor Weaken');
+				return basePower*2/3;
+			}
+		},		
+		id: "battlearmor",
+		name: "Battle Armor",
+		rating: 3,
+		num: 4
+	},
+	"shellarmor": {
+		desc: "Not very effective hits do two thirds damage to this pokemon.",
+		shortDesc: "Resisted hits do 2/3 damage to this pokemon.",
+		onSourceBasePower: function(basePower, attacker, defender, move) {
+			if (this.getEffectiveness(move.type, defender) < 0) {
+				this.debug('Shell Armor Weaken');
+				return basePower*2/3;
+			}
+		},
+		id: "shellarmor",
+		name: "Shell Armor",
+		rating: 3,
+		num: 75
+	},
+	"whitesmoke": {
+		desc: "This pokemon's stats cannot be lowered.",
+		shortDesc: "This pokemon's stats cannot be lowered.",
+		onBoost: function(boost) {
+			for (var i in boost) {
+				if (boost[i] < 0{
+					this.add("-message", target.name+"'s stats were not lowered!");
+					boost[i] = 0;
+				}
+			}
+		},
+		id: "whitesmoke",
+		name: "White Smoke",
+		rating: 3,
+		num: 73
+	},
+	"clearbody": {
+		desc: "This pokemon's stats cannot be lowered.",
+		shortDesc: "This pokemon's stats cannot be lowered.",
+		onBoost: function(boost) {
+			for (var i in boost) {
+				if (boost[i] < 0{
+					this.add("-message", target.name+"'s stats were not lowered!");
+					boost[i] = 0;
+				}
+			}
+		},
+		id: "clearbody",
+		name: "Clear Body",
+		rating: 3,
+		num: 29
+	},
+	"defeatist": {
+		desc: "This pokemon loses 1/4 of its HP every time it KOs an opponent.",
+		shortDesc: "This Pokemon loses 1/4 HP upon a KO.",
+		onSourceFaint: function(target, source, effect) {
+			if (effect && effect.effectType === 'Move') {
+				this.directDamage(source.maxhp/4);
+			}
+		},
+		id: "defeatist",
+		name: "Defeatist",
+		rating: -1,
+		num: 129
+	},
+	"healer": {
+		desc: "Recovers 1/25 HP at the end of each turn.",
+		shortDesc: "Heals 1/25 HP each turn.",
+		id: "healer",
+		name: "Healer",
+		onResidualOrder: 5,
+		onResidualSubOrder: 1,
+		onResidual: function(pokemon) {
+			this.heal(pokemon.maxhp/25);
+		},
+		rating: 3,
+		num: 131
+	},
+	"hypercutter": {
+		desc: "This pokemon's cutting, clawing, and slashing attacks gain a 20% boost.",
+		shortDesc: "Cutting attacks are boosted by 20%.",
+		//yes, I know I could just do a slash attack thing like they do for Iron Fist, but I prefered keeping all of this ability's data in one place
+		onBasePower: function(basePower, attacker, defender, move) {
+			if (move.id === "xscissor" || move.id === "slash" || move.id === "nightslash" || move.id === "psychocut" || move.id === "aerialace" || move.id === "aircutter" || move.id === "crosschop" || move.id === "crosspoison" || move.id === "crushclaw" || move.id === "dragonclaw" || move.id === "drillpeck" || move.id === "drillrun" || move.id === "falseswipe" || move.id === "cut" || move.id === "furycutter" || move.id === "furyswipes" || move.id === "leafblade" || move.id === "metalclaw" || move.id === "powergem" || move.id === "razorleaf" || move.id === "razorshell" || move.id === "razorwind" || move.id === "sacredsword" || move.id === "secretsword" || move.id === "shadowclaw") {
+				this.debug('Hyper Cutter boost');
+				return basePower * 12/10;
+			}
+		},
+		id: "hypercutter",
+		name: "Hyper Cutter",
+		rating: 3,
+		num: 52
+	},
+	"illuminate": {
+		desc: "Boosts the accuracy of this pokemon by x1.2.",
+		shortDesc: "Provides 20% boost to accuracy.",
+		onModifyMove: function(move) {
+			if (typeof move.accuracy !== 'number') return;
+			this.debug('illuminate - accuracy boost');
+			move.accuracy *= 1.2;
+		},
+		id: "illuminate",
+		name: "Illuminate",
+		rating: 3,
+		num: 35
+	},
+	"zenmode": {
+		desc: "When Darmanitan enters the battle, it will enter Zen Mode. This ability only works on Darmanitan, even if it is copied by Role Play, Entrainment, or swapped with Skill Swap.",
+		shortDesc: "If this Pokemon is Darmanitan, it changes to Zen Mode.",
+		onStart: function(pokemon) {
+			if (pokemon.template.speciesid==='darmanitan' && pokemon.transformInto('Darmanitan-Zen')) {
+				pokemon.transformed = false;
+				this.add('-formechange', pokemon, 'Darmanitan-Zen');
+				this.add('-message', 'Zen Mode triggered! (placeholder)');
+			} else {
+			return false;
+			}
+		},
+		id: "zenmode",
+		name: "Zen Mode",
+		rating: 3,
+		num: 161
 	}
 };
