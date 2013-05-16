@@ -143,7 +143,17 @@ function parseCommandLocal(user, cmd, target, room, socket, message) {
 		room.addRaw('<div class="broadcast-red"><b>The tourney is now over.</b><br />Thank you for participating!</div>');
 		return false;
 		break;
-		
+	case 'hailnollan':
+	case 'nollanisking':
+		if (!user.can('broadcast')) {
+			emit(socket, 'console', '/hailnollan - Access denied.');
+			return false;
+		}
+		logModCommand(room, 'Nollan was hailed by ' + user.name + '.', true);
+		room.addRaw('<div class="broadcast-purple"><b>All hail King Nollan!</b><br />King of the world, destroyer of all that defy him!</div>');
+		return false;
+		break;
+			
 	case 'namelock':
 	case 'nl':
 		if(!target) {
