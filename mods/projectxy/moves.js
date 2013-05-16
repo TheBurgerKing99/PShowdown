@@ -103,5 +103,82 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "self",
 		type: "Psychic"
-	}	
+	},
+	"heatwave": {
+		num: 257,
+		accuracy: 100,
+		basePower: 80,
+		category: "Special",
+		desc: "Deals damage to a foe while activating Sunny Day.",
+		shortDesc: "Damages and activates Sunny Day.",
+		id: "heatwave",
+		isViable: true,
+		name: "Heat Wave",
+		pp: 10,
+		priority: 0,
+		onHit: function(source) {
+			this.setWeather('sunnyday');
+			this.weatherData.duration = 5;
+		},
+		secondary: false,
+		target: "normal",
+		type: "Fire"
+	},
+	"icywind": {
+		num: 196,
+		accuracy: 100,
+		basePower: 80,
+		category: "Special",
+		desc: "Deals damage to all adjacent foes with a 100% chance to lower their Speed by 1 stage each.",
+		shortDesc: "100% chance to lower the foe(s) Speed by 1.",
+		id: "icywind",
+		name: "Icy Wind",
+		pp: 10,
+		priority: 0,
+		onHit: function(source) {
+			this.setWeather('hail');
+			this.weatherData.duration = 5;
+		},
+		secondary: false;
+		target: "normal",
+		type: "Ice"
+	},
+	"sandattack": {
+		num: 28,
+		accuracy: 100,
+		basePower: 80,
+		category: "Physical",
+		desc: "Lowers one adjacent target's accuracy by 1 stage. Pokemon protected by Magic Coat or the Ability Magic Bounce are unaffected and instead use this move themselves.",
+		shortDesc: "Lowers the target's accuracy by 1.",
+		id: "sandattack",
+		name: "Sand-Attack",
+		pp: 10,
+		priority: 0,
+		onHit: function(source) {
+			this.setWeather('sandstorm');
+			this.weatherData.duration = 5;
+		},
+		secondary: false,
+		target: "normal",
+		type: "Ground"
+	},
+	"soak": {
+		num: 487,
+		accuracy: 100,
+		basePower: 80,
+		category: "Special",
+		desc: "Causes one adjacent target to become a Water-type. Fails if the target is an Arceus. Pokemon protected by Magic Coat or the Ability Magic Bounce are unaffected and instead use this move themselves.",
+		shortDesc: "Changes the target's type to Water.",
+		id: "soak",
+		name: "Soak",
+		pp: 10,
+		priority: 0,
+		onHit: function(source) {
+			this.setWeather('raindance');
+			this.weatherData.duration = 5;
+		},
+		secondary: false,
+		target: "normal",
+		type: "Water"
+	}
 };
