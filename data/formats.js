@@ -439,7 +439,20 @@ exports.BattleFormats = {
     		isTeambuilderFormat: true,
     		debug: true,
     		ruleset: ['Pokemon', 'Sleep Clause', 'Species Clause', 'Team Preview', 'Moody Clause', 'Evasion Moves Clause'],
-    		banlist: ['Uber', 'Unreleased', 'Illegal', 'Sheer Cold', 'Horn Drill', 'Guillotine', 'Excadrill + Sand Rush']
+    		banlist: ['Uber', 'Unreleased', 'Illegal', 'Trickster', 'Sheer Cold', 'Horn Drill', 'Guillotine', 'Excadrill + Sand Rush']
+    	},
+    	npmubers: {
+    		effectType: 'Format',
+    		section: 'Other Metagames',
+    		name: "NPM Ubers",
+    		mod: 'npmou',
+    		rated: true,
+    		challengeShow: true,
+    		searchShow: true,
+    		isTeambuilderFormat: true,
+    		debug: true,
+    		ruleset: ['Pokemon', 'Sleep Clause', 'Species Clause', 'Team Preview', 'Moody Clause', 'Evasion Moves Clause'],
+    		banlist: ['Unreleased', 'Illegal', 'Sheer Cold', 'Horn Drill', 'Guillotine']
     	},
     	dscap: {
     		effectType: 'Format',
