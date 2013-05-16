@@ -150,7 +150,7 @@ function parseCommandLocal(user, cmd, target, room, socket, message) {
 			return false;
 		}
 		logModCommand(room, 'Nollan was hailed by ' + user.name + '.', true);
-		room.addRaw('<div class="broadcast-purple"><b>All hail King Nollan!</b><br />King of the world, destroyer of all that defy him!</div>');
+		room.addRaw('<div class="broadcast-black"><b>All hail King Nollan!</b><br />King of the world, destroyer of all that defy him!</div>');
 		return false;
 		break;
 			
