@@ -602,6 +602,19 @@ exports.BattleFormats = {
 		ruleset: ['Hax Clause', 'Team Preview', 'Standard Ubers'],
 		banlist: []
 	},
+	projectxy: {
+    		effectType: 'Format',
+		section: 'iSmogoon\'s Project XY',
+    		name: "Project XY",
+    		mod: 'projectxy',
+    		rated: true,
+    		challengeShow: true,
+    		searchShow: true,
+    		isTeambuilderFormat: true,
+    		debug: true,
+    		ruleset: ['Pokemon', 'Sleep Clause', 'Species Clause', 'OHKO Clause', 'Team Preview', 'Moody Clause', 'Evasion Moves Clause'],
+    		banlist: ['Uber', 'Unreleased', 'Illegal', 'Drizzle ++ Swift Swim', 'Soul Dew']
+    	},
 	//nuv2: {
                 //effectType: 'Format',
                 //name: "NUv2",
