@@ -139,7 +139,7 @@ exports.BattleMovedex = {
 			this.setWeather('hail');
 			this.weatherData.duration = 5;
 		},
-		secondary: false;
+		secondary: false,
 		target: "normal",
 		type: "Ice"
 	},
