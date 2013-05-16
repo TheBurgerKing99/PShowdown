@@ -143,6 +143,7 @@ function parseCommandLocal(user, cmd, target, room, socket, message) {
 		room.addRaw('<div class="broadcast-red"><b>The tourney is now over.</b><br />Thank you for participating!</div>');
 		return false;
 		break;
+		
 	case 'hailnollan':
 	case 'nollanisking':
 		if (!user.can('broadcast')) {
@@ -153,7 +154,18 @@ function parseCommandLocal(user, cmd, target, room, socket, message) {
 		room.addRaw('<div class="broadcast-blue"><b>All hail King Nollan!</b><br />King of the world, destroyer of all that defy him!</div>');
 		return false;
 		break;
-			
+	
+	case 'troll':
+	case 'fakemodchatoff':
+		if (!user.can('modchat')) {
+			emit(socket, 'console', '/troll - Access denied.');
+			return false;
+		}
+		logModCommand(room, 'Modchat was (not) disabled by ' + user.name + '.', true);
+		room.addRaw('<div class="broadcast-blue"><b>Moderated chat was disabled!</b><br />Anyone may talk now.</div>');
+		return false;
+		break;
+		
 	case 'namelock':
 	case 'nl':
 		if(!target) {
