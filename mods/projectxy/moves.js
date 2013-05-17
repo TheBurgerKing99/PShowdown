@@ -104,13 +104,14 @@ exports.BattleMovedex = {
 		target: "self",
 		type: "Psychic"
 	},
+	//DEBUG NOTE: The following four moves do NOT summon weather if they hit a Substitute instead of the actual pokemon, I will fix this later, since it the big picture it is not a priority.
 	"heatwave": {
 		num: 257,
 		accuracy: 100,
 		basePower: 80,
 		category: "Special",
-		desc: "Deals damage to a foe while activating Sunny Day.",
-		shortDesc: "Damages and activates Sunny Day.",
+		desc: "Deals damage to one adjacent target and will activate Sunny Day if it hits.",
+		shortDesc: "Activates sun if it hits.",
 		id: "heatwave",
 		isViable: true,
 		name: "Heat Wave",
@@ -129,8 +130,8 @@ exports.BattleMovedex = {
 		accuracy: 100,
 		basePower: 80,
 		category: "Special",
-		desc: "Deals damage to all adjacent foes with a 100% chance to lower their Speed by 1 stage each.",
-		shortDesc: "100% chance to lower the foe(s) Speed by 1.",
+		desc: "Deals damage to one adjacent target and will activate Hail if it hits.",
+		shortDesc: "Activates hail if it hits.",
 		id: "icywind",
 		name: "Icy Wind",
 		pp: 10,
@@ -148,8 +149,8 @@ exports.BattleMovedex = {
 		accuracy: 100,
 		basePower: 80,
 		category: "Physical",
-		desc: "Lowers one adjacent target's accuracy by 1 stage. Pokemon protected by Magic Coat or the Ability Magic Bounce are unaffected and instead use this move themselves.",
-		shortDesc: "Lowers the target's accuracy by 1.",
+		desc: "Deals damage to one adjacent target and will activate Sandstorm if it hits.",
+		shortDesc: "Activates sand if it hits.",
 		id: "sandattack",
 		name: "Sand-Attack",
 		pp: 10,
@@ -167,8 +168,8 @@ exports.BattleMovedex = {
 		accuracy: 100,
 		basePower: 80,
 		category: "Special",
-		desc: "Causes one adjacent target to become a Water-type. Fails if the target is an Arceus. Pokemon protected by Magic Coat or the Ability Magic Bounce are unaffected and instead use this move themselves.",
-		shortDesc: "Changes the target's type to Water.",
+		desc: "Deals damage to one adjacent target and will activate Rain Dance if it hits.",
+		shortDesc: "Activates rain if it hits.",
 		id: "soak",
 		name: "Soak",
 		pp: 10,
@@ -180,5 +181,46 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Water"
-	}
+	},
+	magmastorm: {
+		inherit: true,
+		basePower: 100,
+		accuracy: 100
+	},
+	"spikecannon": {
+		num: 131,
+		accuracy: 100,
+		basePower: 20,
+		category: "Physical",
+		desc: "Deals damage to one adjacent target and scatters Spikes on the opposing side if it hits.",
+		shortDesc: "Scatters Spikes on the opposing side of the field if it successfully hits.",
+		id: "spikecannon",
+		name: "Spike Cannon",
+		pp: 15,
+		priority: 0,
+		sideCondition: 'spikes',
+		secondary: false,
+		target: "normal",
+		type: "Ground"
+	},
+	"payday": {
+		num: 6,
+		accuracy: 100,
+		basePower: 20,
+		category: "Physical",
+		desc: "Always crits and deals damage in two seperate hits to one adjacent target.",
+		shortDesc: "Damages twice with a 100% crit rate.",
+		id: "payday",
+		name: "Pay Day",
+		pp: 20,
+		priority: 0,
+		willCrit: true,
+		multihit: 2,
+		onHit: function() {
+			this.add('-fieldactivate', 'move: Pay Day');
+		},
+		secondary: false,
+		target: "normal",
+		type: "Normal"
+	},
 };
