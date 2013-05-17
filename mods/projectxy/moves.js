@@ -244,7 +244,7 @@ exports.BattleMovedex = {
 					target.trySetStatus('par', source);
 				} else if (result===2) {
 					target.trySetStatus('tox', source);
-				} else if result===3) {
+				} else if (result===3) {
 					target.addVolatile('confusion', source);
 				} else {
 					target.trySetStatus('frz', source);
