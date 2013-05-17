@@ -223,4 +223,77 @@ exports.BattleMovedex = {
 		target: "normal",
 		type: "Normal"
 	},
+	"roaroftime": {
+		num: 459,
+		accuracy: 90,
+		basePower: 120,
+		category: "Special",
+		desc: "Deals damage to one adjacent target. If this move is successful, the user must recharge on the following turn and cannot make a move.",
+		shortDesc: "User cannot move next turn.",
+		id: "roaroftime",
+		name: "Roar of Time",
+		pp: 5,
+		priority: 0,
+		secondary: {
+			chance: 50,
+			onHit: function(target, source) {
+				var result = this.random(5);
+				if (result===0) {
+					target.trySetStatus('brn', source);
+				} else if (result===1) {
+					target.trySetStatus('par', source);
+				} else if (result===2) {
+					target.trySetStatus('tox', source);
+				} else if result===3) {
+					target.addVolatile('confusion', source);
+				} else {
+					target.trySetStatus('frz', source);
+				}
+			}
+		},
+		target: "normal",
+		type: "Dragon"
+	},
+	"cometpunch": {
+		num: 4,
+		accuracy: 100,
+		basePower: 75,
+		category: "Physical",
+		desc: "Deals damage to one adjacent target and hits two to five times. Has a 1/3 chance to hit two or three times, and a 1/6 chance to hit four or five times. If one of the hits breaks the target's Substitute, it will take damage for the remaining hits. If the user has the Ability Skill Link, this move will always hit five times. Makes contact. Damage is boosted to 1.2x by the Ability Iron Fist.",
+		shortDesc: "Hits 2-5 times in one turn.",
+		id: "cometpunch",
+		name: "Comet Punch",
+		pp: 15,
+		priority: 0,
+		isContact: true,
+		isPunchAttack: true,
+		secondary: false,
+		target: "normal",
+		type: "Psychic"
+	},
+	"gust": {
+		num: 16,
+		accuracy: 100,
+		basePower: 20,
+		category: "Special",
+		desc: "Deals damage to one adjacent or non-adjacent target. Power doubles against Pokemon using Bounce, Fly, or Sky Drop.",
+		shortDesc: "Power doubles during Fly, Bounce, and Sky Drop.",
+		id: "gust",
+		name: "Gust",
+		pp: 35,
+		priority: 0,
+		self: {
+			onHit: function(pokemon) {
+				var sideConditions = {spikes:1, toxicspikes:1, stealthrock:1};
+				for (var i in sideConditions) {
+					if (pokemon.hp && pokemon.side.removeSideCondition(i)) {
+						this.add('-sideend', pokemon.side, this.getEffect(i).name, '[from] move: Gust', '[of] '+pokemon);
+					}
+				}
+			}
+		},
+		secondary: false,
+		target: "normal",
+		type: "Flying"
+	}	
 };
