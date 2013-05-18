@@ -196,7 +196,7 @@ exports.BattleMovedex = {
 		shortDesc: "Scatters Spikes on the opposing side of the field if it successfully hits.",
 		id: "spikecannon",
 		name: "Spike Cannon",
-		pp: 15,
+		pp: 10,
 		priority: 0,
 		sideCondition: 'spikes',
 		secondary: false,
@@ -228,8 +228,8 @@ exports.BattleMovedex = {
 		accuracy: 90,
 		basePower: 120,
 		category: "Special",
-		desc: "Deals damage to one adjacent target. If this move is successful, the user must recharge on the following turn and cannot make a move.",
-		shortDesc: "User cannot move next turn.",
+		desc: "",
+		shortDesc: "",
 		id: "roaroftime",
 		name: "Roar of Time",
 		pp: 5,
@@ -259,8 +259,8 @@ exports.BattleMovedex = {
 		accuracy: 100,
 		basePower: 75,
 		category: "Physical",
-		desc: "Deals damage to one adjacent target and hits two to five times. Has a 1/3 chance to hit two or three times, and a 1/6 chance to hit four or five times. If one of the hits breaks the target's Substitute, it will take damage for the remaining hits. If the user has the Ability Skill Link, this move will always hit five times. Makes contact. Damage is boosted to 1.2x by the Ability Iron Fist.",
-		shortDesc: "Hits 2-5 times in one turn.",
+		desc: "",
+		shortDesc: "",
 		id: "cometpunch",
 		name: "Comet Punch",
 		pp: 15,
@@ -276,11 +276,11 @@ exports.BattleMovedex = {
 		accuracy: 100,
 		basePower: 20,
 		category: "Special",
-		desc: "Deals damage to one adjacent or non-adjacent target. Power doubles against Pokemon using Bounce, Fly, or Sky Drop.",
-		shortDesc: "Power doubles during Fly, Bounce, and Sky Drop.",
+		desc: "",
+		shortDesc: "",
 		id: "gust",
 		name: "Gust",
-		pp: 35,
+		pp: 30,
 		priority: 0,
 		self: {
 			onHit: function(pokemon) {
@@ -295,5 +295,291 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Flying"
+	},
+	sacredsword: {
+		inherit: true,
+		secondary: {
+			chance: 10,
+			self: {
+				boosts: {
+					atk: 1
+				}
+			}
+		}
+	},
+	"aeroblast": {
+		num: 177,
+		accuracy: 95,
+		basePower: 100,
+		category: "Special",
+		defensiveCategory: "Physical",
+		desc: "",
+		shortDesc: "",
+		id: "aeroblast",
+		isViable: true,
+		name: "Aeroblast",
+		pp: 5,
+		priority: 0,
+		secondary: {
+			chance: 10,
+			boosts: {
+				atk: -1
+			}
+		},
+		target: "any",
+		type: "Flying"
+	},
+	"rocksmash": {
+		num: 249,
+		accuracy: 100,
+		basePower: 40,
+		category: "Physical",
+		desc: "",
+		shortDesc: "",
+		id: "rocksmash",
+		name: "Rock Smash",
+		pp: 15,
+		priority: 0,
+		isContact: true,
+		willCrit: true,
+		secondary: false,
+		target: "normal",
+		type: "Fighting"
+	},
+	"peck": {
+		num: 64,
+		accuracy: 100,
+		basePower: 40,
+		category: "Physical",
+		desc: "",
+		shortDesc: "Always lands a critical hit.",
+		id: "peck",
+		name: "Peck",
+		pp: 15,
+		priority: 0,
+		isContact: true,
+		willCrit: true,
+		secondary: false,
+		target: "any",
+		type: "Flying"
+	},
+	rocktomb: {
+		inherit: true,
+		accuracy: 95,
+		basePower: 60
+	},
+	shadowclaw: {
+		inherit: true,
+		basePower: 80
+	},
+	"needlearm": {
+		num: 302,
+		accuracy: 100,
+		basePower: 40,
+		category: "Physical",
+		desc: "",
+		shortDesc: "",
+		id: "needlearm",
+		name: "Needle Arm",
+		pp: 10,
+		priority: 4,
+		isContact: true,
+		onTryHit: function(target, pokemon) {
+			if (pokemon.activeTurns > 1) {
+				this.debug('It\'s not your first turn out.');
+				return false;
+			}
+		},
+		secondary: {
+			chance: 100,
+			volatileStatus: 'flinch'
+		},
+		target: "normal",
+		type: "Grass"
+	},
+	"psychocut": {
+		num: 427,
+		accuracy: 100,
+		basePower: 50,
+		category: "Physical",
+		desc: "",
+		shortDesc: "Always lands a critical hit.",
+		id: "psychocut",
+		isViable: true,
+		name: "Psycho Cut",
+		pp: 10,
+		priority: 0,
+		willCrit: true,
+		secondary: false,
+		target: "normal",
+		type: "Psychic"
+	},
+	"glaciate": {
+		num: 549,
+		accuracy: 95,
+		basePower: 100,
+		category: "Special",
+		desc: "Deals damage to all adjacent foes with a 100% chance to lower their Speed by 2 stages each.",
+		shortDesc: "100% chance to lower the foe(s) Speed by 2.",
+		id: "glaciate",
+		name: "Glaciate",
+		pp: 10,
+		priority: 0,
+		secondary: {
+			chance: 100,
+			boosts: {
+				spe: -2
+			}
+		},
+		target: "allAdjacentFoes",
+		type: "Ice"
+	},
+	twister: {
+		inherit: true,
+		basePower: 80,
+		type: "Flying"
+	},
+	razorshell: {
+		inherit: true,
+		basePower: 100,
+		accuracy: 85
+	},
+	"skyattack": {
+		num: 143,
+		accuracy: 90,
+		basePower: 100,
+		category: "Physical",
+		desc: "",
+		shortDesc: "",
+		id: "skyattack",
+		name: "Sky Attack",
+		pp: 10,
+		priority: 0,
+		secondary: {
+			chance: 20,
+			boosts: {
+				def: -1
+			}
+		},
+		target: "any",
+		type: "Flying"
+	},
+	relicsong: {
+		inherit: true,
+		secondary: {
+			chance: 20,
+			self: {
+				boosts: {
+					atk: 1,
+					spa: 1
+				}
+			}
+		}
+	},
+	"electroweb": {
+		num: 527,
+		accuracy: 85,
+		basePower: 70,
+		category: "Special",
+		desc: "",
+		shortDesc: "",
+		id: "electroweb",
+		name: "Electroweb",
+		pp: 10,
+		priority: 0,
+		secondary: {
+			chance: 100,
+			status: 'par'
+		},
+		target: "normal",
+		type: "Electric"
+	},
+	"naturepower": {
+                inherit: true,
+                basePower: 80,
+                accuracy: 100,
+                priority: 0,
+                category: "Physical",
+                target: "normal",
+                type: "Ground",
+                onHit: false,
+                onModifyMove: function(move, source, target) {
+                        if (source.hasType('Grass')) {
+                            move.basePower = 120;
+                            }
+		}
+        },
+        leechseed: {
+        	inherit: true,
+        	accuracy: 100
+        },
+        shellsmash: {
+                inherit: true,
+                boosts: {
+                        atk: 2,
+                        spa: 2,
+                        spe: 2,
+                        def: -1,
+                        spd: -1
+                },
+                onModifyMove: function(move, user) {
+                        if (user.ability === 'shellarmor') {
+                                move.boosts = {
+                                        spa: 1,
+                                        atk: 1,
+                                        spe: 1,
+                                };
+                        }
+                }
+        },
+        "triattack": {
+		num: 161,
+		accuracy: 100,
+		basePower: 30,
+		category: "Special",
+		desc: "",
+		shortDesc: "",
+		id: "triattack",
+		isViable: true,
+		name: "Tri Attack",
+		pp: 10,
+		priority: 0,
+		multihit: 3,
+		secondary: {
+			chance: 25,
+			onHit: function(target, source) {
+				var result = this.random(3);
+				if (result===0) {
+					target.trySetStatus('brn', source);
+				} else if (result===1) {
+					target.trySetStatus('par', source);
+				} else {
+					target.trySetStatus('frz', source);
+				}
+			}
+		},
+		target: "normal",
+		type: "Normal"
+	},
+	"razorwind": {
+		num: 13,
+		accuracy: 100,
+		basePower: 30,
+		category: "Special",
+		desc: "",
+		shortDesc: "",
+		id: "razorwind",
+		name: "Razor Wind",
+		pp: 10,
+		priority: 0,
+		multihit: 2,
+		critRatio: 2,
+		secondary: false,
+		target: "allAdjacentFoes",
+		type: "Normal"
+	},
+	heartstamp: {
+		inherit: true,
+		basePower: 80
 	}	
 };
