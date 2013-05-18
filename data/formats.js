@@ -574,6 +574,18 @@ exports.BattleFormats = {
 		ruleset: ['Pokemon', 'Standard', 'Evasion Abilities Clause', 'Team Preview'],
 		banlist: ['Uber', 'Drizzle ++ Swift Swim', 'Soul Dew']
 	},
+	statswap: {
+		effectType: 'Format',
+		mod: 'statswap',
+		name: "Stat Swap",
+		section: "Other Metagames",
+		rated: true,
+		challengeShow: true,
+		searchShow: true,
+		isTeambuilderFormat: true,
+		ruleset: ['Pokemon', 'Standard', 'Evasion Abilities Clause', 'Team Preview'],
+		banlist: ['Uber', 'Drizzle ++ Swift Swim', 'Soul Dew']
+	},
 	ousixmoves: {
 		effectType: 'Format',
 		name: "OU Six Moves",
