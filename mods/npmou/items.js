@@ -212,7 +212,7 @@ exports.BattleItems = {
 			basePower: 30
 		},
 		onModifyMove: function(move) {
-			if (pokemon.template.species === 'Alakazam' && move.category === 'Physical') {
+			if (move && user.baseTemplate.species === 'Dialga' && (move.category === 'Physical')) {
 				move.category = 'Special';
 				move.defensiveCategory = 'Physical';
 			}
