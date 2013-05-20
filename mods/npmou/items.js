@@ -211,8 +211,8 @@ exports.BattleItems = {
 		fling: {
 			basePower: 30
 		},
-		onModifyMove: function(move) {
-			if (user.baseTemplate.species === 'Alakazam' && (move.category === 'Physical')) {
+		onModifyMove: function(move, user) {
+			if (move && user.baseTemplate.species === 'Alakazam' && (move.category === 'Physical')) {
 				move.category = 'Special';
 				move.defensiveCategory = 'Physical';
 			}
