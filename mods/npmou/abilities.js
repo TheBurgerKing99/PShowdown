@@ -49,7 +49,7 @@ exports.BattleAbilities = {
 				}
 				if (totalatk && totalatk >= totalspa) {
 					this.boost({def:1});
-				} else if (totalspd) {
+				} else if (totalspa) {
 					this.boost({spd:1});
 				}
 		},
