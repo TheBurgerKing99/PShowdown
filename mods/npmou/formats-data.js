@@ -23,6 +23,10 @@ exports.BattleFormatsData = {
                 inherit: true,
                 tier: 'OU'
         },
+        tornadustherian: {
+                inherit: true,
+                tier: 'OU'
+        },
         thundurus: {
                 inherit: true,
                 tier: 'OU'
