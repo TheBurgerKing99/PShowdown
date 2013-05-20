@@ -27,6 +27,10 @@ exports.BattleFormatsData = {
                 inherit: true,
                 tier: 'OU'
         },
+        blaziken: {
+                inherit: true,
+                tier: 'OU'
+        },
         thundurus: {
                 inherit: true,
                 tier: 'OU'
