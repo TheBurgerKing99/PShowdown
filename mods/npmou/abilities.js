@@ -9,6 +9,68 @@ exports.BattleAbilities = {
 		 rating: 3,
 		 num: -4
 	},
+	"dauntless": {
+		desc: "When a Pokemon with Dauntless faints another Pokemon, its Special Attack rises by one stage.",
+		shortDesc: "This Pokemon's Special Attack is boosted by 1 if it attacks and faints another Pokemon.",
+		onSourceFaint: function(target, source, effect) {
+			if (effect && effect.effectType === 'Move') {
+				this.boost({spa:1}, source);
+			}
+		},
+		id: "dauntless",
+		name: "Dauntless",
+		rating: 4,
+		num: 1003
+	},
+	"adrenaline": {
+		desc: "When a Pokemon with Adrenaline faints another Pokemon, its Speed rises by one stage.",
+		shortDesc: "This Pokemon's Speed is boosted by 1 if it attacks and faints another Pokemon.",
+		onSourceFaint: function(target, source, effect) {
+			if (effect && effect.effectType === 'Move') {
+				this.boost({spe:1}, source);
+			}
+		},
+		id: "adrenaline",
+		name: "Adrenaline",
+		rating: 4,
+		num: 1004
+	},
+	"caution": {
+		desc: "If this Pokemon switches into an opponent with equal offenses or higher Attack than Special Attack, this Pokemon's Defense receives a 50% boost. If this Pokemon switches into an opponent with higher Special Attack than Attack, this Pokemon's Special Defense receive a 50% boost.",
+		shortDesc: "On switch-in, Defense or Sp. Def is boosted by 1 based on the foes' stronger offense.",
+		onStart: function (pokemon) {
+			var foeactive = pokemon.side.foe.active;
+			var totalatk = 0;
+			var totalspa = 0;
+				for (var i=0; i<foeactive.length; i++) {
+					if (!foeactive[i] || foeactive[i].fainted) continue;
+					totalatk+= foeactive[i].getStat('atk');
+					totalspa += foeactive[i].getStat('spa');
+				}
+				if (totalatk && totalatk >= totalspa) {
+					this.boost({def:1});
+				} else if (totalspd) {
+					this.boost({spd:1});
+				}
+		},
+		id: "caution",
+		name: "Caution",
+		rating: 4,
+		num: 1005 
+	},
+	"tempest": {
+		desc: "When this Pokemon enters the field, Water and Flying-type opponents cannot switch out nor flee the battle unless they are holding Shed Shell or use the attacks U-Turn or Baton Pass.",
+		shortDesc: "Prevents Water and Flying-type foes from switching out normally.",
+		onFoeModifyPokemon: function(pokemon) {
+			if (pokemon.hasType('Water') || pokemon.hasType('Flying')) {
+				pokemon.trapped = true;
+			}
+		},
+		id: "tempest",
+		name: "Tempest",
+		rating: 5,
+		num: 1006
+	},
   	"gravitation": {
   		desc: "Summons a 5-turn Gravity upon switch in.",
   		shortDesc: "Summons 5 turn Auto-Gravity.",
