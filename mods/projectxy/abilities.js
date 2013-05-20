@@ -181,7 +181,7 @@ exports.BattleAbilities = {
 		desc: "This Pokemon always attacks last, but the damage it receives is reduced by 50%.",
 		shortDesc: "All moves become -7 priority, but takes 1/2 damage.",
 		onModifyMove: function(move) {
-			if(move.priority > -7) {
+			if(!move.priority = -7) {
 				move.priority = -7;	
 		},
 		onSourceBasePower: function(basePower, attacker, defender, move) {
