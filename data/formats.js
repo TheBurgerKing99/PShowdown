@@ -537,6 +537,20 @@ exports.BattleFormats = {
 		ruleset: ['Pokemon', 'Standard NEXT', 'Team Preview'],
 		banlist: ['Uber']
 	},
+	theburgerking99: {
+    		name: 'MMMM, burgers',
+    		section: "Other Metagames",
+    		
+    		mod: 'bkrandommod',
+    		effectType: 'Format',
+    		rated: false,
+    		challengeShow: true,
+    		searchShow: true'
+    		isTeambuilderFormat: true,
+    		ruleset: ['Pokemon', 'Standard Ubers', 'Team Preview'],
+    		banlist: []
+	},
+    		
 	tiershift: {
 		name: "Tier Shift",
 		section: 'Other Metagames',
