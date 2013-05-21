@@ -183,12 +183,11 @@ exports.BattleAbilities = {
 		onModifyMove: function(move) {
 			if(move.priority !== -7) {
 				move.priority = -7;	
+			}
 		},
-		onModifyDef: function(def) {
-			return def * 2;
-		},
-		onModifySpD: function(spd) {
-			return spd * 2;
+		onSourceBasePower: function(basePower, attacker, defender, move) {
+			this.debug('Stall weaken');
+			return basePower/2;
 		},
 		id: "stall",
 		name: "Stall",
